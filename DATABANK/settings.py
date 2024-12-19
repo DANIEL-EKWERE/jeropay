@@ -88,18 +88,18 @@ WSGI_APPLICATION = 'DATABANK.wsgi.application'
 import dj_database_url
 
 
-# DATABASES = {
-#     'default': dj_database_url.parse('postgres://databank_api_db_dh00_user:yH1ZhzfWf7lmHHxuaIlTyIJrhaWJ0oki@dpg-cmbdesicn0vc73dc1jtg-a.oregon-postgres.render.com/databank_api_db_dh00')
-# }
-
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse('')
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # DATABASES = {
