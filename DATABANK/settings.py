@@ -89,7 +89,7 @@ import dj_database_url
 
 
 DATABASES = {
-    'default': dj_database_url.parse('')
+    'default': dj_database_url.parse('postgresql://jeropay_db_user:GCljhRbPCbY7Sdsm8MfbNpRU6nWGu8mQ@dpg-cthv66jqf0us73dp4i00-a.oregon-postgres.render.com/jeropay_db')
 }
 
 
