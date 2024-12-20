@@ -9,6 +9,7 @@ html, body{
 	padding:0;
 	font-family: 'Lato', sans-serif;
 	scroll-behavior: smooth;
+  background: #CAFBDC
 }
 
 
@@ -239,7 +240,8 @@ button.main-hero-download-button{
 
 /*=========== MAIN FEATURES SECTION =========*/
 section.blog-posts-section{
-	background-color: #f5f6f7;
+	background-color: #CAFBDC;
+  /* background: #CAFBDC */
 }
 
 div.blog-posts-container{
@@ -308,7 +310,7 @@ div.blog-posts-card div.blog-text a:active{
 
 /* CATEGORIES SECTION */
 section.categories-section{
-	background-color: #fff;
+	background-color: #CAFBDC;
 }
 
 div.categories-container{
@@ -371,7 +373,7 @@ div.categories-card p{
 /*===== CONTACT SECTION ====*/
 
 section.main-contact-container{
-	background-color:#FFF;
+	background-color: #CAFBDC;
 }
 div.main-contact{
 	padding:10em 3em;
