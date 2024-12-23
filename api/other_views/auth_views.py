@@ -362,8 +362,8 @@ class CreateProfileAPIView(GenericAPIView):
                 print("status_code",response.status_code)
                 print(response.text)
                 if response.status_code == 200:
-                    #data_json = response.json()
-                    data = json.loads(response)
+                    data = response.json()
+                    #data = json.loads(response)
                     # reserved_account, created = ReservedAccount.objects.get_or_create(user=None)
 
                     #bank_name = data_json['banks'][0]['bankName']
