@@ -345,7 +345,7 @@ class CreateProfileAPIView(GenericAPIView):
 
                 data = {
                     "email": request.user.email,
-                    "reference": f"sna{phone_numbet}",
+                    "reference": f"sna{phone_number}",
                     "firstName": request.user.first_name,
                     "lastName": request.user.last_name,
                     "phone": phone_number,
