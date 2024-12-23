@@ -354,7 +354,8 @@ class CreateProfileAPIView(GenericAPIView):
                 }
 
                 response = requests.post(
-                    'https://api.payvessel.com/api/external/request/customerReservedAccount/',
+                    #'https://api.payvessel.com/api/external/request/customerReservedAccount/',
+                    'https://api.billstack.co/v2/thirdparty/generateVirtualAccount/',
                     headers=headers,
                     json=data
                 )
@@ -362,6 +363,7 @@ class CreateProfileAPIView(GenericAPIView):
                 print(response.text)
                 if response.status_code == 200:
                     data_json = response.json()
+                    data = json.loads(response)
                     # reserved_account, created = ReservedAccount.objects.get_or_create(user=None)
 
                     bank_name = data_json['banks'][0]['bankName']
