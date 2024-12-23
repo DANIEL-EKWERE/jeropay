@@ -362,16 +362,21 @@ class CreateProfileAPIView(GenericAPIView):
                 print("status_code",response.status_code)
                 print(response.text)
                 if response.status_code == 200:
-                    data_json = response.json()
+                    #data_json = response.json()
                     data = json.loads(response)
                     # reserved_account, created = ReservedAccount.objects.get_or_create(user=None)
 
-                    bank_name = data_json['banks'][0]['bankName']
-                    account_number = data_json['banks'][0]['accountNumber']
-                    account_name = data_json['banks'][0]['accountName']
-                    print(bank_name)
-                    print(account_number)
-                    print(account_name)
+                    #bank_name = data_json['banks'][0]['bankName']
+                    #account_number = data_json['banks'][0]['accountNumber']
+                    #account_name = data_json['banks'][0]['accountName']
+                    #print(bank_name)
+                    #print(account_number)
+                    #print(account_name)
+                    account_info = data["data"]["account"][0]
+                    bank_name = account_info["bank_name"]
+                    account_number = account_info["account_number"]
+                    account_name = account_info["account_name"]
+                    created_at = account_info["created_at"]
                     # Set bank details in the profile model
                     # serializer_inst.bank_name = bank_name  # Replace with actual bank name
                     # serializer_inst.account_number = account_number  # Replace with actual account number
