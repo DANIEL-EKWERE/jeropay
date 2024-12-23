@@ -1,7 +1,7 @@
 import requests
 from django.conf import settings
 
-KVDATA_BASE_URL = "https://kvdata.net/api/"
+KVDATA_BASE_URL = "https://kvdataapi.net/api/"
 KVDATA_PROVIDER_TOKEN = "95fa17cc2db34652b231cedd500d368789002382"
 
 BaseUrl = 'https://api.payvessel.com/'
