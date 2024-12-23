@@ -338,17 +338,19 @@ class CreateProfileAPIView(GenericAPIView):
             # Call create_reserved_account function after creating a profile
             try:
                 headers = {
-                    'api-key': 'PVKEY-K6AICOC1BP6W8TVSQD3WOJM2SIWCX57K',
-                    'api-secret': 'Bearer PVSECRET-5CQIJKA16EBCVL6WY7DH8OQ57DZQDZ2YXGA76NK64QRBGT5OCRWQ8KBZTYYA603S',
+                    #'api-key': 'PVKEY-K6AICOC1BP6W8TVSQD3WOJM2SIWCX57K',
+                    'Authorization': 'Bearer Bill_Stack-SEC-KEY-299b074531bcfed779edb3f7fdaac87b',
                     'Content-Type': 'application/json'  
                 }
 
                 data = {
                     "email": request.user.email,
-                    "name": request.user.username,
-                    "phoneNumber": phone_number,
-                    "bankcode":["120001"],
-                    "businessid":"064A4A647B0E4C3D8D83F68985FA31A9"
+                    "reference": f"sna{phone_numbet}"
+                    "firstName": request.user.first_name,
+                    "lastName": request.user.last_name,
+                    "phone": phone_number,
+                    "bank":"PALMPAY",
+                    #"businessid":"064A4A647B0E4C3D8D83F68985FA31A9"
                 }
 
                 response = requests.post(
