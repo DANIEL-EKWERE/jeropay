@@ -714,7 +714,7 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
                     #     )
                     wallet = Wallet.objects.get(user=profile)
                     
-                    totalpur = wallet.total_purchase + amount
+                    totalpur = wallet.total_purchase + data_plan_price
                     Wallet.objects.filter(user=profile).update(total_purchase=totalpur)
 
                     trans_serializer = TransactionSerializer(trans).data
