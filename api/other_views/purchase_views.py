@@ -264,7 +264,7 @@ class PurchaseAirtimeView(WalletCheckMixin, GenericAPIView):
                     amount= amount,
                     type= 'Airtime',
                 )
-                profile = User.objects.get(user=request.user)
+                profile = Profile.objects.get(user=request.user)
                 wallet = Wallet.objects.get(user=profile)
                     
                 totalpur = wallet.total_purchase + amount
