@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 import requests, json, urllib3
 
 # models
-from api.models import Transaction, Data, Profile, CableSubscription
+from api.models import Transaction, Data, Profile, CableSubscription, Wallet
 
 # serializers
 from api.other_serializers.purchase_serializers import (
