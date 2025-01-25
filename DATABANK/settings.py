@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'DATABANK.wsgi.application'
 import dj_database_url
 
 
-DATABASES = {
-    'default': dj_database_url.parse('postgresql://jeropay_db_user:GCljhRbPCbY7Sdsm8MfbNpRU6nWGu8mQ@dpg-cthv66jqf0us73dp4i00-a.oregon-postgres.render.com/jeropay_db')
-}
+# DATABASES = {
+#     'default': dj_database_url.parse('postgresql://jeropay_db_user:GCljhRbPCbY7Sdsm8MfbNpRU6nWGu8mQ@dpg-cthv66jqf0us73dp4i00-a.oregon-postgres.render.com/jeropay_db')
+# }
 
 
 
@@ -101,6 +101,19 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '',         # Database name
+        'USER': '',     # Database user
+        'PASSWORD': '',          # Database password
+        'HOST': 'localhost',                  # Host (usually 'localhost' for cPanel)
+        'PORT': '5432',                       # Default PostgreSQL port
+    }
+}
+
 
 
 # DATABASES = {
@@ -263,7 +276,7 @@ FCM_DJANGO_SETTINGS = {
     "DELETE_INACTIVE_DEVICES": False,
 }
 
-# import firebase_admin
+# import firebase_adminj
 # from firebase_admin import credentials
 
 # cred = credentials.Certificate("path/to/serviceAccountKey.json")

@@ -21,6 +21,9 @@ from api.other_serializers.admin.deposit_record_serializers import DepositRecord
 # models
 from api.models import Profile, Wallet, DepositRecord
 
+import json
+from django.http import JsonResponse
+
 class FundCustomerAccount(GenericAPIView):
     serializer_class = FundUserAccountSerializer
     # permission_classes = [IsAuthenticated, IsAdminUser,]
@@ -53,12 +56,12 @@ class FundCustomerAccount(GenericAPIView):
             deposit = wallet.total_deposit + amount
             Wallet.objects.filter(user=profile).update(total_deposit=deposit)
 
-            # create the new Deposit Record
-            def create_id():
-                num = random.randint(1, 10)
-                num_2 = random.randint(1, 10)
-                num_3 = random.randint(1, 10)
-                return str(num_2)+str(num_3)+str(uuid.uuid4())
+            # # create the new Deposit Record
+            # def create_id():
+            #     num = random.randint(1, 10)
+            #     num_2 = random.randint(1, 10)
+            #     num_3 = random.randint(1, 10)
+            #     return str(num_2)+str(num_3)+str(uuid.uuid4())
 
 
             DepositRecord.objects.create(
@@ -97,92 +100,150 @@ class FundCustomerAccount(GenericAPIView):
                 status=400
             )
 
-def create_id():
-                num = random.randint(1, 10)
-                num_2 = random.randint(1, 10)
-                num_3 = random.randint(1, 10)
-                return str(num_2)+str(num_3)+str(uuid.uuid4())
+# def create_id():
+#                 num = random.randint(1, 10)
+#                 num_2 = random.randint(1, 10)
+#                 num_3 = random.randint(1, 10)
+#                 return str(num_2)+str(num_3)+str(uuid.uuid4())
 
 '''  PYTHON DJANGO SAMPLE WEBHOOK  '''
 
+# @require_POST
+# @csrf_exempt
+# def payvessel_payment_done(request):
+#         payload = request.body
+#         payvessel_signature = request.META.get('HTTP_PAYVESSEL_HTTP_SIGNATURE')
+#         #this line maybe be differ depends on your server
+#         #ip_address = u'{}'.format(request.META.get('HTTP_X_FORWARDED_FOR'))
+#         #ip_address = u'{}'.format(request.META.get('REMOTE_ADDR'))
+#         secret = bytes("PVSECRET-", 'utf-8')
+#         hashkey = hmac.new(secret,request.body, hashlib.sha512).hexdigest()
+#         if payvessel_signature == hashkey:
+#                 data = json.loads(payload)
+#                 print(data)
+#                 amount = float(data['order']["amount"])
+#                 settlementAmount = float(data['order']["settlement_amount"])
+#                 fee = float(data['order']["fee"])
+#                 reference = data['transaction']["reference"]
+#                 description = data['order']["description"]
+#                 settlementAmount = settlementAmount 
+#                 paynow = (round(amount - fee))
+                
+#                 ###check if reference already exist in your payment transaction table   
+#                 if not DepositRecord.objects.filter(reference=reference).exists():
+                   
+#                     #fund user wallet here
+#                     email = data["eventData"]["customer"]["email"]
+#                     user = User.objects.get(email__iexact=email)
+#                     try:
+#                         profile = Profile.objects.get(user=user)
+
+#                     except:
+#                         return Response(
+#                             data={
+#                             'status':'error',
+#                             'data': 'No Profile found'
+#                             },
+#                             status=404
+#                         )
+#                     wallet = Wallet.objects.get(user=profile)
+                    
+#                     new_balance = wallet.balance + paynow
+#                     # deposit = wallet.total_deposit + paynow
+#                     Wallet.objects.filter(user=profile).update(balance=new_balance)
+#                     #Wallet.objects.filter(user=profile).update(total_deposit=deposit)
+#                     DepositRecord.objects.create(
+#                     wallet = wallet,
+#                     amount=amount,
+#                     gateway='Wallet Transfer Deposit (payvessel)',
+#                     status='successfull',
+#                     reference=reference,
+#                     )
+
+
+
+#                     # Send a notification
+#                     # devices = FCMDevice.objects.filter(user=user.id)
+#                     # devices.send_message(
+#                     #     message =Message(
+#                     #         notification=Notification(
+#                     #             title='Wallet Transfer Deposit',
+#                     #             body=f'Success🎉 Your account has been funded with ₦{paynow}'
+#                     #         ),
+#                     #         token=FCMDevice.objects.get(user=user.id).device_id,
+#                     #     ),
+
+#                     #     app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP']
+#                     # )
+
+
+#                     return JsonResponse({"message": "success",'data': f'updated {user} Balance to {paynow}'},status=200) 
+                        
+#                 else:
+#                     return JsonResponse({"message": "transaction already exist",},status=200) 
+        
+#         else:
+#             return JsonResponse({"message": "Permission denied, invalid hash or ip address.",},status=400)
+
+
+
+
 @require_POST
 @csrf_exempt
-def payvessel_payment_done(request):
+def payment_webhook(request):
+    try:
+        # Parse the request payload
         payload = request.body
-        payvessel_signature = request.META.get('HTTP_PAYVESSEL_HTTP_SIGNATURE')
-        #this line maybe be differ depends on your server
-        #ip_address = u'{}'.format(request.META.get('HTTP_X_FORWARDED_FOR'))
-        #ip_address = u'{}'.format(request.META.get('REMOTE_ADDR'))
-        secret = bytes("PVSECRET-", 'utf-8')
-        hashkey = hmac.new(secret,request.body, hashlib.sha512).hexdigest()
-        if payvessel_signature == hashkey:
-                data = json.loads(payload)
-                print(data)
-                amount = float(data['order']["amount"])
-                settlementAmount = float(data['order']["settlement_amount"])
-                fee = float(data['order']["fee"])
-                reference = data['transaction']["reference"]
-                description = data['order']["description"]
-                settlementAmount = settlementAmount 
-                paynow = (round(amount - fee))
-                
-                ###check if reference already exist in your payment transaction table   
-                if not DepositRecord.objects.filter(reference=reference).exists():
-                   
-                    #fund user wallet here
-                    email = data["eventData"]["customer"]["email"]
-                    user = User.objects.get(email__iexact=email)
-                    try:
-                        profile = Profile.objects.get(user=user)
+        data = json.loads(payload)
 
-                    except:
-                        return Response(
-                            data={
-                            'status':'error',
-                            'data': 'No Profile found'
-                            },
-                            status=404
-                        )
-                    wallet = Wallet.objects.get(user=profile)
-                    
-                    new_balance = wallet.balance + paynow
-                    # deposit = wallet.total_deposit + paynow
-                    Wallet.objects.filter(user=profile).update(balance=new_balance)
-                    #Wallet.objects.filter(user=profile).update(total_deposit=deposit)
-                    DepositRecord.objects.create(
-                    wallet = wallet,
-                    amount=amount,
-                    gateway='Wallet Transfer Deposit (payvessel)',
-                    status='successfull',
-                    reference=reference,
-                    )
+        # Extract data from the payload
+        reference = data["data"]["reference"]
+        amount = float(data["data"]["amount"])  # Payment amount
+        payer_info = data["data"]["payer"]
+        payer_email = payer_info.get("email", None)  # Assuming email is in the payload
 
+        # Check if the reference already exists in `DepositRecord`
+        if DepositRecord.objects.filter(reference=reference).exists():
+            return JsonResponse({"message": "Transaction already exists."}, status=200)
 
+        # Get the user and their wallet
+        user = User.objects.get(email__iexact=payer_email)
+        profile = Profile.objects.get(user=user)
+        wallet = Wallet.objects.get(user=profile)
 
-                    # Send a notification
-                    # devices = FCMDevice.objects.filter(user=user.id)
-                    # devices.send_message(
-                    #     message =Message(
-                    #         notification=Notification(
-                    #             title='Wallet Transfer Deposit',
-                    #             body=f'Success🎉 Your account has been funded with ₦{paynow}'
-                    #         ),
-                    #         token=FCMDevice.objects.get(user=user.id).device_id,
-                    #     ),
+        # Update wallet balance
+        new_balance = wallet.balance + amount
+        Wallet.objects.filter(user=profile).update(balance=new_balance)
 
-                    #     app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP']
-                    # )
+        # Save the transaction in `DepositRecord`
+        DepositRecord.objects.create(
+            wallet=wallet,
+            amount=amount,
+            gateway="Wallet Transfer Deposit (Webhook)",
+            status="successful",
+            reference=reference,
+        )
 
+        # Send a success response
+        return JsonResponse(
+            {
+                "message": "success",
+                "data": f"Updated {user.email}'s wallet balance by {amount}",
+            },
+            status=200,
+        )
 
-                    return JsonResponse({"message": "success",'data': f'updated {user} Balance to {paynow}'},status=200) 
-                        
-                else:
-                    return JsonResponse({"message": "transaction already exist",},status=200) 
-        
-        else:
-            return JsonResponse({"message": "Permission denied, invalid hash or ip address.",},status=400)
+    except User.DoesNotExist:
+        return JsonResponse({"message": "User not found."}, status=404)
 
+    except Profile.DoesNotExist:
+        return JsonResponse({"message": "Profile not found."}, status=404)
 
+    except Wallet.DoesNotExist:
+        return JsonResponse({"message": "Wallet not found."}, status=404)
+
+    except Exception as e:
+        return JsonResponse({"message": f"An error occurred: {str(e)}"}, status=500)
 
         
 class DisplayDepositRecordsView(ListAPIView):

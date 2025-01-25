@@ -23,7 +23,7 @@ urlpatterns = [
 urlpatterns += [
     # fund account
     path('admin/fund-account/', FundCustomerAccount.as_view(), name='fund-customer-account'),
-    path('admin/payvessel-payment-done/', payvessel_payment_done, name='payvessel-payment-done'),
+    path('admin/payment_webhook/', payment_webhook, name='payvessel-payment-done'),
     path('admin/display-deposit-records/', DisplayDepositRecordsView.as_view(), name='display-deposit-records'),
     
     # private url
