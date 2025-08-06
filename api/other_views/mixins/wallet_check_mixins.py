@@ -5,6 +5,12 @@ from api.models import Wallet, Profile, Transaction
 
 class WalletCheckMixin:
 
+    def req_data(self, data):
+        return {
+            "exam": data["exam_name"],
+            "quantity": data["quantity"]
+        }
+
     def check_wallet_inst(self):
         # wallet = Wallet.objects.get(user=self.check_profile())
         try:

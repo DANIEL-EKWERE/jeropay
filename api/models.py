@@ -145,6 +145,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=100)
     phone = models.CharField(max_length=11)
+    fullName = models.CharField(max_length=31, default="N/A")
     reseller = models.BooleanField()
     state = models.CharField(max_length=20, choices=states_in_ng)
     profile_picture = models.ImageField(upload_to='profile-pic/', blank=True)
@@ -156,7 +157,7 @@ class Profile(models.Model):
 
     # new fields for referral
     code = models.CharField(max_length=10,default='',blank=True)
-    recommended_by = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,related_name='ref_by')
+    recommended_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='ref_by')
 
     #referral = models.ForeignKey(Referrer,on_delete=models.CASCADE,null=True,blank=True,default='')
    # referral_id = models.UUIDField(default=uuid4,)
@@ -230,7 +231,9 @@ class Transaction(models.Model):
     
     user = models.ForeignKey(User, on_delete= models.CASCADE)
     id = models.UUIDField(default=uuid4, primary_key=True)
-    detail = models.CharField(max_length=300)
+    response = models.CharField(max_length=300,default='N/A',blank=True,null=True)
+    detail = models.CharField(max_length=300,default='N/A')
+    request_id = models.CharField(max_length=300,default='N/A',blank=True,null=True)
     date_and_time = models.DateTimeField(auto_now_add=True)
     old_balance = models.DecimalField(decimal_places=2, max_digits=11)
     new_balance = models.DecimalField(decimal_places=2, max_digits=11)
@@ -286,3 +289,22 @@ class ReservedAccount(models.Model):
 
 class Announcement(models.Model):
     body = models.TextField()
+
+
+
+class VirtualAccount(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='virtual_accounts')
+    bank_name = models.CharField(max_length=100)
+    account_number = models.CharField(max_length=20)
+    account_name = models.CharField(max_length=100)
+    bank_code = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.bank_name} - {self.account_number} ({self.profile.user.username})"
+    
+
+class TransactionPin(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='transaction_pin')    
+    pin = models.CharField(max_length=5)
+    created_at = models.DateTimeField(auto_now_add=True)

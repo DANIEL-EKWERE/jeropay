@@ -254,6 +254,7 @@ class DisplayDepositRecordsView(ListAPIView):
 class DisplayDepositRecordsPerUserView(ListAPIView):
     serializer_class = DepositRecordSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
+    
     queryset = DepositRecord.objects.all()
     lookup_field = 'id'
 

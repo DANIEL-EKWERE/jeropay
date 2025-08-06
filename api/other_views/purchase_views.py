@@ -40,11 +40,14 @@ from api.other_views.mixins.wallet_check_mixins import WalletCheckMixin
 
 # constants
 from api.constants import (
+    EXAM_RESULT_CHECKER,
     NETWORK_ID, 
     ELECTRIC_DISCO_ID,
     CABLE_PROVIDER_ID,
     KVDATA_BASE_URL,
     KVDATA_PROVIDER_TOKEN,
+    API_BASE_URL,
+    API_PROVIDER_TOKEN,
 
     RequestWrapper
     )
@@ -87,7 +90,7 @@ class DeductTest(WalletCheckMixin, GenericAPIView):
                 new_balance= balances[1],
                 phone_number=phone_number,
                 status='Success',
-                amount= amount,
+                amount=amount,
                 type= 'Airtime',
             )
 
@@ -222,19 +225,27 @@ class PurchaseAirtimeView(WalletCheckMixin, GenericAPIView):
             #     'amount': amount,
             # }
 
-
+# {
+#  "network": 1,
+#  "phone": "09065903769",
+#  "bypass": false,
+#  "request-id": "", 
+# "plan_type": "VTU",
+#  "amount": "100" 
+#}
             # parameters ,url and request for the new 
             
             params = {
                 "network": NETWORK_ID[network],
-                'amount': int(amount),
-                "mobile_number": phone_number,
-                "Ported_number": True,
-                "airtime_type": "VTU",
+                "phone": phone_number,
+                "bypass": False,
+                "request-id": "", 
+                "plan_type": "VTU",
+                "amount": int(amount),
             }
 
             headers = {
-                'Authorization': f'Token {KVDATA_PROVIDER_TOKEN}',
+                'Authorization': f'Token {API_PROVIDER_TOKEN}',
                 'Content-Type': 'application/json'
             }
 
@@ -242,14 +253,21 @@ class PurchaseAirtimeView(WalletCheckMixin, GenericAPIView):
             # Process the request
             # url = settings.PG_URL
             # response = requests.get(url, params=request_params)
-            url = KVDATA_BASE_URL + 'topup/'
+            url = API_BASE_URL + 'airtime/'
             response = requests.post(
                 url,
                 headers=headers,
                 data=json.dumps(params),
             )
             
-            if response.status_code == 201:
+            if response.status_code == 200:
+                print(response)
+                response_data = response.json()
+                status = response_data.get("status")
+                print(f"status =========== {status}")
+                print(response_data)
+                data_response = response_data.get("response")
+                request_id = response_data.get("request-id")
                 message = f'You have purchased {amount} airtime from {network}'
                 
                 balances = self.deduct_amount_from_balance(amount=amount)
@@ -257,6 +275,8 @@ class PurchaseAirtimeView(WalletCheckMixin, GenericAPIView):
                 trans = Transaction.objects.create(
                     user=request.user,
                     detail= message,
+                    response=data_response,
+                    request_id=request_id,
                     old_balance=balances[0],
                     new_balance= balances[1],
                     phone_number=phone_number,
@@ -655,18 +675,29 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
 
             # check wallet balance against the price of the data plan
             wallet = self.check_wallet_balance(amount=data_plan_price)
+#{
+#  "network": 1,
+#  "phone" : "09065903769",
+#  "bypass" : false,
+#  "request-id" : "",
+#  "data_plan" : 1 
+#}
+
+
 
             '''make the request'''
             params = {
                 "network":  network_id,
-                "mobile_number": phone_number,
-                "plan": data_plan_id,
+                "phone": phone_number,
+                "bypass" : False,
+                "request-id" : "",
+                "data_plan" : data_plan_id,
                 "Ported_number": True,
                 
             }
 
             headers = {
-                'Authorization': f'Token {KVDATA_PROVIDER_TOKEN}',
+                'Authorization': f'Token {API_PROVIDER_TOKEN}',
                 'Content-Type': 'application/json'
             }
             
@@ -675,12 +706,15 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
 
             try:
 
-                response = requests.post(KVDATA_BASE_URL + 'data/',headers=headers, data=json.dumps(params),timeout=20)
+                response = requests.post(API_BASE_URL + 'data/',headers=headers, data=json.dumps(params),timeout=20)
                 #response.raise_for_status()
 
-                if response.status_code == 201:
+                if response.status_code == 201 or response.status_code == 200:
+                    response_data = response.json()
+                    data_response = response_data.get("response")
+                    request_id = response_data.get("request_id") 
                     # check if the API returns a failed status
-                    if response.json()['Status'] == 'failed':
+                    if response.json()['Status'] == 'error':
                         return Response(
                             data={
                                 'status': 'error',
@@ -693,6 +727,8 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
                     trans = Transaction.objects.create(
                         user=request.user,
                         detail= message,
+                        response=data_response,
+                        request_id=request_id,
                         old_balance=balances[0],
                         new_balance= balances[1],
                         phone_number=phone_number,
@@ -802,6 +838,7 @@ class BillPurchaseMixin(RequestWrapper, WalletCheckMixin):
         
         if  serializer.is_valid():
             valid_data = serializer.validated_data
+            print(valid_data)
 
             try:            
                 amount = valid_data['amount']
@@ -813,10 +850,26 @@ class BillPurchaseMixin(RequestWrapper, WalletCheckMixin):
             self.check_wallet_balance(amount=amount)
             
             data = self.request_data(amount, valid_data, **kwargs)
+            print(f'data === {data}')
             response = self.req_post(data=data)
+            print(f"response ===== {response.json()}")
             json_resp = response.json()
             
+            if "message" in json_resp and "balance is low" in json_resp["message"]:
+                return Response(
+                    json_resp,
+                    status=400,
+                )
+
             if json_resp['status'] == 'fail':
+                return Response(
+                    json_resp,
+                    status=400,
+                )
+            
+            
+            
+            if "message" in json_resp and "balance is low" in json_resp["message"]:
                 return Response(
                     json_resp,
                     status=400,
@@ -827,7 +880,7 @@ class BillPurchaseMixin(RequestWrapper, WalletCheckMixin):
 
             # create the transaction
             kwargs['json_resp'] = json_resp
-            trans_data = self.transaction_data(amount, old_bal, new_bal, **kwargs)
+            trans_data = self.transaction_data(old_bal, new_bal, **kwargs)
             trans = self.create_transaction_record(
                 **trans_data
             )
@@ -848,20 +901,21 @@ class BillPurchaseMixin(RequestWrapper, WalletCheckMixin):
 
 
 class PurchaseElectricityView(BillPurchaseMixin, GenericAPIView):
-    url = 'https://kvdata.net/api/'
-    endpoint = 'billpayment/'
-    provider_token = KVDATA_PROVIDER_TOKEN
+    url = API_BASE_URL
+    endpoint = 'bill'
+    provider_token = API_PROVIDER_TOKEN
     serializer_class = ElectricBillPaymentSerializer
     queryset = Transaction.objects.all()
     permission_classes = [IsAuthenticated, ]
 
     def request_data(self, amount, valid_data, **kwargs):
         return {
-                "disco_name": ELECTRIC_DISCO_ID[valid_data['disco']],
+                "disco": ELECTRIC_DISCO_ID[valid_data['disco']],
                 "amount": int(amount),
-                "meter_number": valid_data['number'],
-                "MeterType": "prepaid",
-                "bypass": "true",
+                "meter_number": valid_data['meter_number'],
+                "meter_type": valid_data["meter_type"],
+                "bypass": True,
+                "phone": valid_data["phone"],
                 "request-id": f'{uuid4()}'
             }
 
@@ -880,9 +934,9 @@ class PurchaseElectricityView(BillPurchaseMixin, GenericAPIView):
   
     
 class PurchaseCableSubscriptionView(BillPurchaseMixin, GenericAPIView):
-    url = 'https://kvdata.net/api/'
-    endpoint = 'cablesub'
-    provider_token = KVDATA_PROVIDER_TOKEN
+    url = API_BASE_URL
+    endpoint = 'cable'
+    provider_token = API_PROVIDER_TOKEN
     serializer_class = CablePaymentSerializer
     permission_classes = [IsAuthenticated, ]
     queryset = CableSubscription.objects.all()
@@ -891,9 +945,9 @@ class PurchaseCableSubscriptionView(BillPurchaseMixin, GenericAPIView):
         cable_sub_instance = CableSubscription.objects.get(id=cable_id)
 
         return {
-                "cablename": CABLE_PROVIDER_ID[valid_data['cable_provider']],
-                "cableplan": str(cable_sub_instance.plan_id),
-                "smart_card_number": valid_data['iuc'],
+                "cable": CABLE_PROVIDER_ID[valid_data['cable_provider']],
+                "cable_plan": str(cable_sub_instance.plan_id),
+                "iuc": valid_data['iuc'],
                 "bypass": True,
                 "request-id": f'{uuid4()}'
             }
@@ -914,30 +968,35 @@ class PurchaseCableSubscriptionView(BillPurchaseMixin, GenericAPIView):
 
 
 class PurchaseExamEpin(BillPurchaseMixin, GenericAPIView):
-    url = 'https://kvdata.net/api/'
-    endpoint = 'epin/'
-    provider_token = KVDATA_PROVIDER_TOKEN
+    url = API_BASE_URL
+    endpoint = 'exam'
+    provider_token = API_PROVIDER_TOKEN
     serializer_class = PurchaseExamEpinSerializer
     queryset = Transaction.objects.all()
     # permission_classes = [IsAuthenticated, ]
 
     def request_data(self, valid_data, **kwargs):
         return {
-                "network": valid_data['network'].upper(),
-                "exam_name": valid_data["WAEC"].upper(),
+                # "network": valid_data['network'].upper(),
+                "exam": EXAM_RESULT_CHECKER[valid_data["exam_name"].upper()],
                 "quantity": valid_data["quantity"],
             }
 
     def transaction_data(amount, old_bal, new_bal, **kwargs):
-        token = kwargs['json_resp']['token']
+        # trans_data = kwargs['json_resp']
+        token = kwargs['json_resp']['pin']
+        exam = kwargs['json_resp']['exam']
+        request_id = kwargs['json_resp']['request_id']
+        print(kwargs['json_resp'])
         trans_data = {
             'detail': f'You have purchased {amount}, {token}',
+            "request_id": request_id,
             'old_balance': old_bal,
             'new_balance': new_bal,
-            'phone_number': '',
+            'phone_number': token,
             'status': 'Success',
             'amount': amount,
-            'type': 'Exam Epin'
+            'type': f'{exam} - Exam Epin'
         }
         return trans_data
   
@@ -958,10 +1017,12 @@ class BillValidatorMixin(RequestWrapper):
             valid_data = serializer.validated_data
             
             data = self.request_data(valid_data)
+            print(data)
 
             response = self.req_get(params=data)
             
             json_data = response.json()
+            print(json_data)
             
             if json_data['status'] == 'fail':
                 return Response(
@@ -986,28 +1047,28 @@ class BillValidatorMixin(RequestWrapper):
 class ValidateMeterNumberAPI(BillValidatorMixin, GenericAPIView):
     serializer_class = ValidateMeterNumberSerializer
     permission_classes = [IsAuthenticated,]
-    url = 'https://kvdata.net/api/'
-    endpoint = 'validatemeter'
-    provider_token = KVDATA_PROVIDER_TOKEN
+    url = API_BASE_URL
+    endpoint = 'bill/bill-validation'
+    provider_token = API_PROVIDER_TOKEN
 
     def request_data(self, valid_data):
         return {
-            'meternumber': str(valid_data['number']),
-            'disconame': ELECTRIC_DISCO_ID[valid_data['disco']],
-            'mtype': valid_data['type']
+            'meter_number': str(valid_data['meter_number']),
+            'meter_type': valid_data['meter_type'],
+            'disco': ELECTRIC_DISCO_ID[valid_data['disco']]
         }
         
 class ValidateCableNumberAPI(BillValidatorMixin, GenericAPIView):
     serializer_class = ValidateCableNumber
     permission_classes = [IsAuthenticated,]
-    url = 'https://kvdata.net/api/'
-    endpoint = 'validateiuc'
-    provider_token = KVDATA_PROVIDER_TOKEN
+    url = API_BASE_URL
+    endpoint = 'cable/cable-validation'
+    provider_token = API_PROVIDER_TOKEN
     
     def request_data(self, valid_data):
         return {
-            'smart_card_number': str(valid_data['iuc']),
-            'cablename': CABLE_PROVIDER_ID[valid_data['cable_provider']],
+            'iuc': str(valid_data['iuc']),
+            'cable': CABLE_PROVIDER_ID[valid_data['cable_provider']],
         }
 
 '''

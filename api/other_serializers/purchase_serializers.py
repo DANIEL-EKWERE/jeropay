@@ -24,7 +24,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         exclude = ['user', ]
 
 class PurchaseExamEpinSerializer(serializers.Serializer):
-    network = serializers.CharField(max_length=10)
+    amount = serializers.DecimalField(max_digits=10,decimal_places=2)
     exam_name = serializers.CharField(max_length=10)
     quantity = serializers.CharField(max_length=10)
 
@@ -32,12 +32,17 @@ class PurchaseExamEpinSerializer(serializers.Serializer):
     Validate and purchase Electricity bill serializer
 '''
 class ValidateMeterNumberSerializer(serializers.Serializer):
-    number = serializers.IntegerField()
-    type = serializers.CharField()
+    meter_number = serializers.IntegerField()
+    meter_type = serializers.CharField()
     disco = serializers.CharField()
 
 class ElectricBillPaymentSerializer(ValidateMeterNumberSerializer):
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+    amount = serializers.IntegerField()
+    phone = serializers.CharField()
+    disco = serializers.CharField()
+    meter_type = serializers.CharField()
+    meter_number = serializers.CharField()
+    bypass = serializers.BooleanField()
    
     def validate_amount(self, value):
         if value < 300:
@@ -53,6 +58,11 @@ class ValidateCableNumber(serializers.Serializer):
     cable_provider = serializers.CharField()
 
 class CablePaymentSerializer(ValidateCableNumber):
+    # cable = serializers.IntegerField()
+    # iuc = serializers.CharField()
+    # bypass = serializers.BooleanField()
+    # request_id = serializers.CharField()
+    # cable_plan = serializers.CharField()
     pass
 
 

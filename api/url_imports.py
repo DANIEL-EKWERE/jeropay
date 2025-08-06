@@ -9,7 +9,7 @@ from .views import (
     )
 
 # authetntication
-from api.other_views.auth_views import CreateUserAccountView, CreateProfileAPIView, ChangePasswordView, UpdateProfileView,LoginUser,LogOut
+from api.other_views.auth_views import CreateUserAccountView, CreateProfileAPIView, ChangePasswordView, UpdateProfileView,LoginUser,LogOut,  CreateTransactionPinAPIView
 
 # dashboard views
 from api.other_views.user_views import (

@@ -50,6 +50,7 @@ urlpatterns += [
 urlpatterns += [
     path('user/create-account/', CreateUserAccountView.as_view(), name='create-account'),
     path('user/login-user/', LoginUser.as_view(), name='create-account'),
+    path('user/transaction-pin/', CreateTransactionPinAPIView.as_view(), name='create-account'),
     path('user/logout-user/', LogOut.as_view(), name='logout-account'),
     path('user/create/profile/', CreateProfileAPIView.as_view(), name='profile'),
     path('user/update/profile/', UpdateProfileView.as_view(), name='update-profile'),
@@ -95,7 +96,7 @@ urlpatterns += [
     # get wallet stats
 
 ]
-
+#5165884a-e696-47cd-808d-c42b0b23165a
 # purchase routes
 urlpatterns += [
     path('purchase/airtime/', PurchaseAirtimeView.as_view(), name='purchase-airtime'),

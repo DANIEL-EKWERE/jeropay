@@ -9,10 +9,10 @@ from rest_framework.permissions import IsAuthenticated
 import requests,json
 # import models
 
-from api.models import Profile, Wallet
+from api.models import Profile, Wallet, VirtualAccount, TransactionPin
 
 # import serializers
-from api.other_serializers.auth_serializers import UserSerializer, ProfileSerializer, ChangePasswordSerializer, LogInUserSerializer
+from api.other_serializers.auth_serializers import UserSerializer, ProfileSerializer, ChangePasswordSerializer, LogInUserSerializer, virtaualAccountSerializer, TransactionPinSerializer
 from api.other_serializers.user_serializers import AnnouncementSerializer
 class CreateUserAccountView1(GenericAPIView):
     serializer_class = UserSerializer
@@ -38,24 +38,56 @@ class CreateUserAccountView1(GenericAPIView):
         )
 
 
+# class CreateUserAccountView(GenericAPIView):
+#     serializer_class = UserSerializer
+    
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+        
+#         if serializer.is_valid():
+#             serializer.save()
+#             ser_data = serializer.validated_data
+
+#             username = ser_data['username']
+#             password = ser_data['password']
+
+#             user = authenticate(request, username=username, password=password)
+#             user1 = request.user
+#             if user is not None:
+#                 login(request, user)
+
+#                 refresh = RefreshToken.for_user(user)
+#                 access_token = str(refresh.access_token)
+#                 return Response(
+#                     data={
+#                         'status': 'success',
+#                         'data': serializer.data,
+#                         'access_token': access_token,
+#                     },
+#                     status=201
+#                 )
+#         return Response(
+#             data={
+#                 'status': 'error',
+#                 'data': serializer.errors
+#             },
+#             status=400
+#         )
+
+
 class CreateUserAccountView(GenericAPIView):
     serializer_class = UserSerializer
-    
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        
         if serializer.is_valid():
-            serializer.save()
-            ser_data = serializer.validated_data
-
-            username = ser_data['username']
-            password = ser_data['password']
-
+            user = serializer.save()
+            # Authenticate and login the user
+            username = user.username
+            password = request.data.get('password')
             user = authenticate(request, username=username, password=password)
-            user1 = request.user
             if user is not None:
                 login(request, user)
-
                 refresh = RefreshToken.for_user(user)
                 access_token = str(refresh.access_token)
                 return Response(
@@ -73,6 +105,7 @@ class CreateUserAccountView(GenericAPIView):
             },
             status=400
         )
+    
 
 class LoginUser(GenericAPIView):
     serializer_class = LogInUserSerializer
@@ -143,6 +176,7 @@ from django.contrib.auth import authenticate, login
 
 class LoginUser(APIView):
     serializer_class = LogInUserSerializer
+
     
 
     def post(self, request, *args, **kwargs):
@@ -177,20 +211,32 @@ class LoginUser(APIView):
 
 
                 try:
-                    profile = Profile.objects.get(user=request.user)
+                    #proserializer = None
+                    profile = Profile.objects.get(user=user)
+                    virtaualAccounts = VirtualAccount.objects.all()
+                    VirtaualAccountsserializer = virtaualAccountSerializer(virtaualAccounts, many=True)
                     my_recs = profile.get_recommened_profiles()
-                    profileSerializer = ProfileSerializer(my_recs,many=True)
-                except:
+                    profileSerializer = ProfileSerializer(profile)
+                    pin ,created = TransactionPin.objects.get_or_create(profile=profile)
+                    proserializer = TransactionPinSerializer(pin).data
                     return Response(
                         data={
                             'status': 'success',
                             'token': access_token,
                             'user_id': user.id,
                             'username': username,
+                            "accounts" : VirtaualAccountsserializer.data,
+                            "profile" : profileSerializer.data,
+                            "pin" : proserializer
                             # 'my_recs':my_recs,
                         },
                         status=201,
                     )
+                except:
+                    return Response({
+                        "error": " something went wrong"
+                    })
+                    
                 
                 return Response({
                     'status': 'success',
@@ -246,6 +292,117 @@ view for profiles
 # Creating profile
 # updating profile
 '''      
+class CreateTransactionPinAPIView(GenericAPIView):
+    serializer_class = TransactionPinSerializer
+    queryset = TransactionPin.objects.all()
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        try:
+            profile = Profile.objects.get(user=request.user)
+            transactioPIn = TransactionPin.objects.get(profile=profile)
+            serialiser = TransactionPinSerializer(transactioPIn)
+            return Response(serialiser.data)
+        except TransactionPin.DoesNotExist:
+            return Response(
+                status=404,
+                data={
+                    "status": 'error',
+                    'message': 'Transaction Pin not found',
+                    'error': 'No pin for this profile' 
+                })
+        except Profile.DoesNotExist:
+            return Response(
+                status=404,
+                data={
+                    "status": 'error',
+                    'message': 'Profile not found',
+                    'error': 'No profile for this user' 
+                })
+        
+            
+            
+
+
+    def post(self, request, *args, **kwargs):
+        try:
+            profile = Profile.objects.get(user=request.user)
+            serializer = TransactionPinSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer_inst = serializer.validated_data
+                pin = serializer_inst["pin"]
+                TransactionPin.objects.create(
+                    profile=profile,
+                    pin=pin
+                )
+                return Response(
+                    status=201,
+                    data={
+                        "status": "success",
+                        "pin": pin,
+                        "data": serializer.data
+                    }
+                )
+            else:
+                return Response({
+                    "error": serializer.errors
+                })
+        except Profile.DoesNotExist:
+            return Response({
+                "error": "Profile does not exist"
+            })
+        
+    def put(self, request, *args, **kwargs):
+        try:
+            profile = Profile.objects.get(user=request.user)
+            try:
+                transaction_pin = TransactionPin.objects.get(profile=profile)
+            except TransactionPin.DoesNotExist:
+                return Response({
+                    "status": "error",
+                    "message": "Transaction Pin not found for this profile."
+                }, status=404)
+            serializer = TransactionPinSerializer(transaction_pin, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({
+                    "status": "success",
+                    "message": "Transaction Pin updated successfully.",
+                    "data": serializer.data
+                }, status=200)
+            else:
+                return Response({
+                    "status": "error",
+                    "message": serializer.errors
+                }, status=400)
+        except Profile.DoesNotExist:
+            return Response({
+                "status": "error",
+                "message": "Profile does not exist"
+            }, status=404)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            profile = Profile.objects.get(user=request.user)
+            try:
+                transaction_pin = TransactionPin.objects.get(profile=profile)
+            except TransactionPin.DoesNotExist:
+                return Response({
+                    "status": "error",
+                    "message": "Transaction Pin not found for this profile."
+                }, status=404)
+            transaction_pin.delete()
+            return Response({
+                "status": "success",
+                "message": "Transaction Pin deleted successfully."
+            }, status=204)
+        except Profile.DoesNotExist:
+            return Response({
+                "status": "error",
+                "message": "Profile does not exist"
+            }, status=404)    
+
+
 class CreateProfileAPIView1(GenericAPIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = ProfileSerializer
