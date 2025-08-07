@@ -233,6 +233,7 @@ class Transaction(models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True)
     response = models.CharField(max_length=300,default='N/A',blank=True,null=True)
     detail = models.CharField(max_length=300,default='N/A')
+    network = models.CharField(max_length=300,default='N/A',blank=True,null=True)
     request_id = models.CharField(max_length=300,default='N/A',blank=True,null=True)
     date_and_time = models.DateTimeField(auto_now_add=True)
     old_balance = models.DecimalField(decimal_places=2, max_digits=11)

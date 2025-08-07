@@ -100,9 +100,9 @@ urlpatterns += [
 # purchase routes
 urlpatterns += [
     path('purchase/airtime/', PurchaseAirtimeView.as_view(), name='purchase-airtime'),
-    path('purchase/airtime1/', DeductTest.as_view(), name='DeductTest'),
+    #path('purchase/airtime1/', DeductTest.as_view(), name='DeductTest'),
     path('purchase/data/<str:data_plan_uuid>/', PurchaseDataView.as_view(), name='purchase-data'),
-    path('purchase/data1/<str:data_plan_uuid>/', DeductData.as_view(), name='deduct-data'),
+    #path('purchase/data1/<str:data_plan_uuid>/', DeductData.as_view(), name='deduct-data'),
     path('electric-bill/purchase/', PurchaseElectricityView.as_view()),
     path('cable-subscription/purchase/<str:cable_uuid>/', PurchaseCableSubscriptionView.as_view()),
     path('Data-price-list-API/purchase/<str:network>/', DataPriceListAPI.as_view()),
