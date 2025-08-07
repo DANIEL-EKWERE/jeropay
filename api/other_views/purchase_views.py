@@ -275,6 +275,7 @@ class PurchaseAirtimeView(WalletCheckMixin, GenericAPIView):
                 trans = Transaction.objects.create(
                     user=request.user,
                     detail= message,
+                    network=network,
                     response=data_response,
                     request_id=request_id,
                     old_balance=balances[0],
@@ -728,6 +729,7 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
                         user=request.user,
                         detail= message,
                         response=data_response,
+                        network=data_network,
                         request_id=request_id,
                         old_balance=balances[0],
                         new_balance= balances[1],
