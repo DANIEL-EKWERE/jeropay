@@ -90,7 +90,6 @@ class UserDashboardView(GenericAPIView):
                 'status': 'success',
                 'data': {
                     'profile': user_serializer.data,
-                    #'profile_pic': profile.profile_picture.url,
                     'wallet': wallet_serializer.data,
                     'transactions': trans_serializer.data,
                     'wallet_balance':wallet_balance,
