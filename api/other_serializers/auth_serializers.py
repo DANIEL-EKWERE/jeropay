@@ -93,6 +93,29 @@ class TransactionPinSerializer(serializers.ModelSerializer):
         fields = ['pin']         
 
 
+# class ChangePasswordSerializer(serializers.Serializer):
+#     old_password = serializers.CharField()
+#     new_password = serializers.CharField()
+#     confirm_password = serializers.CharField()
+
+#     def validate(self, attrs):
+#         #return super().validate(attrs)
+#         if attrs['new_password'] != attrs['confirm_password']:
+#             raise serializers.ValidationError("New password doesn't match.")
+#         return attrs
+        
+#     def validate_new_password(self, value):
+#         if len(value) < 8:
+#             raise serializers.ValidationError("password must be atleast 8 characters long.")
+#         return value
+
+
+class TransactionPinWithPasswordSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    pin = serializers.CharField(required=True)
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     # Use a CharField for recommended_by to accept a string
     recommended_by = serializers.CharField(required=False)

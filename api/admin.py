@@ -14,6 +14,7 @@ from .models import (
      Deduct,
      ReservedAccount,
      Announcement,
+     ExamPinPrice,
      )
 
 
@@ -81,7 +82,14 @@ class AdminWallet(admin.ModelAdmin):
                     'balance',
                     'gateway',
                     ]
-
+     
+@admin.register(ExamPinPrice)
+class AdminExamPrice(admin.ModelAdmin):
+     list_display = [ 
+                    'id',
+                    'exam',
+                    'price',
+                    ]
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):

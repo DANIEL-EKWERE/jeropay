@@ -12,7 +12,7 @@ import requests,json
 from api.models import Profile, Wallet, VirtualAccount, TransactionPin
 
 # import serializers
-from api.other_serializers.auth_serializers import UserSerializer, ProfileSerializer, ChangePasswordSerializer, LogInUserSerializer, virtaualAccountSerializer, TransactionPinSerializer
+from api.other_serializers.auth_serializers import UserSerializer, ProfileSerializer, ChangePasswordSerializer, LogInUserSerializer, virtaualAccountSerializer, TransactionPinSerializer,TransactionPinWithPasswordSerializer,ChangePasswordSerializer
 from api.other_serializers.user_serializers import AnnouncementSerializer
 class CreateUserAccountView1(GenericAPIView):
     serializer_class = UserSerializer
@@ -291,7 +291,80 @@ class LogOut(GenericAPIView):
 view for profiles
 # Creating profile
 # updating profile
-'''      
+'''   
+class UpdateTransactionPinWithPasswordAPIView(GenericAPIView):
+    serializer_class = TransactionPinWithPasswordSerializer
+    queryset = TransactionPin.objects.all()
+    permission_classes = (IsAuthenticated, )
+
+    def put(self, request, *args, **kwargs):
+
+            
+        serializer = TransactionPinWithPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer_inst = serializer.validated_data
+            username = serializer_inst["username"]
+            password = serializer_inst["password"]
+            pin = serializer_inst["pin"]
+            user = authenticate(request, username=username,password=password)
+            if user is not None:
+                profile = Profile.objects.get(user=user)
+        
+                transaction_pin = TransactionPin.objects.get(profile=profile)
+        
+                serializer = TransactionPinSerializer(transaction_pin, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({
+                        "status": "success",
+                        "message": "Transaction Pin updated successfully.",
+                        "data": serializer.data
+                    }, status=200)
+                else:
+                    return Response({
+                        "status": "error",
+                        "message": serializer.errors
+                    }, status=400)
+            else:
+                return Response({
+                        "status": "error",
+                        "message": "user not found"
+                    }, status=400)
+        return Response({
+                        "status": "error",
+                        "message": serializer.errors
+                    }, status=400)
+
+
+class ChangePasswordAPIView(GenericAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (IsAuthenticated, )      
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user = request.user
+
+            if not user.check_password(serializer.validated_data['old_password']):
+                return Response({
+                    "status":"error",
+                    "message":"wrong passowrd"
+                },status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(serializer.validated_data["new_password"])
+            user.save()
+
+            return Response({
+                "status":"success",
+                "mesasge":"Password Changed suucessfully."
+            },status=status.HTTP_200_OK)
+        
+        return Response(
+            serializer.errors,status.HTTP_400_BAD_REQUEST
+        )
+
+
+
 class CreateTransactionPinAPIView(GenericAPIView):
     serializer_class = TransactionPinSerializer
     queryset = TransactionPin.objects.all()

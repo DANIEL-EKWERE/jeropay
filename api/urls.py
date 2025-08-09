@@ -45,12 +45,13 @@ urlpatterns += [
     # notifications
     path('admin/notification/announcement/', AnnouncementNotificationView.as_view(), name='announcement-notification'),
 ]
-
+#UpdateTransactionPinWithPasswordAPIView
 # authentication routes
 urlpatterns += [
     path('user/create-account/', CreateUserAccountView.as_view(), name='create-account'),
     path('user/login-user/', LoginUser.as_view(), name='create-account'),
-    path('user/transaction-pin/', CreateTransactionPinAPIView.as_view(), name='create-account'),
+    path('user/transaction-pin/', CreateTransactionPinAPIView.as_view(), name='create-pin'),
+    path('user/update-transaction-pin/', UpdateTransactionPinWithPasswordAPIView.as_view(), name='update-pin'),
     path('user/logout-user/', LogOut.as_view(), name='logout-account'),
     path('user/create/profile/', CreateProfileAPIView.as_view(), name='profile'),
     path('user/update/profile/', UpdateProfileView.as_view(), name='update-profile'),

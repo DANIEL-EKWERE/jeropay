@@ -309,3 +309,14 @@ class TransactionPin(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='transaction_pin')    
     pin = models.CharField(max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    
+class ExamPinPrice(models.Model):
+    exam_choice = (
+        ("NECO","NECO"),
+        ("JAMB","JAMB"),
+        ("WAEC","WAEC"),
+        ("NABTEB","NABTEB"),
+    )
+    exam = models.CharField(max_length=10, choices=exam_choice)
+    price = models.IntegerField()

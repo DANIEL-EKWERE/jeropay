@@ -25,11 +25,11 @@ from rest_framework.permissions import IsAuthenticated
 from fcm_django.models import FCMDevice
 
 # import models
-from api.models import Wallet, Profile, Transaction, ReservedAccount, Announcement
+from api.models import Wallet, Profile, Transaction, ReservedAccount, Announcement, VirtualAccount
 
 # serializers
 from api.other_serializers.auth_serializers import UserSerializer, ProfileSerializer
-from api.other_serializers.account_serializers import WalletSerializer, TransactionSerializer, ConfirmPaymentSerializer, PhoneNumbersSerializer
+from api.other_serializers.account_serializers import VirtualAccountsSerializer, WalletSerializer, TransactionSerializer, ConfirmPaymentSerializer, PhoneNumbersSerializer
 from api.other_serializers.user_serializers import FCMDeviceIDSerializer, ReserveAcctountSerializer, AnnouncementSerializer
 
 # import packages
@@ -57,10 +57,25 @@ class UserDashboardView(GenericAPIView):
                 status=403,
             )
         
+        try:
+            virtual_accounts = VirtualAccount.objects.all()
+        except:
+            return Response(
+                data={
+                    'status': 'error',
+                    'message': 'No virtual accounts found'
+                },
+                status=403,
+            )
+                
+        
         # wallet infomation
         wallet = Wallet.objects.get(user=profile)
         wallet_serializer = WalletSerializer(wallet)
         wallet_balance = wallet.balance
+
+        # virtaul accounts
+        accounts_serializer = VirtualAccountsSerializer(virtual_accounts, many=True)
 
         
         # orders/transactions
@@ -75,10 +90,11 @@ class UserDashboardView(GenericAPIView):
                 'status': 'success',
                 'data': {
                     'profile': user_serializer.data,
-                    'profile_pic': profile.profile_picture.url,
+                    #'profile_pic': profile.profile_picture.url,
                     'wallet': wallet_serializer.data,
                     'transactions': trans_serializer.data,
                     'wallet_balance':wallet_balance,
+                    'virtual_accounts': accounts_serializer.data
                 }
             },
             status=200

@@ -715,7 +715,7 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
                     data_response = response_data.get("response")
                     request_id = response_data.get("request_id") 
                     # check if the API returns a failed status
-                    if response.json()['Status'] == 'error':
+                    if response.json()['Status'] == 'fail':
                         return Response(
                             data={
                                 'status': 'error',
@@ -850,8 +850,8 @@ class BillPurchaseMixin(RequestWrapper, WalletCheckMixin):
 
             # check balance, if successful, process the transaction
             self.check_wallet_balance(amount=amount)
-            
-            data = self.request_data(amount, valid_data, **kwargs)
+            # commented out 'amount'
+            data = self.request_data(valid_data, **kwargs)
             print(f'data === {data}')
             response = self.req_post(data=data)
             print(f"response ===== {response.json()}")
