@@ -1,3 +1,4 @@
+from api.other_views.auth_views import CustomResetPassword
 from .url_imports import *
 from .views import DataNetworkViewAPIView, SingleCableProviderPlan
 app_name = 'api'
@@ -56,6 +57,8 @@ urlpatterns += [
     path('user/create/profile/', CreateProfileAPIView.as_view(), name='profile'),
     path('user/update/profile/', UpdateProfileView.as_view(), name='update-profile'),
     path('user/change-password/', ChangePasswordView.as_view(), name='change-password' ),
+    path('password_reset/', CustomResetPassword.as_view(), name='password_reset'),
+
 ]
 
 # dashboard routes

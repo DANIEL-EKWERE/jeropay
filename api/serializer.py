@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Airtime, CableSubscription, Data ,ElectricitySubscription, Profile,Wallet
-
-
+#from django_rest_passwordreset.views import ResetPasswordRequestToken
+from django_rest_passwordreset.serializers import  EmailSerializer
+from django_rest_passwordreset.models import ResetPasswordToken
 
 class CableSubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +36,31 @@ class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
         fields = ['id', 'user', 'balance']
+
+
+# class CustomResetPasswordView(ResetPasswordRequestToken):
+#     pass
+
+class CustomPasswordResetSerializer(EmailSerializer):
+
+    #token = serializers.EmailField()
+
+    def save(self):
+        #reset_password_token = super().save()
+        request = self.context.get('request')
+        email = self.validated_data['email']
+
+        super().save()
+
+        try:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            user = User.objects.get(email=email)
+            token = ResetPasswordToken.objects.filter(user=user).first()
+
+            if token:
+                self.context['reset_token'] = token.key
+        except User.DoesNotExist: 
+            pass
+
+       

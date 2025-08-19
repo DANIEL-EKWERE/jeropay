@@ -19,7 +19,7 @@ from api.other_serializers.admin.fund_account_serializer import FundUserAccountS
 from api.other_serializers.admin.deposit_record_serializers import DepositRecordSerializer
 
 # models
-from api.models import Profile, Wallet, DepositRecord
+from api.models import Profile, Wallet, DepositRecord, Transaction
 
 import json
 from django.http import JsonResponse
@@ -55,6 +55,8 @@ class FundCustomerAccount(GenericAPIView):
 
             deposit = wallet.total_deposit + amount
             Wallet.objects.filter(user=profile).update(total_deposit=deposit)
+
+            
 
             # # create the new Deposit Record
             # def create_id():
@@ -213,6 +215,7 @@ def payment_webhook(request):
 
         # Update wallet balance
         new_balance = wallet.balance + amount
+        balance = Wallet.objects.filter(user=profile).balance
         Wallet.objects.filter(user=profile).update(balance=new_balance)
 
         # Save the transaction in `DepositRecord`
@@ -223,6 +226,20 @@ def payment_webhook(request):
             status="successful",
             reference=reference,
         )
+
+        Transaction.objects.create(
+                    user=request.user,
+                    detail= 'Not Applicable',
+                    network='Not Applicable',
+                    response='Not Applicable',
+                    request_id='Not Applicable',
+                    old_balance=balance,
+                    new_balance= balance + amount,
+                    phone_number='Not Applicable',
+                    status='succes',
+                    amount= amount,
+                    type= 'Deposit',
+                )
 
         # Send a success response
         return JsonResponse(

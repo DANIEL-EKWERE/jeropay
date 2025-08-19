@@ -20,6 +20,7 @@ from rest_framework_simplejwt import views as jwt_views
 # static
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 # admin decorator
 from DATABANK.decorators import admin_whitelist_required
@@ -39,6 +40,15 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api')),
 
     path('admin/database/', admin.site.urls),
+
+            # Password reset views
+    # path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    # path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset'))
+
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

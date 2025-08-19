@@ -9,7 +9,7 @@ from .views import (
     )
 
 # authetntication
-from api.other_views.auth_views import CreateUserAccountView, CreateProfileAPIView, ChangePasswordView, UpdateProfileView,LoginUser,LogOut,  CreateTransactionPinAPIView,UpdateTransactionPinWithPasswordAPIView
+from api.other_views.auth_views import CreateUserAccountView, CreateProfileAPIView, ChangePasswordView, UpdateProfileView,LoginUser,LogOut,  CreateTransactionPinAPIView,UpdateTransactionPinWithPasswordAPIView,ForgotPasswordView
 
 # dashboard views
 from api.other_views.user_views import (
@@ -21,7 +21,6 @@ from api.other_views.user_views import (
     RecentTransactions,
     ToBeFilteredTransactions,
     AnnouncementApiView,
-
     # transactions for certain periods
     TransactionsToday,
     TransactionsYesterday,

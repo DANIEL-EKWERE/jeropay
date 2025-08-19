@@ -89,6 +89,9 @@ class UserDashboardView(GenericAPIView):
             data = {
                 'status': 'success',
                 'data': {
+                    'name': profile.fullName,
+                    'location': profile.location,
+                    'phone' : profile.phone,
                     'profile': user_serializer.data,
                     'wallet': wallet_serializer.data,
                     'transactions': trans_serializer.data,

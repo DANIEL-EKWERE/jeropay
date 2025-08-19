@@ -14,6 +14,7 @@ from api.models import Profile, Wallet, VirtualAccount, TransactionPin
 # import serializers
 from api.other_serializers.auth_serializers import UserSerializer, ProfileSerializer, ChangePasswordSerializer, LogInUserSerializer, virtaualAccountSerializer, TransactionPinSerializer,TransactionPinWithPasswordSerializer,ChangePasswordSerializer
 from api.other_serializers.user_serializers import AnnouncementSerializer
+from api.serializer import CustomPasswordResetSerializer
 class CreateUserAccountView1(GenericAPIView):
     serializer_class = UserSerializer
     
@@ -753,3 +754,52 @@ class ChangePasswordView(UpdateAPIView):
             }
             return Response(response,status=200)
         return Response(serializer.errors, status=401)
+
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from rest_framework.views import APIView
+
+class ForgotPasswordView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        
+        try:
+            user = User.objects.get(email=email)
+            # Generate password reset token
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            
+            # Create password reset link
+            reset_link = f"{settings.FRONTEND_URL}/reset-password/{uid}/{token}"
+            
+            # Send email
+            send_mail(
+                'Password Reset Request',
+                f'Click the following link to reset your password: {reset_link}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+            
+            return Response({
+                'status': 'success',
+                'message': 'Password reset link has been sent to your email'
+            }, status=200)
+            
+        except User.DoesNotExist:
+            return Response({
+                'status': 'error',
+                'message': 'No user found with this email address'
+            }, status=404)
+        
+from django_rest_passwordreset.views import ResetPasswordRequestToken
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+class CustomResetPassword(ResetPasswordRequestToken):
+    serializer_class = CustomPasswordResetSerializer

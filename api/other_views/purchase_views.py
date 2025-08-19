@@ -281,7 +281,7 @@ class PurchaseAirtimeView(WalletCheckMixin, GenericAPIView):
                     old_balance=balances[0],
                     new_balance= balances[1],
                     phone_number=phone_number,
-                    status='Success',
+                    status=status,
                     amount= amount,
                     type= 'Airtime',
                 )
@@ -713,7 +713,8 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
                 if response.status_code == 201 or response.status_code == 200:
                     response_data = response.json()
                     data_response = response_data.get("response")
-                    request_id = response_data.get("request_id") 
+                    request_id = response_data.get("request-id") 
+                    status = response_data.get("status") 
                     # check if the API returns a failed status
                     if response.json()['Status'] == 'fail':
                         return Response(
@@ -734,7 +735,7 @@ class PurchaseDataView(WalletCheckMixin ,GenericAPIView):
                         old_balance=balances[0],
                         new_balance= balances[1],
                         phone_number=phone_number,
-                        status='Success',
+                        status=status,
                         amount= data_plan_price,
                         type= 'Data',
                     )

@@ -1,5 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail
 from api.models import Profile
 import requests
 from api.models import VirtualAccount
@@ -46,3 +48,17 @@ def create_virtual_accounts(sender, instance, created, **kwargs):
                     print(f"Failed to create virtual account for {bank_code}: {response.text}")
             except Exception as e:
                 print(f"Error creating virtual account for {bank_code}: {e}")
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    #instance.response.data['token'] = reset_password_token.key
+    #instance.response.data['uid'] = reset_password_token.user.id
+    print(instance)
+    reset_url = f'https://jeropay.com.ng/api/reset-password?token={reset_password_token.key}'
+    send_mail(
+        'password Reset Request',
+        f'Click the link to reset your password: {reset_url}',
+        'no-reply@ejeropay.com.ng',
+        [reset_password_token.user.email]
+    )
