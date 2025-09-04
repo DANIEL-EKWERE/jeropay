@@ -1,757 +1,667 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Jero Pay</title>
-
-  <!--Metadata -->
-
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="keywords" content="Cheap Data MTN GLO Airtel" />
-    <meta name="description" content="Jero Pay is an Easy to use mobile app, make it to pay for bills cheaply" />
-    <meta name="author" content="Daniel Ekwere" />
- <!-- particles.min js -->
- <script src="./static/js/particles.min.js"></script>
-      <!-- Favicon -->
-      <link rel="shortcut icon" href="./static/img/logo-1.png" />
-  <!-- CSS and Bootstrap stylesheet -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./static/css/base.css">
-
-  <!--Scrolling animation link-->
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-<!-- Plugins -->
-<!-- <link rel="stylesheet" href="./static/css/plugins.css" /> -->
-<link rel="stylesheet" href="./static/css/animate.min.css" />
-<link rel="stylesheet" href="./static/css/owl.carousel.min.css" />
-
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/841ba9776c.js" crossorigin="anonymous"></script>
-
-
-  <!-- Javascript Sweet alert --->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-</head>
-<body>
-  <!-- =====================================
-    	==== Start Loading -->
-
-    <div class="loading">
-        <div class="text-center middle">
-            <div class="lds-ellipsis">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- End Loading ====
-    	======================================= -->
-    <ul class="navbar1" id="navbar1">
-
-      <li class="nav-brand" id="nav-Brand">
-        <img src="./static/img/logo-1.png" alt="logo" style="width: 80px">
-      </li>
-
-      <li class="nav-menu" data-scroll-nav="0"><a href="#">Home</a></li>
-      <li class="nav-menu"  href="#" data-scroll-nav="1"><a class="nav-link active" href="#">Services</a></li>
-      <li class="nav-menu" href="#" data-scroll-nav="4"><a href="#">Price</a></li>
-      <li class="nav-menu" href="#" data-scroll-nav="6"><a href="#">Contact</a></li>
-      <li class="nav-menu" href="#" data-scroll-nav="2"><a href="#">testimony</a></li>
-
-
-      <!-- Mobile Navigation button ---->
-      <span class="menu-btn" onclick="openNav()">&#9776;</span>
-
-
-      <!-- Mobile navigation bar container --->
-      <div class="mobileNav" id="mobilenav">
-        <div class="mobileNav-links">
-         <a class="closeBtn" onclick="closeNav()">&#10006;</a>
-         <a href="#" data-scroll-nav="0">Home</a>
-         <a href="#" data-scroll-nav="1">Services</a>
-        <a href="#" data-scroll-nav="4">Price</a>
-         <a href="#" data-scroll-nav="6">Contact</a>
-         <a href="#" data-scroll-nav="2">testimony</a>
-
-      </div>
-
-    </div>
-       <!-- End of Mobile navigation bar container --->
-
-
-    </ul>
- 
-    <!---======= End of Navigation Bar ========---->
-
-
-
-
-
-    <!--===== Hero section =======---->
-    {% comment %} <section class="main-hero-container" id="hero" > 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeropay - Nigeria's Most Trusted VTU Platform</title>
     
-
-    <div class="main-hero" >
-
-      <div class="main-hero-description" >
-           <!-- particles -->
-          <div id="particles-js"></div>
-        <center>
-          
-         
-                  <p data-aos="fade-down">Welcome to DATABANK</p>
-                  <h4 data-aos="fade-down">A better way to Buy</h4>
-                  <h1 class="cd-headline clip">
-                      <!-- <span class="blc">Subscribe for</span> -->
-                      <span class="cd-words-wrapper" data-aos="zoom-in">
-                            <b class="is-visible">Data</b>
-                            <b>Airtime</b>
-                            <b>Cable</b>
-                            <b>Electricity </b>
-                          </span>
-                  </h1>
-                  <div class="row">
-                    <div class="offset-md-1 col-md-10 offset-lg-2 col-lg-8">
-                        <p>Our Services are fast, reliable and Easy to use</p>
-                    </div>
-                  </div>
-                    <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-right">
-                      <span>Download the Android App</span>
-                    </a>
-                    <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-left">
-                      <span>Get it from the playstore</span>
-                    </a>
-
-                  
-        </center>
-
-      </div>
-
-    </div>
-    <!-- <div class="curve curve-bottom curve-center"></div> -->
-    </section> {% endcomment %}
+    <!-- Favicon -->
+    <link rel="icon" href="https://www.247api.com.ng/site/storage/app/public/site_logos/5eWG3iyWUtteyDfHFxwH7vqeMwNdmzjvj3h7zDrx.jpg" type="image/x-icon">
     
-     {% comment %} data-background="https://images.pexels.com/photos/3807547/pexels-photo-3807547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"  {% endcomment %}
-
-    <header class="header valign bg-img" data-scroll-index="0" 
-    data-overlay-dark="7" 
-    data-background="https://images.pexels.com/photos/3807547/pexels-photo-3807547.jpeg" 
-    data-stellar-background-ratio="0.5">
-
-    <!-- particles -->
-    <div id="particles-js"></div>
-
-    <div class="container">
-        <div class="text-center caption mt-30">
-            <h4 data-aos="fade-right">A better way to Buy</h4>
-            <h1 class="cd-headline clip" data-aos="zoom-in">
-                <span class="cd-words-wrapper">
-                      <b class="is-visible">Data</b>
-                      <b>Airtime</b>
-                      <b>Cable</b>
-                      <b>Electricity</b>
-                </span>
-            </h1>
-            <div class="row">
-                <div class="offset-md-1 col-md-10 offset-lg-2 col-lg-8">
-                    <p data-aos="fade-left">Our Services are fast, reliable, and easy to use</p>
-                </div>
-            </div>
-            <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-right">
-                <span>Download the Android App</span>
-              </a>
-              <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-left">
-                <span>Get it from the playstore</span>
-              </a>
-        </div>
-    </div>
-
-    <div class="curve curve-bottom curve-center"></div>
-</header>
-
-
-<style>
-    .header {
-        position: relative;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-size: cover;
-        background-position: center;
-    }
+    <!-- Meta Tags -->
+    <meta name="description" content="Jeropay Buy Cheap Data, Airtime And Pay Bills in Nigeria">
+    <meta property="og:title" content="Jeropay - Best Reliable Data and Airtime">
+    <meta property="og:description" content="Jeropay, your number one VTU platform in Nigeria. Most reliable place for buying internet data, airtime, TV subscriptions, exam pins, and paying NEPA bills.">
+    <meta property="og:image" content="https://www.247api.com.ng/site/storage/app/public/site_logos/5eWG3iyWUtteyDfHFxwH7vqeMwNdmzjvj3h7zDrx.jpg">
     
-    .bg-img {
-        background-repeat: no-repeat;
-        position: relative;
-    }
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    [data-overlay-dark]::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7); /* Adjust opacity as needed */
-        z-index: 1;
-    }
-    
-    .caption {
-        position: relative;
-        z-index: 2;
-        color: #fff;
-    }
-    
-</style>
+    <style>
+        :root {
+            --primary-color: #3e0555;
+            --secondary-color: #f476ff;
+            --text-white: #ffffff;
+        }
 
-    <!--===== End of hero section =======---->
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
 
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
+        .navbar-brand img {
+            border-radius: 50%;
+        }
 
+        /* Header Section */
+        .hero-section {
+           background: linear-gradient(
+  to bottom,
+  #3e0555 0%,
+  #c837f5 70%,
+  #f476ff 80%,
+  #ffffff 100%
+);
 
+            min-height: 70vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
 
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
 
-     <!--===== BLOG POST SECTION =======---->
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
 
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
 
-        <section class="blog-posts-section" id="blog-posts" data-scroll-index="1">
-          
-          <div class="blog-posts-container">
-           
-           <div class="blog-posts-heading">
-            <h2 data-aos="fade-down-right">About Our Services</h2>
-            <p data-aos="fade-down-left">at Jero Pay</p>
-          </div>
-          
-          <div class="blog-posts-grid">
-          <div class="blog-posts-card" data-aos="fade-up">
-            <center>
-                <div style="height: 20px;"></div>
-              <div class="data1">
-                <img src="./static/img/data.jpg" alt="image here">
-              </div>
-             <div class="blog-text">
-              <h5>Buy Affordable Data</h5>
-              <p>
-                  Start enjoying Data plans at Low rates.
-              </p>
-          </div>
-            </center>
-          </div>
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
 
-          
-            <div class="blog-posts-card" data-aos="fade-up">
-              <center>
-                <div style="height: 20px;"></div>
-                <img src="./static/img/networks.jpg" alt="image here">
-               <div class="blog-text">
-                <h5>Airtime</h5>
-              <p>Making an online recharge is simple and safe with Jero Pay
-            </div>
-              </center>
-            </div>
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
 
-            <div class="blog-posts-card" data-aos="fade-up">
-              <center>
-                <div style="height: 20px;"></div>
-                <img src="./static/img/cable.jpg" alt="image here">
-               <div class="blog-text">
-                <h5>Cable Subscription</h5>
-                      <!-- <h6>Coming Soon</h6> -->
-                      <p>
-                          Instantly Activate Cable subscription
-                      </p>
-            </div>
-              </center>
-            </div>
+        /* Feature Cards */
+        .feature-box-1 {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
+        .feature-box-1:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
 
+        .feature-box-1 .icons {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
-            <div class="blog-posts-card" data-aos="fade-up">
-              <center>
-                <div style="height: 20px;"></div>
-                <!-- <span class="icon fas fa-bolt"></span> -->
-                <img src="./static/img/yolaelectricity.jpeg" alt="image here">
-               <div class="blog-text">
-                <h5>Electricity</h5>
-                <!-- <h6>Coming Soon</h6> -->
+        .feature-box-1 .icons i {
+            color: white;
+            font-size: 24px;
+        }
 
-                <p>
-                    Jero Pay offers the best deals on electricity bills with instant token delivery to you via SMS
-                </p>
-            </div>
-              </center>
-            </div>
+        /* Pricing Cards */
+        .pricing-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
 
-            <div class="blog-posts-card" data-aos="fade-up">
-                <center>
-                    <div style="height: 10px;"></div>
-                    <img src="./static/img/metaverse.png" alt="image here">
-                    <!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
-                 <div class="blog-text">
-                  <h5>Bulk SMS</h5>
-                        
-                        <p>
-                            get to send bulk sms to to multiple phonr Numbers at a cheaper rate
-                        </p>
-              </div>
-                </center>
-              </div>
+        .pricing-cards {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 0 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            min-width: 280px;
+            text-align: center;
+        }
 
-              <div class="blog-posts-card" data-aos="fade-up">
-                <center>
-                    <div style="height: 20px;"></div>
-                    <!-- <i class="fa fa-graduation-cap" aria-hidden="true"></i> -->
-                    <img src="./static/img/graduation-cap.png" alt="image here">
-                 <div class="blog-text">
-                  <h5>Result Checker</h5>
-                        
-                        <p>
-                            generate result token for weac, neco etc
-                        </p>
-              </div>
-                </center>
-              </div>
+        .pricing-cards h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
 
-              <div class="blog-posts-card" data-aos="fade-up">
-                <center>
-                    <div style="height: 20px;"></div>
-                    <!-- <i class="fa fa-address-card" aria-hidden="true"></i> -->
-                    <img src="./static/img/data-pin.png" alt="image here">
-                 <div class="blog-text">
-                  <h5>Data pin</h5>
-                        
-                        <p>
-                            generate data pin from the Jero Pay mobile app at a cheaper rate
-                        </p>
-              </div>
-                </center>
-              </div>
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px 0;
+            gap: 20px;
+        }
 
-              <div class="blog-posts-card" data-aos="fade-up">
-                <center>
-                    <div style="height: 20px;"></div>
-                    <!-- <i class="fa fa-id-card" aria-hidden="true"></i> -->
-                    <img src="./static/img/recharge-card-printer.png" alt="image here">
-                 <div class="blog-text">
-                  <h5>Reacharge Card Printing</h5>
-                        
-                        <p>
-                            generate recharge pins for your recharge Printing business
-                        </p>
-              </div>
-                </center>
-              </div>
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
 
-              <div class="blog-posts-card" data-aos="fade-up" style="padding-top: 10px;">
-                <center>
-                    <div style="height: 10px;"></div>
-                  <!-- <span class="icon fas fa-tv"></span> -->
-                  <img src="./static/img/metaverse.png" alt="image here">
-                 <div class="blog-text">
-                  <h5>Scan To Load</h5>
-                        
-                        <p>
-                            Scan a recharge card pin to load with ease
-                        </p>
-              </div>
-                </center>
-              </div>
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        /* Review Cards */
+        .review-cards {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            min-width: 300px;
+            margin: 0 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .review-cards h5 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 80vh;
+                text-align: center;
+            }
             
-          
-        </div>
+            .section {
+                padding: 50px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
 
-          </div>
-      </section>
+        /* Fixed scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
 
-       <!--===== END OF BLOG POST SECTION =======---->
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+    </style>
+</head>
 
+<body>
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-light p-3"><a href="home.html"
+                            class="logo navbar-brand">
+                            <img src="{% static 'img/web-logo.png' %}"
+                            {% comment %} ./images/5eWG3iyWUtteyDfHFxwH7vqeMwNdmzjvj3h7zDrx.jpg" {% endcomment %}
+                                alt="Logo" style="width: 40px; height: auto;"></a><button
+                            class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation"><span class="navbar-toggler-icon text-white"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home:about' %}">About Us</a></li>
+                                <!-- <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact Us</a></li> -->
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home:privacy-policy' %}">Privacy Policy</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home:terms-and-condition' %}">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                    </nav>
 
-
-
-
-
-
-
-
-      <!-- WHAT OUR CUSTOMERS HAVE TO SAY-->
-      <section class="testimonials section-padding bg-img bg-fixed pos-re"  data-overlay-dark="7" data-scroll-index="2" data-background="https://images.pexels.com/photos/2014342/pexels-photo-2014342.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" data-scroll-index="7">
-        <div class="container" >
-            <div class="row">
-                <div class="section-head offset-md-2 col-md-8 offset-lg-3 col-lg-6">
-                    <h4>What's <span>Clients</span> Says?</h4>
-                    <p>In doubt?, Here's what Our Customer's and resellers have to say.</p>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center hero-content">
+                    <p class="text-white fs-7 mb-3"><strong>Welcome To</strong></p>
+                    <h1 class="display-6 text-white fw-bold mb-2">Jeropay</h1>
+                    <p class="text-white fs-8 mb-2 px-lg-8">
+                        Jeropay — Nigeria's most trusted VTU platform for affordable data, airtime, and bill payments. 
+                        We have the best customer care service with fast, reliable, and secure transactions.
+                    </p>
+                    <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mb-4">
+                        <button class="btn btn-light btn-lg px-4">Login</button>
+                        <button class="btn btn-outline-light btn-lg px-4">Register</button>
+                    </div>
+                    <a href="download-app.html" class="btn btn-dark btn-lg">
+                        INSTALL OUR APP <i class="fas fa-play ms-2"></i>
+                    </a>
                 </div>
-
-                <div class="owl-carousel owl-theme text-center col-lg-10 offset-lg-1" >
-                    <div class="item-box" data-aos="zoom-in">
-                        <span class="quote">
-                                <img src="./static/img/quot.png" alt="hrer">
-                            </span>
-                        <p>
-                            I love the app. I no longer have to go through the struggle of dealing with expired subscription. All plans are 30 days no matter how small. Amazing!
-                        </p>
-                        <div class="info">
-                            <!-- <div class="author-img">
-                                <img src="./static/home/img/clients/1.jpg" alt="">
-                            </div> -->
-                            <div class="cont">
-                                <h6>Nelson</h6>
-                                <span>Jero Pay Customer</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item-box" data-aos="zoom-in">
-                        <span class="quote">
-                                <img src="./static/img/quot.png" alt="">
-                            </span>
-                        <p>
-                            My Customers Love buying Data and I've seen a lot of repeat customers because Micro E-pay helps me give them access to the internet at an affordable rate.
-                        </p>
-                        <div class="info">
-                            <!-- <div class="author-img">
-                                <img src="./static/home/img/clients/2.jpg" alt="">
-                            </div> -->
-                            <div class="cont">
-                                <h6>Abigail O.</h6>
-                                <span>Jero Pay Reseller</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item-box" data-aos="zoom-in">
-                        <span class="quote">
-                                <img src="./static/img/quot.png" alt="">
-                            </span>
-                        <p>
-                            Though I Founded this. But It's a product I use everytime to fuel not only the business but my own creativity. Data Shouldn't be so pricey.
-                        </p>
-                        <div class="info">
-                            <!-- <div class="author-img">
-                                <img src="./static/home/img/clients/3.jpg" alt="">
-                            </div> -->
-                            <div class="cont">
-                                <h6>Daniel Ekwere</h6>
-                                <span>Jero Pay Founder</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
- <!-- particles -->
- <div id="particles-js"></div>
-        <div class="curve curve-top"></div>
     </section>
 
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="section-title">
+                        <h2 style="color: var(--primary-color);">
+                            Jeropay <i class="fas fa-check-circle"></i>
+                        </h2>
+                    </div>
+                    
+                    <div class="row text-start">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Topup mobile data at cheap rate
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Topup airtime and earn cash back
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Pay electricity bill and earn cash back
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Subscribe cable TV and earn cash back
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Print recharge cards at any time
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Get the WAEC, NECO and NABTEB pins
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <a href="#services" class="btn btn-primary btn-lg mt-4">GET STARTED!</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-
-
-
-  <!-- =====================================
-        ==== Start Price -->
-
-        <section class="price section-padding bg-gray pos-re" data-scroll-index="4">
-            <div class="container">
-                <div class="row">
-                    <!-- Section Heading -->
-                    <div class="section-head offset-md-2 col-md-8 offset-lg-3 col-lg-6 text-center">
-                        <h4 data-aos="fade-right">Pricing <span>Table</span></h4>
-                        <p data-aos="fade-left">
-                            Check out our affordable prices across all networks
-                        </p>
+    <!-- Services Section -->
+    <section id="services" class="section bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <div class="section-title text-start">
+                        <h2>What We Do</h2>
+                    </div>
+                    <p class="fs-5">We offer fast, secure, and convenient transactions, making it easy to stay connected with affordable digital solutions.</p>
+                    <a href="#pricing" class="btn btn-primary">SEE MORE!</a>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Airtime Purchase</h5>
+                            <p>Instantly recharge your mobile lines with ease. Airtime for all networks — MTN, Glo, Airtel, and 9mobile — is available 24/7.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="pricing-tables text-center full-width">
-                    <div class="row">
-                        <!-- Pricing Card 1 -->
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="item mb-md50" data-aos="flip-down">
-                                <div class="type">
-                                    <img src="./static/img/mtn.png" alt="MTN Logo">
-                                </div>
-                                <div class="value">
-                                    <h3>MTN Data</h3>
-                                    <span class="per">30 Days</span>
-                                </div>
-                                <div class="features">
-                                    <ul>
-                                        <li>₦ 140 - 500 MB</li>
-                                        <li>₦ 250 - 1 GB</li>
-                                        <li>₦ 500 - 2.00 GB</li>
-                                        <li>₦ 850 - 3.00 GB</li>
-                                        <li>₦ 1,300 - 5.00 GB</li>
-                                        <li>₦ 2,500 - 10.00 GB</li>
-                                    </ul>
-                                </div>
-                                <div class="order">
-                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
-                                        <span>Purchase Now</span>
-                                    </a>
-                                </div>
-                            </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-wifi"></i>
                         </div>
-                        <!-- Pricing Card 2 -->
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="item mb-md50" data-aos="flip-right">
-                                <div class="type">
-                                    <img src="./static/img/glo.png" alt="Glo Logo">
-                                </div>
-                                <div class="value">
-                                    <h3>Glo Data</h3>
-                                    <span class="per">30 Days</span>
-                                </div>
-                                <div class="features">
-                                    <ul>
-                                        <li>₦ 500 - 1.8 GB</li>
-                                        <li>₦ 950 - 3.9 GB</li>
-                                        <li>₦ 1,450 - 5.2 GB</li>
-                                        <li>₦ 2,400 - 10.8 GB</li>
-                                        <li>₦ 9,200 - 50 GB</li>
-                                    </ul>
-                                </div>
-                                <div class="order">
-                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
-                                        <span>Purchase Now</span>
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="feature-content">
+                            <h5>Data Subscription</h5>
+                            <p>Get affordable and reliable mobile data plans for all networks — MTN, Glo, Airtel, and 9mobile — available 24/7.</p>
                         </div>
-                        <!-- Pricing Card 3 -->
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="item mb-md50" data-aos="flip-left">
-                                <div class="type">
-                                    <img src="./static/img/airtel.png" alt="Airtel Logo">
-                                </div>
-                                <div class="value">
-                                    <h3>Airtel Data</h3>
-                                    <span class="per">30 Days</span>
-                                </div>
-                                <div class="features">
-                                    <ul>
-                                        <li>₦ 200 - 500 MB</li>
-                                        <li>₦ 250 - 1 GB</li>
-                                        <li>₦ 500 - 2.00 GB</li>
-                                        <li>₦ 1,300 - 5.00 GB</li>
-                                        <li>₦ 2,500 - 10.00 GB</li>
-                                    </ul>
-                                </div>
-                                <div class="order">
-                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
-                                        <span>Purchase Now</span>
-                                    </a>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-tv"></i>
                         </div>
-                        <!-- Pricing Card 4 -->
-                        <div class="col-sm-6 col-md-4 col-lg-3">
-                            <div class="item mb-md50" data-aos="flip-up">
-                                <div class="type">
-                                    <img src="./static/img/9-mobile.png" alt="9 Mobile Logo">
-                                </div>
-                                <div class="value">
-                                    <h3>9 Mobile Data</h3>
-                                    <span class="per">30 Days</span>
-                                </div>
-                                <div class="features">
-                                    <ul>
-                                        <li>₦ 500 - 500 MB</li>
-                                        <li>₦ 1,000 - 1 GB</li>
-                                        <li>₦ 1,200 - 2.00 GB</li>
-                                        <li>₦ 1,400 - 3.00 GB</li>
-                                        <li>₦ 1,900 - 4.50 GB</li>
-                                        <li>₦ 3,800 - 11.00 GB</li>
-                                        <li>₦ 4,800 - 15.00 GB</li>
-                                    </ul>
-                                </div>
-                                <div class="order">
-                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
-                                        <span>Purchase Now</span>
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="feature-content">
+                            <h5>Cable TV Subscription</h5>
+                            <p>Easily subscribe to DSTV, GOTV, and Startimes at affordable rates. Renew your cable TV subscriptions hassle-free today!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Electricity Bills Payment</h5>
+                            <p>Easily pay your electricity bills directly from your home, whether prepaid or postpaid.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Examination PINs</h5>
+                            <p>Purchase any type of exam pins like WAEC exam, NECO exam, and NABTEB exam pin.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-print"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Recharge Card Printing</h5>
+                            <p>Easily print recharge card pins. All network pins — MTN, Glo, Airtel, and 9mobile — are available 24/7.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="curve curve-bottom"></div>
-        </section>
-        
-  
-      <!-- End Price ====
-          ======================================= -->
-  
-
-
-
-
-
-        <!--======= CONTACT SECTION ==========-->
-
-        <section class="main-contact-container" id="contact" data-scroll-index="6">
-          
-          <div class="main-contact" data-aos="zoom-in">
-
-            <div class="main-contact-form">
-              <h2>Get in touch</h2>
-              <h6 style="text-align: center;color: grey;padding-bottom: 50px; font-size: 20px;">Let's get to hear from you what your view on our services</h6>
-           <form id="contact-form" action="#" method="post">
-        <input type="text" name="full_name" placeholder="Full Name*" required><br><br>
-        <input type="email" name="email" placeholder="Email Address*" required><br><br>
-        <input type="tel" name="phone" placeholder="Phone Number*" required><br><br>
-        <textarea name="message" rows="4" placeholder="Your Message..." required></textarea><br><br>
-        <button type="submit">Send Message</button>
-    </form>
-         
         </div>
+    </section>
 
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Pricing</h2>
+                <p>All our data is very affordable and reliable. Here are some of our data prices:</p>
+            </div>
+            
+            <div class="scroll-container">
+                <div class="pricing-cards">
+                    <h3>₦540 Per GB</h3>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr><td><strong>Network:</strong></td><td>MTN SME</td></tr>
+                            <tr><td><strong>Data:</strong></td><td>1GB</td></tr>
+                            <tr><td><strong>Validity:</strong></td><td>30 days</td></tr>
+                            <tr><td><strong>Support:</strong></td><td>2G/3G/4G</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <div class="pricing-cards">
+                    <h3>₦700 Per GB</h3>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr><td><strong>Network:</strong></td><td>MTN SME2</td></tr>
+                            <tr><td><strong>Data:</strong></td><td>1GB</td></tr>
+                            <tr><td><strong>Validity:</strong></td><td>30 days</td></tr>
+                            <tr><td><strong>Support:</strong></td><td>2G/3G/4G</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <div class="pricing-cards">
+                    <h3>₦388 Per GB</h3>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr><td><strong>Network:</strong></td><td>Glo Corporate</td></tr>
+                            <tr><td><strong>Data:</strong></td><td>1GB</td></tr>
+                            <tr><td><strong>Validity:</strong></td><td>30 days</td></tr>
+                            <tr><td><strong>Support:</strong></td><td>2G/3G/4G</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <div class="pricing-cards">
+                    <h3>₦360 Per GB</h3>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr><td><strong>Network:</strong></td><td>9mobile Corporate</td></tr>
+                            <tr><td><strong>Data:</strong></td><td>1GB</td></tr>
+                            <tr><td><strong>Validity:</strong></td><td>30 days</td></tr>
+                            <tr><td><strong>Support:</strong></td><td>2G/3G/4G</td></tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
         </div>
+    </section>
 
-      </section>
+    <!-- Reviews Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Customer Reviews</h2>
+            </div>
+            
+            <div class="scroll-container">
+                <div class="review-cards">
+                    <h5>Vera Smart</h5>
+                    <p>"This is the most amazing API provider"</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="review-cards">
+                    <h5>Iboi Rejoice</h5>
+                    <p>"Sharp API provider."</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="review-cards">
+                    <h5>Monosub</h5>
+                    <p>"They are the most stable API provider. Saving my business from poor providers."</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="review-cards">
+                    <h5>Bello Sub</h5>
+                    <p>"I'm so happy, this API has saved my business from network issues. Thank you 247API!"</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-8">
+                    <h3 class="text-white mb-3">
+                        Jeropay <i class="fas fa-check-circle ms-2"></i>
+                    </h3>
+                    <p class="text-white">
+                        Jeropay, your number one VTU platform in Nigeria. Most reliable place for buying internet data, 
+                        airtime, TV subscriptions, exam pins, and paying NEPA bills. Enjoy 24/7 active customer care service 
+                        and unmatched reliability.
+                    </p>
+                </div>
+            </div>
+            
+            <hr class="text-white">
+            
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <h5 class="text-white fw-bold mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="#about" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>About Us
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#contact" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>Contact Us
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#terms" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>Terms of Service
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#privacy" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5 class="text-white fw-bold mb-3">Contact Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>
+                            <strong>Phone:</strong> +234 706 765 5274
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <strong>Email:</strong> benazdata@gmail.com
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>Address:</strong> Ambrose Ali University, Ekpoma Edo State
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="text-white mt-5">
+            
+            <div class="row text-center mt-4">
+                <div class="col-12">
+                    <p class="text-white mb-3">© 2025 Jeropay. All rights reserved.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-whatsapp fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-        <!--======= END OF CONTACT SECTION ==========-->
-      
+    <!-- Scroll to Top Button -->
+    <a href="#home" class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
 
-
-      <!--========Footer Section========--->
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     
-<section class="footer">
-  <div class="curve curve-top"></div>
-  <div class="footer-content">
-    <div class="curve curve-top"></div>
-    <a class="logo" href="#">
-      <img src="./static/img/logo-1.png" alt="logo">
-  </a>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-    <p>© 2023 Jero Pay
-All Rights Reserved</p>
-  </div>
-
-   <div class="footer-content">
-    <h3>Get in touch</h3>
-    <p>uyo, Akwa Ibom State, Nigeria.</p>
-      <p>jeropay@gmail.com<br>
-        +234 704 319 4111</p>
-  </div>
-
-   <div class="footer-content">
-    <h3>Learn More</h3>
-    <p>About Us</p>
-     <p>Features</p>
-      <p>FAQ</p>
-       <p>Pricing Policy</p>
-        <p>Terms of Use</p>
-  </div>
-
-<div class="footer-content">
-  <div class="social">
-    <a href="#0"><i class="fab fa-facebook-f"></i></a>
-    <a href="#0"><i class="fab fa-twitter"></i></a>
-    <a href="#0"><i class="fab fa-linkedin-in"></i></a>
-    <a href="#0"><i class="fab fa-behance"></i></a>
-    <a href="#0"><i class="fab fa-pinterest-p"></i></a>
-</div>
-
-</div>
-
-
-</section>
-
-      <!-- JAVA SCRIPT -->
-
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<!-- particles.min js -->
-<script src="./static/js/particles.min.js"></script>
-      <script>
-
-//scroll animation program
-AOS.init({
-       duration: 2000,
-       once: false,
-      });
-
-
-
-//navbar program  
-
-  function openNav(){
-  document.getElementById("mobilenav").style.width="100%";
-}
-function closeNav(){
-  document.getElementById("mobilenav").style.width="0%";
-}
-
-  
-
-
-
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<!-- particles.min js -->
-    <script src="./static/js/particles.min.js"></script>
-    <!-- app js -->
-    <script src="./static/js/app.js"></script>
-    <!-- animated.headline -->
-    <script src="./static/js/animated.headline.js"></script>
-
-     <!-- bootstrap -->
-     <script src="./static/js/bootstrap.min.js"></script>
-
-
-     <!-- jQuery -->
-    <script src="./static/js/jquery-3.0.0.min.js"></script>
-    <script src="./static/js/jquery-migrate-3.0.0.min.js"></script>
-
-    <!-- popper.min -->
-    <script src="./static/js/popper.min.js"></script>
-
-    <!-- bootstrap -->
-    <!-- <script src="./static/js/bootstrap.min.js"></script> -->
-
-    <!-- scrollIt -->
-    <script src="./static/js/scrollIt.min.js"></script>
-
-    <!-- animated.headline -->
-    <script src="./static/js/animated.headline.js"></script>
-
-    <!-- jquery.waypoints.min -->
-    <script src="./static/js/jquery.waypoints.min.js"></script>
-
-    <!-- owl carousel -->
-    <script src="./static/js/owl.carousel.min.js"></script>
-
-    <!-- jquery.magnific-popup js -->
-    <!-- <script src="./static/js/jquery.magnific-popup.min.js"></script> -->
-
-    <!-- stellar js -->
-    <!-- <script src="./static/js/jquery.stellar.min.js"></script> -->
-
-    <!-- isotope.pkgd.min js -->
-    <script src="./static/js/isotope.pkgd.min.js"></script>
-
-    
-
-    <!-- particles.min js -->
-    <script src="./static/js/particles.min.js"></script>
-
-    <!-- app js -->
-    <script src="./static/js/app.js"></script>
-
-    <!-- validator js -->
-    <script src="./static/js/validator.js"></script>
-
-    <!-- custom scripts -->
-    <script src="./static/js/scripts.js"></script>
-
-    <!-- custom scripts -->
-    <script src="./static/js/base.js"></script>
-
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollButton = document.querySelector('.scroll-to-top');
+            if (window.pageYOffset > 300) {
+                scrollButton.style.opacity = '1';
+            } else {
+                scrollButton.style.opacity = '0';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,222 +1,804 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- Title  -->
-     <title>Download Mobile App</title>
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="keywords" content="Cheap Data MTN GLO Airtel" />
-       <meta name="description" content="Jero Pay is an Easy to use mobile app, make it to pay for bills cheaply" />
-       <meta name="author" content="" />
-     <!-- Favicon -->
-     <link rel="shortcut icon" href="/static/img/logo-1.png" />
- 
-     <!-- Google Fonts -->
-     <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800" rel="stylesheet">
-     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900" rel="stylesheet">
- 
-     <!-- Plugins -->
-     <!-- <link rel="stylesheet" href="./plugins.css" /> -->
-     <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-     <!-- Core Style Css -->
-     <link rel="stylesheet" href="/static/css/base.css">
- 
-     <!-- font awesome -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-12/css/all.min.css" integrity="sha512-pn4RwKFKdSvaTRSYO5WIUGz89e1tJvWWUGRIBym1/k467SuMMjKKw/X5TXJYp2+WLmHumHivCJ2JAJppXF9SoA==" crossorigin="anonymous" referrerpolicy="no-referrer"
-     />
- 
-     <style>
-         .type>img {
-             width: 50%;
-             margin: 5% auto;
-         }
-         
-         .price .features li {
-             font-size: 17px;
-             color: #777;
-             margin-bottom: 12px;
-         }
-     </style>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>247 API APP - Download</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Download the 247 API mobile app - Fast & Reliable VTU platform for data, airtime, and bill payments in Nigeria">
+    <meta name="keywords" content="247 API, app download, VTU, data, airtime, Nigeria">
+    <meta property="og:title" content="247 API APP - Fast & Reliable">
+    <meta property="og:description" content="Download the most reliable VTU app in Nigeria">
+    <meta property="og:image" content="{% static 'img/web-logo.png' %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'img/web-logo.png' %}" type="image/x-icon">
+    
+    <!-- Bootstrap & Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+             --primary-color: #3e0555;
+            --secondary-color: #823c88;
+            --text-color: #333;
+            --bg-light: #f8f9fa;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        .app-header {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .app-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-name {
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .stats-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--bg-light);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .download-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,106,0,0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255,106,0,0.4);
+        }
+
+        .review-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .review-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .screenshots-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .screenshot {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot:hover {
+            transform: translateY(-5px);
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .rating-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .rating-overview {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .rating-number {
+            text-align: center;
+        }
+
+        .rating-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-chart {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .rating-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .rating-bar-bg {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .stars {
+            color: #ffd700;
+        }
+
+        .review-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-modal.show {
+            display: flex;
+        }
+
+        .review-form-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 1rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star:hover,
+        .star.selected {
+            color: #ffd700;
+        }
+
+        .reviews-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .review-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s ease;
+        }
+
+        .review-item:hover {
+            background: var(--bg-light);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .review-meta h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .review-stars {
+            display: flex;
+            gap: 0.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .load-more-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        .load-more-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 1.5rem;
+            }
+            
+            .app-title {
+                font-size: 1.5rem;
+            }
+            
+            .rating-overview {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .screenshots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="{% url 'home:home' %}" class="back-btn">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+    </header>
 
-<ul class="navbar1" id="navbar1">
+    <div class="container fade-in">
+        <!-- App Info Section -->
+        <div class="app-header">
+            <img src="{% static 'img/web-logo.png' %}" 
+                 alt="247 API Logo" class="app-icon">
+            <h1 class="app-title">247 API | Fast & Reliable</h1>
+            <p class="developer-name">VICOM Software LTD</p>
+            <button class="review-btn" onclick="openReviewModal()">
+                <i class="fas fa-star me-1"></i>Write a Review
+            </button>
+        </div>
 
-    <li class="nav-brand" id="nav-Brand">
-      <img src="/static/img/logo-1.png" alt="logo" style="width: 80px">
-    </li>
+        <!-- Stats Section -->
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">100K+</span>
+                    <div class="stat-label">Downloads</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">13K</span>
+                    <div class="stat-label">Reviews</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">4.5</span>
+                    <div class="stat-label">Rating</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">12+</span>
+                    <div class="stat-label">Age Rating</div>
+                </div>
+            </div>
+        </div>
 
-    <li class="nav-menu" data-scroll-nav="0"><a href="#">Home</a></li>
-    <li class="nav-menu"  href="#" data-scroll-nav="1"><a class="nav-link active" href="#">Services</a></li>
-    <li class="nav-menu" href="#" data-scroll-nav="4"><a href="#">Price</a></li>
-    <li class="nav-menu" href="#" data-scroll-nav="6"><a href="#">Contact</a></li>
-    <li class="nav-menu" href="#" data-scroll-nav="2"><a href="#">testimony</a></li>
+        <!-- Download Section -->
+        <div class="download-section">
+            <h3 class="mb-3">Get the App</h3>
+            <p class="text-muted mb-4">Experience the fastest and most reliable VTU service in Nigeria</p>
+            <button class="download-btn" onclick="downloadApp()">
+                <i class="fas fa-download me-2"></i>Install Now
+            </button>
+            <p class="text-muted mt-3 small">Free download • Android & iOS</p>
+        </div>
 
+        <!-- Screenshots Section -->
+        <div class="screenshots-container">
+            <h4 class="mb-3">App Screenshots</h4>
+            <div class="screenshots-grid">
+                <div class="screenshot">
+                    <img src="./images/IgdxkF9Mdsgz60JubtEdl9VxjKYa0v1BBnOxx7vv.png" alt="App Screenshot 1">
+                </div>
+                <div class="screenshot">
+                    <img src="./images/ch6lnRDmlBpiF30NomXaxJubRMtoX2C1k9f081fI.png" alt="App Screenshot 2">
+                </div>
+                <div class="screenshot">
+                    <img src="./images/5enjb9OZ6L9uGc91bkcMAOSbwKY2lVwuZ8ExYl0Q.png" alt="App Screenshot 3">
+                </div>
+                <div class="screenshot">
+                    <img src="./images/0KL7I7a2a04FC2mjphMNQBgStRgnj4RkoQYMZTWZ.png" alt="App Screenshot 4">
+                </div>
+            </div>
+        </div>
 
-    <!-- Mobile Navigation button ---->
-    <span class="menu-btn" onclick="openNav()">&#9776;</span>
-
-
-    <!-- Mobile navigation bar container --->
-    <div class="mobileNav" id="mobilenav">
-      <div class="mobileNav-links">
-       <a class="closeBtn" onclick="closeNav()">&#10006;</a>
-    <a href="#" data-scroll-nav="0">Home</a>
-    <a href="#" data-scroll-nav="1">Services</a>
-   <a href="#" data-scroll-nav="4">Price</a>
-    <a href="#" data-scroll-nav="6">Contact</a>
-    <a href="#" data-scroll-nav="2">testimony</a>
-
-    </div>
-
-  </div>
-     <!-- End of Mobile navigation bar container --->
-
-
-  </ul>
-
-  <!---======= End of Navigation Bar ========---->
-
-
-
-
-
-
-
-
-   <!-- =====================================
-        ==== Start Hero -->
-<center>
-        <section class="hero" data-scroll-index="1" data-aos="fade-up">
-            <div class="section-padding pos-re">
-                <div class="container">
-                    <div class="row">
-                        <div class="offset-lg-2 col-lg-8 offset-md-1 col-md-10 text-center mb-80">
-                            <h4 class="extra-title">Download Jero Pay's <span>Android</span> App</h4>
-                            <span>We are working on our apps being available on the PlayStore (Android) and App Store (iOS)</span>
-                            <span>But you can still enjoy all the benefits of the App when you download below.</span>
+        <!-- Rating Overview -->
+        <div class="rating-section">
+            <h4 class="mb-4">Ratings & Reviews</h4>
+            <div class="rating-overview">
+                <div class="rating-number">
+                    <div class="rating-value">4.5</div>
+                    <div class="stars mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <div class="stat-label">12K reviews</div>
+                </div>
+                <div class="rating-chart">
+                    <div class="rating-row">
+                        <span>5 <i class="fas fa-star text-warning"></i></span>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 80%"></div>
                         </div>
-                        <div class="feat-item mb-md50 col-lg-12">
-                            <table class="table" data-aos="zoom-in">
-                                <!-- table heading -->
-                                <tr>
-                                    <th>
-                                        Upload date
-                                    </th>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>Action</th>
-                                </tr>
-    
-                                <!-- table content -->
-                                <!-- {% for obj in object_list %} -->
-                                <tr>
-                                    <td>
-                                        <!-- {{ obj.upload_date }} -->
-                                    </td>
-                                    <td>
-                                        Micro E-pay
-                                    </td>
-                                    <td>
-    
-                                        <a href="{{obj.file.url}}" class="btn btn-success">
-                                            Download
-                                        </a>
-                                    </td>
-                                </tr>
-                                <!-- {% endfor %} -->
-                            </table>
-                            <hr>
+                        <span class="text-muted">80%</span>
+                    </div>
+                    <div class="rating-row">
+                        <span>4 <i class="fas fa-star text-warning"></i></span>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 50%"></div>
                         </div>
+                        <span class="text-muted">50%</span>
+                    </div>
+                    <div class="rating-row">
+                        <span>3 <i class="fas fa-star text-warning"></i></span>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 40%"></div>
+                        </div>
+                        <span class="text-muted">40%</span>
+                    </div>
+                    <div class="rating-row">
+                        <span>2 <i class="fas fa-star text-warning"></i></span>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 10%"></div>
+                        </div>
+                        <span class="text-muted">10%</span>
+                    </div>
+                    <div class="rating-row">
+                        <span>1 <i class="fas fa-star text-warning"></i></span>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 6%"></div>
+                        </div>
+                        <span class="text-muted">6%</span>
                     </div>
                 </div>
-    
-                <!-- <div class="curve curve-gray-b curve-bottom"></div> -->
             </div>
-    
-        </section>
-    </center>
-        <!-- End Hero ====
-            ======================================= -->
-    
-    
+        </div>
 
-        <!--========Footer Section========--->
-    
-<section class="footer">
-    <div class="curve curve-top"></div>
-    <div class="footer-content">
-      <div class="curve curve-top"></div>
-      <a class="logo" href="#">
-        <img src="/static/img/logo-1.png" alt="logo">
-    </a>
-  
-      <p>© 2023 Jero Pay
-  All Rights Reserved</p>
+        <!-- Reviews Section -->
+        <div class="reviews-container">
+            <h4 class="mb-4">User Reviews</h4>
+            
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="profile-pic">V</div>
+                    <div class="review-meta">
+                        <h6>Vera Smart</h6>
+                        <div class="review-date">May 22, 2025</div>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="far fa-star text-warning"></i>
+                </div>
+                <p class="mb-0">This is the most amazing API provider</p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="profile-pic">I</div>
+                    <div class="review-meta">
+                        <h6>Iboi Rejoice</h6>
+                        <div class="review-date">Apr 26, 2025</div>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="far fa-star text-warning"></i>
+                </div>
+                <p class="mb-0">Sharp API provider.</p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="profile-pic">M</div>
+                    <div class="review-meta">
+                        <h6>Monosub</h6>
+                        <div class="review-date">Mar 14, 2025</div>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="far fa-star text-warning"></i>
+                </div>
+                <p class="mb-0">They are the most stable API provider. Saving my business from poor providers.</p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="profile-pic">B</div>
+                    <div class="review-meta">
+                        <h6>Bello Sub</h6>
+                        <div class="review-date">Mar 10, 2025</div>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="far fa-star text-warning"></i>
+                    <i class="far fa-star text-warning"></i>
+                </div>
+                <p class="mb-0">I'm so happy, this API has saved my business from subsequent network issues. Thank you so much to 247api - BenazData.</p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="profile-pic">I</div>
+                    <div class="review-meta">
+                        <h6>Isaiah Best</h6>
+                        <div class="review-date">Feb 24, 2025</div>
+                    </div>
+                </div>
+                <div class="review-stars">
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                    <i class="fas fa-star text-warning"></i>
+                </div>
+                <p class="mb-0">I've referred all my friends and family to come enjoy this amazing platform with me. Thanks so much BenazData.</p>
+            </div>
+
+            <button class="load-more-btn" onclick="loadMoreReviews()">
+                <i class="fas fa-plus me-2"></i>Load More Reviews
+            </button>
+        </div>
     </div>
-  
-     <div class="footer-content">
-      <h3>Get in touch</h3>
-      <p>uyo, Akwa Ibom State, Nigeria.</p>
-      <p>jeropay@gmail.com<br>
-        +234 704 319 4111</p>
+
+    <!-- Review Modal -->
+    <div class="review-modal" id="reviewModal">
+        <div class="review-form-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="mb-0">Write a Review</h5>
+                <button type="button" class="btn-close" onclick="closeReviewModal()"></button>
+            </div>
+            
+            <form id="reviewForm">
+                <div class="mb-3 text-center">
+                    <label class="form-label">Your Rating</label>
+                    <div class="star-rating" id="starRating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="ratingValue" value="0" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="userName" class="form-label">Your Name</label>
+                    <input type="text" id="userName" class="form-control" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="userReview" class="form-label">Your Review</label>
+                    <textarea id="userReview" class="form-control" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100" style="background: var(--primary-color); border: none;">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Review
+                </button>
+            </form>
+        </div>
     </div>
-  
-     <div class="footer-content">
-      <h3>Learn More</h3>
-      <p>About Us</p>
-       <p>Features</p>
-        <p>FAQ</p>
-         <p>Pricing Policy</p>
-          <p>Terms of Use</p>
-    </div>
-  
-  <div class="footer-content">
-    <div class="social">
-      <a href="#0"><i class="fab fa-facebook-f"></i></a>
-      <a href="#0"><i class="fab fa-twitter"></i></a>
-      <a href="#0"><i class="fab fa-linkedin-in"></i></a>
-      <a href="#0"><i class="fab fa-behance"></i></a>
-      <a href="#0"><i class="fab fa-pinterest-p"></i></a>
-  </div>
-  
-  </div>
-  
-  
-  </section>
-  
-        <!-- JAVA SCRIPT -->
-  
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-        <script>
-  
-  //scroll animation program
-  AOS.init({
-         duration: 2000,
-         once: false,
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedRating = 0;
+
+        // Star rating functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star');
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    selectedRating = parseInt(this.dataset.value);
+                    document.getElementById('ratingValue').value = selectedRating;
+                    
+                    // Update star display
+                    stars.forEach((s, index) => {
+                        if (index < selectedRating) {
+                            s.classList.add('selected');
+                        } else {
+                            s.classList.remove('selected');
+                        }
+                    });
+                });
+
+                star.addEventListener('mouseover', function() {
+                    const hoverValue = parseInt(this.dataset.value);
+                    stars.forEach((s, index) => {
+                        if (index < hoverValue) {
+                            s.style.color = '#ffd700';
+                        } else {
+                            s.style.color = '#ddd';
+                        }
+                    });
+                });
+            });
+
+            // Reset hover effect
+            document.getElementById('starRating').addEventListener('mouseleave', function() {
+                stars.forEach((s, index) => {
+                    if (index < selectedRating) {
+                        s.style.color = '#ffd700';
+                    } else {
+                        s.style.color = '#ddd';
+                    }
+                });
+            });
         });
-  
-  
-  
-  //navbar program  
-  
-    function openNav(){
-    document.getElementById("mobilenav").style.width="100%";
-  }
-  function closeNav(){
-    document.getElementById("mobilenav").style.width="0%";
-  }
-  
-    
-  
-  
-  
-  </script>
-  
- 
-<body>
-    
+
+        // Modal functions
+        function openReviewModal() {
+            document.getElementById('reviewModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Form submission
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+
+            const formData = {
+                rating: selectedRating,
+                name: document.getElementById('userName').value,
+                review: document.getElementById('userReview').value
+            };
+
+            // Simulate form submission
+            alert('Thank you for your review! It will be published after moderation.');
+            closeReviewModal();
+            
+            // Reset form
+            this.reset();
+            selectedRating = 0;
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('selected');
+                star.style.color = '#ddd';
+            });
+        });
+
+        // Download function
+        function downloadApp() {
+            // Create a temporary link to trigger download
+            const link = document.createElement('a');
+            link.href = './html/247api.com.ng.apk.html';
+            link.download = '247api.apk';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-2"></i>Downloaded!';
+            btn.style.background = '#28a745';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+            }, 2000);
+        }
+
+        // Load more reviews function
+        function loadMoreReviews() {
+            alert('Loading more reviews... This feature will load additional user reviews.');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('reviewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeReviewModal();
+            }
+        });
+    </script>
 </body>
 </html>
