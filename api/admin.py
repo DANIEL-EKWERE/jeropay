@@ -272,13 +272,31 @@ class PushNotificationAdmin(admin.ModelAdmin):
             return
 
         try:
-            devices.send_message(
+            response = devices.send_message(
                 make_message(obj.title, obj.body),
                 app=settings.FCM_DJANGO_SETTINGS.get('DEFAULT_FIREBASE_APP'),
             )
-            obj.sent_count = count
-            super().save_model(request, obj, form, change)
-            self.message_user(request, f'Push notification sent to {count} device(s) successfully.', level=messages.SUCCESS)
+            success = getattr(response, 'success_count', None)
+            failure = getattr(response, 'failure_count', None)
+
+            if success is not None and failure is not None:
+                obj.sent_count = success
+                super().save_model(request, obj, form, change)
+                if failure > 0:
+                    errors = [
+                        str(r.exception) for r in response.responses if not r.success and r.exception
+                    ]
+                    self.message_user(
+                        request,
+                        f'Sent to {success}/{count} device(s). {failure} failed: {"; ".join(errors)}',
+                        level=messages.WARNING,
+                    )
+                else:
+                    self.message_user(request, f'Push notification sent to {success} device(s) successfully.', level=messages.SUCCESS)
+            else:
+                obj.sent_count = count
+                super().save_model(request, obj, form, change)
+                self.message_user(request, f'Push notification sent to {count} device(s) successfully.', level=messages.SUCCESS)
         except Exception as e:
             obj.sent_count = 0
             super().save_model(request, obj, form, change)

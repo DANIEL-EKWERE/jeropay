@@ -666,6 +666,19 @@ class CreateProfileAPIView(GenericAPIView):
                         recommended_by=recommended_user,
                     )
                     Wallet.objects.create(user=serializer_inst, balance=0.0)
+
+                    # Credit ₦3 referral bonus to the referrer
+                    if recommended_user:
+                        try:
+                            from decimal import Decimal
+                            from django.db.models import F
+                            referrer_profile = Profile.objects.get(user=recommended_user)
+                            Wallet.objects.filter(user=referrer_profile).update(
+                                commission_balance=F('commission_balance') + Decimal('3.00')
+                            )
+                        except Exception:
+                            pass
+
                     # except ProfileDoesNotExit:
                     #     serializer_inst = serializer.save(user=request.user, reseller=False,bank_name=bank_name,account_number=account_number,account_name=account_name)
                     #     Wallet.objects.create(user=serializer_inst, balance=0.0)

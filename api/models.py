@@ -265,7 +265,7 @@ class Wallet(models.Model):
     user = models.OneToOneField(Profile, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=11, decimal_places=2,default=0.0)
     gateway = models.CharField(max_length=100,default='')
-    commission_balance = models.CharField(max_length=100,default='',null=True,blank=True)
+    commission_balance = models.DecimalField(max_digits=11, decimal_places=2, default=0.0)
     total_deposit = models.DecimalField(max_digits=10,default=0.0,decimal_places=2,null=True,blank=True)
     total_purchase = models.DecimalField(max_digits=10,default=0.0,decimal_places=2,null=True,blank=True)
     

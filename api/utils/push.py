@@ -12,7 +12,6 @@ def make_message(title: str, body: str) -> Message:
     return Message(
         notification=Notification(title=title, body=body),
         android=AndroidConfig(
-            channel_id=CHANNEL_ID,
             priority='high',
             notification=AndroidNotification(
                 channel_id=CHANNEL_ID,
@@ -28,10 +27,14 @@ def send_push(user, title: str, body: str) -> None:
     try:
         devices = FCMDevice.objects.filter(user=user, active=True)
         if devices.exists():
-            devices.send_message(
+            response = devices.send_message(
                 make_message(title, body),
                 app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP'],
             )
+            failure = getattr(response, 'failure_count', 0)
+            if failure:
+                errors = [str(r.exception) for r in response.responses if not r.success and r.exception]
+                print(f'FCM push partial failure [{user}]: {errors}')
     except Exception as e:
         print(f'FCM push failed [{user}]: {e}')
 
