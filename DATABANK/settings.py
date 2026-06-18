@@ -259,25 +259,13 @@ PG_PASSWORD = os.getenv('PG_PASSWORD')
 
 # Configure firebase
 from firebase_admin import initialize_app, credentials
-from google.auth import load_credentials_from_file
 
-# create a custom Credentials class to load a non-default google service account JSON
-class CustomFirebaseCredentials(credentials.ApplicationDefault):
-    def __init__(self, account_file_path: str):
-        super().__init__()
-        self._account_file_path = account_file_path
+# Messaging app (databank-6f630 project) — Certificate reads project_id from JSON
+_messaging_cred = credentials.Certificate("jeropay-baa6f-firebase-adminsdk-fbsvc-7df7620114.json")
+FIREBASE_MESSAGING_APP = initialize_app(_messaging_cred, name='messaging')
 
-    def _load_credential(self):
-        if not self._g_credential:
-            self._g_credential, self._project_id = load_credentials_from_file(self._account_file_path,
-                                                                              scopes=credentials._scopes)
-
-custom_credentials = CustomFirebaseCredentials("databank-6f630-firebase-adminsdk-2rle3-d464452afe.json")
-FIREBASE_MESSAGING_APP = initialize_app(custom_credentials, name='messaging')
-
-# Firebase app for Google Auth token verification (jeropay-baa6f project)
-from firebase_admin import credentials as fb_credentials
-_auth_cred = fb_credentials.Certificate("jeropay-baa6f-firebase-adminsdk-fbsvc-7df7620114.json")
+# Auth app (jeropay-baa6f project) — used to verify Google Sign-In ID tokens
+_auth_cred = credentials.Certificate("jeropay-baa6f-firebase-adminsdk-fbsvc-7df7620114.json")
 FIREBASE_AUTH_APP = initialize_app(_auth_cred, name='auth')
 
 FCM_DJANGO_SETTINGS = {
@@ -295,8 +283,3 @@ FCM_DJANGO_SETTINGS = {
     "DELETE_INACTIVE_DEVICES": False,
 }
 
-# import firebase_adminj
-# from firebase_admin import credentials
-
-# cred = credentials.Certificate("path/to/serviceAccountKey.json")
-# firebase_admin.initialize_app(cred)

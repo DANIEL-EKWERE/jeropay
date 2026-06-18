@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.conf import settings
 from django.contrib import messages
+from api.utils.push import send_push, send_push_to_all, make_message
 
 from .models import (
     Airtime,
@@ -103,21 +104,8 @@ class AdminWallet(admin.ModelAdmin):
             type=tx_type,
         )
 
-        try:
-            from fcm_django.models import FCMDevice
-            from firebase_admin.messaging import Message, Notification as FCMNotification
-            devices = FCMDevice.objects.filter(user=user, active=True)
-            if devices.exists():
-                sign = '+' if is_credit else '-'
-                devices.send_message(
-                    Message(notification=FCMNotification(
-                        title='Wallet Updated',
-                        body=f'Your wallet has been {sign}₦{amount:,.2f} by admin. New balance: ₦{new_balance:,.2f}',
-                    )),
-                    app=settings.FCM_DJANGO_SETTINGS.get('DEFAULT_FIREBASE_APP'),
-                )
-        except Exception as e:
-            print(f'FCM push failed: {e}')
+        sign = '+' if is_credit else '-'
+        send_push(user, 'Wallet Updated', f'Your wallet has been {sign}₦{amount:,.2f} by admin. New balance: ₦{new_balance:,.2f}')
 
 
 @admin.register(ExamPinPrice)
@@ -285,9 +273,7 @@ class PushNotificationAdmin(admin.ModelAdmin):
 
         try:
             devices.send_message(
-                Message(
-                    notification=FCMNotification(title=obj.title, body=obj.body),
-                ),
+                make_message(obj.title, obj.body),
                 app=settings.FCM_DJANGO_SETTINGS.get('DEFAULT_FIREBASE_APP'),
             )
             obj.sent_count = count

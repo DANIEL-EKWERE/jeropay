@@ -12,9 +12,8 @@ from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-# fcm_django
 from fcm_django.models import FCMDevice
-from firebase_admin.messaging import Message, Notification
+from api.utils.push import send_push, make_message
 
 # serializers
 from api.other_serializers.admin.fund_account_serializer import FundUserAccountSerializer
@@ -85,11 +84,7 @@ class FundCustomerAccount(GenericAPIView):
                     type='AdminCredit',
                 )
 
-            _send_wallet_push(
-                user,
-                title='Wallet Funded',
-                body=f'Your account has been credited with ₦{amount}. New balance: ₦{new_balance}',
-            )
+            send_push(user, 'Wallet Funded', f'Your account has been credited with ₦{amount}. New balance: ₦{new_balance}')
 
             return Response(
                 data={'status': 'success', 'data': f'Updated {user} balance to {new_balance}'},
@@ -99,16 +94,6 @@ class FundCustomerAccount(GenericAPIView):
         return Response(data={'status': 'error', 'data': serializer.errors}, status=400)
 
 
-def _send_wallet_push(user, title, body):
-    try:
-        devices = FCMDevice.objects.filter(user=user, active=True)
-        if devices.exists():
-            devices.send_message(
-                Message(notification=Notification(title=title, body=body)),
-                app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP'],
-            )
-    except Exception as e:
-        print(f'FCM notification failed: {e}')
 
 
 class DeductCustomerAccount(GenericAPIView):
@@ -161,11 +146,7 @@ class DeductCustomerAccount(GenericAPIView):
                 type='AdminDebit',
             )
 
-        _send_wallet_push(
-            user,
-            title='Wallet Debited',
-            body=f'₦{amount} has been deducted from your wallet. New balance: ₦{new_balance}',
-        )
+        send_push(user, 'Wallet Debited', f'₦{amount} has been deducted from your wallet. New balance: ₦{new_balance}')
 
         return Response(
             {'status': 'success', 'data': f'Deducted ₦{amount} from {user}. New balance: ₦{new_balance}'},
@@ -476,21 +457,7 @@ def payment_webhook(request):
             type='Deposit',
         )
 
-        # Send FCM notification
-        try:
-            devices = FCMDevice.objects.filter(user=user)
-            if devices.exists():
-                devices.send_message(
-                    Message(
-                        notification=Notification(
-                            title='Wallet Funded',
-                            body=f'Your wallet has been credited with ₦{amount}',
-                        )
-                    ),
-                    app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP'],
-                )
-        except Exception as e:
-            print(f'FCM notification failed: {e}')
+        send_push(user, 'Wallet Funded', f'Your wallet has been credited with ₦{amount_after_fee_float:.2f}')
 
         return JsonResponse(
             {"message": "success", "data": f"Updated {user.email}'s balance to {new_balance}"},

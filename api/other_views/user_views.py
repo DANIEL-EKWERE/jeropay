@@ -709,36 +709,30 @@ class FCMDeviceInfoConnectorAPI(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             sers_data = serializer.validated_data
-            device_id = sers_data['device_id']
-            
+            registration_id = sers_data['registration_id']   # FCM token
+            device_id = sers_data['device_id'] or registration_id
+            device_type = sers_data['device_type']
+
             user = User.objects.get(username=request.user)
 
-            # query and check if a user exists in a device
             fcm = FCMDevice.objects.filter(user=user)
-
             if fcm.exists():
                 fcm.update(
+                    registration_id=registration_id,
                     device_id=device_id,
-                    registration_id=device_id,
-                    active=True #update to active, if it was set to false
+                    type=device_type,
+                    active=True,
                 )
-                return Response(
-                    data={
-                        'updated',
-                    }
-                )
-            
+                return Response({'status': 'updated'}, status=200)
+
             FCMDevice.objects.create(
-                name=f'{user.first_name} Device',
+                name=f'{user.first_name or user.username} Device',
                 user=user,
+                registration_id=registration_id,
                 device_id=device_id,
-                registration_id=device_id,
-                type= sers_data['device_type'],
+                type=device_type,
             )
-            return Response(
-                data={},
-                status=200
-            )
+            return Response({'status': 'created'}, status=201)
         return Response(
             data=serializer.errors,
             status=400

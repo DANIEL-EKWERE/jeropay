@@ -11,25 +11,9 @@ from rest_framework.permissions import IsAuthenticated
 # requests
 import requests, json, urllib3
 
-# FCM
-from fcm_django.models import FCMDevice
-from firebase_admin.messaging import Message, Notification
-
 # models
 from api.models import Transaction, Data, Profile, CableSubscription, Wallet
-
-
-def _send_push(user, title, body):
-    """Fire-and-forget FCM notification. Silently skips if no device registered."""
-    try:
-        devices = FCMDevice.objects.filter(user=user)
-        if devices.exists():
-            devices.send_message(
-                Message(notification=Notification(title=title, body=body)),
-                app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP'],
-            )
-    except Exception as e:
-        logging.getLogger(__name__).warning('FCM send failed: %s', e)
+from api.utils.push import send_push as _send_push
 
 # serializers
 from api.other_serializers.purchase_serializers import (
