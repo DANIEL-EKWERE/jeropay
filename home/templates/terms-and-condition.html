@@ -1,0 +1,379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Jeropay</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3e0555;
+            --secondary-color: #823c88;
+            --text-color: #333;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+
+        .intro-text {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .section-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .contact-info a:hover {
+            color: #fff;
+        }
+
+        .footer {
+            background-color: var(--bg-light);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .content-wrapper {
+                padding: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'home:home' %}" class="back-btn">
+                    <i class="fas fa-arrow-left me-2"></i>Back
+                </a>
+                <div class="d-flex align-items-center">
+                    <img src="{% static 'img/web-logo.png' %}" 
+                         alt="Jeropay Logo" class="logo me-2">
+                
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="fade-in">
+        <div class="content-wrapper">
+            <h1 class="page-title">Terms of Service</h1>
+            
+            <!-- Introduction -->
+            <div class="intro-text">
+                <p class="mb-0">
+                    Welcome to <strong class="highlight">Jeropay</strong>! By using our app, you agree to be bound by these Terms and Conditions. Please read them carefully before proceeding. If you do not agree, you should discontinue use immediately.
+                </p>
+            </div>
+
+            <!-- Section 1 -->
+            <section>
+                <h2 class="section-title">1. Eligibility</h2>
+                <div class="section-content">
+                    <p>You must be at least 18 years old and legally capable of entering into binding contracts under Nigerian law. By using <strong class="highlight">Jeropay</strong>, you confirm that all information you provide is accurate and up to date.</p>
+                </div>
+            </section>
+
+            <!-- Section 2 -->
+            <section>
+                <h2 class="section-title">2. Services Offered</h2>
+                <div class="section-content">
+                    <p>JeroPay provides Value-Added Services (VAS) and payment solutions, including airtime, data, cable subscriptions, electricity bills, bulk SMS, education PINs, hotel and travel bookings, and other digital services within Nigeria. All services are subject to availability.</p>
+                    {% comment %} <ul>
+                        <li>Phone number</li>
+                        <li>Email address</li>
+                        <li>First name</li>
+                        <li>Last name</li>
+                        <li>Date of birth (KYC)</li>
+                        <li>NIN (KYC)</li>
+                        <li>BVN (KYC)</li>
+                        <li>Image (KYC)</li>
+                    </ul>
+                    <p>You are responsible for maintaining the confidentiality of your account credentials (username, password, and personal information) and for all activities that occur under your account. If you suspect any unauthorized activity, you must notify us immediately. <strong class="highlight">Jeropay</strong> will not be held responsible for any loss due to unauthorized use of your account.</p> {% endcomment %}
+                </div>
+            </section>
+
+            <!-- Section 3 -->
+            <section>
+                <h2 class="section-title">3. User Account Responsibilities</h2>
+                <div class="section-content">
+                    <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities conducted under your account. Any suspicious activity should be reported immediately to info@jeropay.com.ng or 07013715767.</p>
+                    {% comment %} <ul>
+                        <li>Use our services only for lawful purposes and in accordance with local and international laws.</li>
+                        <li>Not engage in fraudulent activity, including but not limited to false claims, fraudulent transactions, or the use of stolen payment methods.</li>
+                        <li>Ensure the security of your account and credentials by taking all necessary precautions.</li>
+                        <li>Be respectful to other users and refrain from using abusive, offensive, or harmful language.</li>
+                    </ul> {% endcomment %}
+                </div>
+            </section>
+
+            <!-- Section 4 -->
+            <section>
+                <h2 class="section-title">4. Prohibited Conduct</h2>
+                <div class="section-content">
+                    <p><strong>You agree not to:</strong></p>
+                    <p>Engage in fraudulent or illegal activities.</p>
+                    <p>Use JeroPay for spamming, hacking, or spreading harmful content.</p>
+                    <p>Misrepresent your identity or payment details.</p>
+                    <p>nterfere with the operation of the app.</p>
+                    
+                </div>
+            </section>
+
+            <!-- Section 5 -->
+            <section>
+                <h2 class="section-title">5. Pricing and Payment</h2>
+                <div class="section-content">
+                    <p>Prices for services are clearly displayed in the app and may change without notice. Payments are processed via secure third-party payment gateways such as Billstack and Monnify.
+</p>
+                </div>
+            </section>
+
+            <!-- Section 6 -->
+            <section>
+                <h2 class="section-title">6. Refund and Dispute Resolution</h2>
+                <div class="section-content">
+                    <p><Strong>If you experience a failed transaction:</strong></p>
+                    
+                    <p>Report within 48 hours of occurrence.</p>
+                    <p>Provide relevant details (transaction ID, date, service type).</p>
+                    <p>Refunds are processed within 5–10 working days if confirmed as valid.</p>
+
+                </div>
+            </section>
+
+            <!-- Section 7 -->
+            <section>
+                <h2 class="section-title">7. Service Availability</h2>
+                <div class="section-content">
+                    <p>While we strive for uninterrupted services, JeroPay does not guarantee 24/7 uptime due to maintenance, technical issues, or third-party failures.
+</p>
+                </div>
+            </section>
+
+            <!-- Section 8 -->
+            <section>
+                <h2 class="section-title">8. Force Majeure</h2>
+                <div class="section-content">
+                    <p>We are not liable for service interruptions or failures caused by events beyond our control, such as natural disasters, government actions, strikes, cyberattacks, or network outages.</p>
+                </div>
+            </section>
+
+            <!-- Section 9 -->
+            <section>
+                <h2 class="section-title">9. Indemnity</h2>
+                <div class="section-content">
+                    <p>You agree to indemnify and hold harmless JeroPay, its directors, employees, and partners from any claims, losses, damages, or expenses arising from your misuse of the platform or violation of these terms.</p>
+                </div>
+            </section>
+
+            <!-- Section 10 -->
+            <section>
+                <h2 class="section-title">10. Limitation of Liability</h2>
+                <div class="section-content">
+                    <p>To the maximum extent permitted by law, our liability for any claim shall not exceed the total value of the transaction in dispute.</p>
+                </div>
+            </section>
+
+            <!-- Section 11 -->
+            <section>
+                <h2 class="section-title">11. Data Privacy</h2>
+                <div class="section-content">
+                    <p>We process your personal data in compliance with the Nigeria Data Protection Act (NDPA). Your data is used only for service delivery, fraud prevention, and customer support. See our Privacy Policy for details.</p>
+                </div>
+            </section>
+
+            <!-- Section 12 -->
+            <section>
+                <h2 class="section-title">12. Intellectual Property</h2>
+                <div class="contact-info">
+                    <p class="mb-3"><strong>All content, trademarks, and software in JeroPay are owned or licensed by us. You may not copy, modify, distribute, or use them without prior written consent.</p>
+                </div>
+            </section>
+
+             <!-- Section 13 -->
+            <section>
+                <h2 class="section-title">13. Termination</h2>
+                <div class="section-content">
+                    <p>We may suspend or terminate your account without notice if you breach these terms or engage in unlawful activities.</p>
+                </div>
+            </section>
+
+               <!-- Section 14 -->
+            <section>
+                <h2 class="section-title">14. Jurisdiction</h2>
+                <div class="section-content">
+                    <p>These terms are governed by the laws of the Federal Republic of Nigeria. All disputes shall be resolved exclusively in the courts of Rivers State, Nigeria.
+</p>
+                </div>
+            </section>
+
+             <!-- Section 15 -->
+            <section>
+                <h2 class="section-title">15. Changes to Terms</h2>
+                <div class="section-content">
+                    <p>We may update these terms from time to time. Updates will be posted in-app, and continued use after changes implies acceptance.</p>
+                </div>
+            </section>
+<!-- Section 16 -->
+            <section>
+                <h2 class="section-title">16. Contact Us</h2>
+                <div class="contact-info">
+                    <p class="mb-3"><strong>
+JeroPay Headquarters:</strong></p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Address: Victory estate, Elelewon, Port Harcourt, Rivers State.</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i>Email: <a href="mailto:info@jeropay.com.ng">info@jeropay.com.ng</a></li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i>Phone: <a href="tel:+2347013715767">+234 701 371 5767</a></li>
+                        {% comment %} <li><i class="fas fa-link me-2"></i>Visit: <a href="./html/contact-us.html">Contact us page</a></li> {% endcomment %}
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links mb-3">
+                <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:info@jeropay.com.ng" title="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p class="mb-0 text-muted">&copy; 2024 Jeropay. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Firebase / Google service account credentials — NEVER commit these
+*-firebase-adminsdk-*.json
+*-service-account*.json
+serviceAccountKey.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+db.sqlite3
+*.egg-info/
+dist/
+build/
+.eggs/
+.env
+.venv/
+venv/
+env/
+
+# Django
+media/
+staticfiles/
+static/
+
+# OS
+.DS_Store
+Thumbs.db

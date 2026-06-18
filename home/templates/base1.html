@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Jero Pay</title>
+
+  <!--Metadata -->
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Cheap Data MTN GLO Airtel" />
+    <meta name="description" content="Jero Pay is an Easy to use mobile app, make it to pay for bills cheaply" />
+    <meta name="author" content="Daniel Ekwere" />
+ <!-- particles.min js -->
+ <script src="./static/js/particles.min.js"></script>
+      <!-- Favicon -->
+      <link rel="shortcut icon" href="./static/img/logo-1.png" />
+  <!-- CSS and Bootstrap stylesheet -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/base.css">
+
+  <!--Scrolling animation link-->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<!-- Plugins -->
+<!-- <link rel="stylesheet" href="./static/css/plugins.css" /> -->
+<link rel="stylesheet" href="./static/css/animate.min.css" />
+<link rel="stylesheet" href="./static/css/owl.carousel.min.css" />
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/841ba9776c.js" crossorigin="anonymous"></script>
+
+
+  <!-- Javascript Sweet alert --->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+</head>
+<body>
+  <!-- =====================================
+    	==== Start Loading -->
+
+    <div class="loading">
+        <div class="text-center middle">
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Loading ====
+    	======================================= -->
+    <ul class="navbar1" id="navbar1">
+
+      <li class="nav-brand" id="nav-Brand">
+        <img src="./static/img/logo-1.png" alt="logo" style="width: 80px">
+      </li>
+
+      <li class="nav-menu" data-scroll-nav="0"><a href="#">Home</a></li>
+      <li class="nav-menu"  href="#" data-scroll-nav="1"><a class="nav-link active" href="#">Services</a></li>
+      <li class="nav-menu" href="#" data-scroll-nav="4"><a href="#">Price</a></li>
+      <li class="nav-menu" href="#" data-scroll-nav="6"><a href="#">Contact</a></li>
+      <li class="nav-menu" href="#" data-scroll-nav="2"><a href="#">testimony</a></li>
+
+
+      <!-- Mobile Navigation button ---->
+      <span class="menu-btn" onclick="openNav()">&#9776;</span>
+
+
+      <!-- Mobile navigation bar container --->
+      <div class="mobileNav" id="mobilenav">
+        <div class="mobileNav-links">
+         <a class="closeBtn" onclick="closeNav()">&#10006;</a>
+         <a href="#" data-scroll-nav="0">Home</a>
+         <a href="#" data-scroll-nav="1">Services</a>
+        <a href="#" data-scroll-nav="4">Price</a>
+         <a href="#" data-scroll-nav="6">Contact</a>
+         <a href="#" data-scroll-nav="2">testimony</a>
+
+      </div>
+
+    </div>
+       <!-- End of Mobile navigation bar container --->
+
+
+    </ul>
+ 
+    <!---======= End of Navigation Bar ========---->
+
+
+
+
+
+    <!--===== Hero section =======---->
+    {% comment %} <section class="main-hero-container" id="hero" > 
+    
+
+    <div class="main-hero" >
+
+      <div class="main-hero-description" >
+           <!-- particles -->
+          <div id="particles-js"></div>
+        <center>
+          
+         
+                  <p data-aos="fade-down">Welcome to DATABANK</p>
+                  <h4 data-aos="fade-down">A better way to Buy</h4>
+                  <h1 class="cd-headline clip">
+                      <!-- <span class="blc">Subscribe for</span> -->
+                      <span class="cd-words-wrapper" data-aos="zoom-in">
+                            <b class="is-visible">Data</b>
+                            <b>Airtime</b>
+                            <b>Cable</b>
+                            <b>Electricity </b>
+                          </span>
+                  </h1>
+                  <div class="row">
+                    <div class="offset-md-1 col-md-10 offset-lg-2 col-lg-8">
+                        <p>Our Services are fast, reliable and Easy to use</p>
+                    </div>
+                  </div>
+                    <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-right">
+                      <span>Download the Android App</span>
+                    </a>
+                    <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-left">
+                      <span>Get it from the playstore</span>
+                    </a>
+
+                  
+        </center>
+
+      </div>
+
+    </div>
+    <!-- <div class="curve curve-bottom curve-center"></div> -->
+    </section> {% endcomment %}
+    
+     {% comment %} data-background="https://images.pexels.com/photos/3807547/pexels-photo-3807547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"  {% endcomment %}
+
+    <header class="header valign bg-img" data-scroll-index="0" 
+    data-overlay-dark="7" 
+    data-background="https://images.pexels.com/photos/3807547/pexels-photo-3807547.jpeg" 
+    data-stellar-background-ratio="0.5">
+
+    <!-- particles -->
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <div class="text-center caption mt-30">
+            <h4 data-aos="fade-right">A better way to Buy</h4>
+            <h1 class="cd-headline clip" data-aos="zoom-in">
+                <span class="cd-words-wrapper">
+                      <b class="is-visible">Data</b>
+                      <b>Airtime</b>
+                      <b>Cable</b>
+                      <b>Electricity</b>
+                </span>
+            </h1>
+            <div class="row">
+                <div class="offset-md-1 col-md-10 offset-lg-2 col-lg-8">
+                    <p data-aos="fade-left">Our Services are fast, reliable, and easy to use</p>
+                </div>
+            </div>
+            <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-right">
+                <span>Download the Android App</span>
+              </a>
+              <a href="{% url 'home:download-app' %}" class="butn butn-light mt-30" data-aos="fade-left">
+                <span>Get it from the playstore</span>
+              </a>
+        </div>
+    </div>
+
+    <div class="curve curve-bottom curve-center"></div>
+</header>
+
+
+<style>
+    .header {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+    }
+    
+    .bg-img {
+        background-repeat: no-repeat;
+        position: relative;
+    }
+    
+    [data-overlay-dark]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* Adjust opacity as needed */
+        z-index: 1;
+    }
+    
+    .caption {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+    }
+    
+</style>
+
+    <!--===== End of hero section =======---->
+
+
+
+
+
+
+     <!--===== BLOG POST SECTION =======---->
+
+
+        <section class="blog-posts-section" id="blog-posts" data-scroll-index="1">
+          
+          <div class="blog-posts-container">
+           
+           <div class="blog-posts-heading">
+            <h2 data-aos="fade-down-right">About Our Services</h2>
+            <p data-aos="fade-down-left">at Jero Pay</p>
+          </div>
+          
+          <div class="blog-posts-grid">
+          <div class="blog-posts-card" data-aos="fade-up">
+            <center>
+                <div style="height: 20px;"></div>
+              <div class="data1">
+                <img src="./static/img/data.jpg" alt="image here">
+              </div>
+             <div class="blog-text">
+              <h5>Buy Affordable Data</h5>
+              <p>
+                  Start enjoying Data plans at Low rates.
+              </p>
+          </div>
+            </center>
+          </div>
+
+          
+            <div class="blog-posts-card" data-aos="fade-up">
+              <center>
+                <div style="height: 20px;"></div>
+                <img src="./static/img/networks.jpg" alt="image here">
+               <div class="blog-text">
+                <h5>Airtime</h5>
+              <p>Making an online recharge is simple and safe with Jero Pay
+            </div>
+              </center>
+            </div>
+
+            <div class="blog-posts-card" data-aos="fade-up">
+              <center>
+                <div style="height: 20px;"></div>
+                <img src="./static/img/cable.jpg" alt="image here">
+               <div class="blog-text">
+                <h5>Cable Subscription</h5>
+                      <!-- <h6>Coming Soon</h6> -->
+                      <p>
+                          Instantly Activate Cable subscription
+                      </p>
+            </div>
+              </center>
+            </div>
+
+
+
+            <div class="blog-posts-card" data-aos="fade-up">
+              <center>
+                <div style="height: 20px;"></div>
+                <!-- <span class="icon fas fa-bolt"></span> -->
+                <img src="./static/img/yolaelectricity.jpeg" alt="image here">
+               <div class="blog-text">
+                <h5>Electricity</h5>
+                <!-- <h6>Coming Soon</h6> -->
+
+                <p>
+                    Jero Pay offers the best deals on electricity bills with instant token delivery to you via SMS
+                </p>
+            </div>
+              </center>
+            </div>
+
+            <div class="blog-posts-card" data-aos="fade-up">
+                <center>
+                    <div style="height: 10px;"></div>
+                    <img src="./static/img/metaverse.png" alt="image here">
+                    <!-- <i class="fa fa-envelope" aria-hidden="true"></i> -->
+                 <div class="blog-text">
+                  <h5>Bulk SMS</h5>
+                        
+                        <p>
+                            get to send bulk sms to to multiple phonr Numbers at a cheaper rate
+                        </p>
+              </div>
+                </center>
+              </div>
+
+              <div class="blog-posts-card" data-aos="fade-up">
+                <center>
+                    <div style="height: 20px;"></div>
+                    <!-- <i class="fa fa-graduation-cap" aria-hidden="true"></i> -->
+                    <img src="./static/img/graduation-cap.png" alt="image here">
+                 <div class="blog-text">
+                  <h5>Result Checker</h5>
+                        
+                        <p>
+                            generate result token for weac, neco etc
+                        </p>
+              </div>
+                </center>
+              </div>
+
+              <div class="blog-posts-card" data-aos="fade-up">
+                <center>
+                    <div style="height: 20px;"></div>
+                    <!-- <i class="fa fa-address-card" aria-hidden="true"></i> -->
+                    <img src="./static/img/data-pin.png" alt="image here">
+                 <div class="blog-text">
+                  <h5>Data pin</h5>
+                        
+                        <p>
+                            generate data pin from the Jero Pay mobile app at a cheaper rate
+                        </p>
+              </div>
+                </center>
+              </div>
+
+              <div class="blog-posts-card" data-aos="fade-up">
+                <center>
+                    <div style="height: 20px;"></div>
+                    <!-- <i class="fa fa-id-card" aria-hidden="true"></i> -->
+                    <img src="./static/img/recharge-card-printer.png" alt="image here">
+                 <div class="blog-text">
+                  <h5>Reacharge Card Printing</h5>
+                        
+                        <p>
+                            generate recharge pins for your recharge Printing business
+                        </p>
+              </div>
+                </center>
+              </div>
+
+              <div class="blog-posts-card" data-aos="fade-up" style="padding-top: 10px;">
+                <center>
+                    <div style="height: 10px;"></div>
+                  <!-- <span class="icon fas fa-tv"></span> -->
+                  <img src="./static/img/metaverse.png" alt="image here">
+                 <div class="blog-text">
+                  <h5>Scan To Load</h5>
+                        
+                        <p>
+                            Scan a recharge card pin to load with ease
+                        </p>
+              </div>
+                </center>
+              </div>
+            
+          
+        </div>
+
+          </div>
+      </section>
+
+       <!--===== END OF BLOG POST SECTION =======---->
+
+
+
+
+
+
+
+
+
+      <!-- WHAT OUR CUSTOMERS HAVE TO SAY-->
+      <section class="testimonials section-padding bg-img bg-fixed pos-re"  data-overlay-dark="7" data-scroll-index="2" data-background="https://images.pexels.com/photos/2014342/pexels-photo-2014342.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" data-scroll-index="7">
+        <div class="container" >
+            <div class="row">
+                <div class="section-head offset-md-2 col-md-8 offset-lg-3 col-lg-6">
+                    <h4>What's <span>Clients</span> Says?</h4>
+                    <p>In doubt?, Here's what Our Customer's and resellers have to say.</p>
+                </div>
+
+                <div class="owl-carousel owl-theme text-center col-lg-10 offset-lg-1" >
+                    <div class="item-box" data-aos="zoom-in">
+                        <span class="quote">
+                                <img src="./static/img/quot.png" alt="hrer">
+                            </span>
+                        <p>
+                            I love the app. I no longer have to go through the struggle of dealing with expired subscription. All plans are 30 days no matter how small. Amazing!
+                        </p>
+                        <div class="info">
+                            <!-- <div class="author-img">
+                                <img src="./static/home/img/clients/1.jpg" alt="">
+                            </div> -->
+                            <div class="cont">
+                                <h6>Nelson</h6>
+                                <span>Jero Pay Customer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-box" data-aos="zoom-in">
+                        <span class="quote">
+                                <img src="./static/img/quot.png" alt="">
+                            </span>
+                        <p>
+                            My Customers Love buying Data and I've seen a lot of repeat customers because Micro E-pay helps me give them access to the internet at an affordable rate.
+                        </p>
+                        <div class="info">
+                            <!-- <div class="author-img">
+                                <img src="./static/home/img/clients/2.jpg" alt="">
+                            </div> -->
+                            <div class="cont">
+                                <h6>Abigail O.</h6>
+                                <span>Jero Pay Reseller</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item-box" data-aos="zoom-in">
+                        <span class="quote">
+                                <img src="./static/img/quot.png" alt="">
+                            </span>
+                        <p>
+                            Though I Founded this. But It's a product I use everytime to fuel not only the business but my own creativity. Data Shouldn't be so pricey.
+                        </p>
+                        <div class="info">
+                            <!-- <div class="author-img">
+                                <img src="./static/home/img/clients/3.jpg" alt="">
+                            </div> -->
+                            <div class="cont">
+                                <h6>Daniel Ekwere</h6>
+                                <span>Jero Pay Founder</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+ <!-- particles -->
+ <div id="particles-js"></div>
+        <div class="curve curve-top"></div>
+    </section>
+
+
+
+
+
+  <!-- =====================================
+        ==== Start Price -->
+
+        <section class="price section-padding bg-gray pos-re" data-scroll-index="4">
+            <div class="container">
+                <div class="row">
+                    <!-- Section Heading -->
+                    <div class="section-head offset-md-2 col-md-8 offset-lg-3 col-lg-6 text-center">
+                        <h4 data-aos="fade-right">Pricing <span>Table</span></h4>
+                        <p data-aos="fade-left">
+                            Check out our affordable prices across all networks
+                        </p>
+                    </div>
+                </div>
+                <div class="pricing-tables text-center full-width">
+                    <div class="row">
+                        <!-- Pricing Card 1 -->
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="item mb-md50" data-aos="flip-down">
+                                <div class="type">
+                                    <img src="./static/img/mtn.png" alt="MTN Logo">
+                                </div>
+                                <div class="value">
+                                    <h3>MTN Data</h3>
+                                    <span class="per">30 Days</span>
+                                </div>
+                                <div class="features">
+                                    <ul>
+                                        <li>₦ 140 - 500 MB</li>
+                                        <li>₦ 250 - 1 GB</li>
+                                        <li>₦ 500 - 2.00 GB</li>
+                                        <li>₦ 850 - 3.00 GB</li>
+                                        <li>₦ 1,300 - 5.00 GB</li>
+                                        <li>₦ 2,500 - 10.00 GB</li>
+                                    </ul>
+                                </div>
+                                <div class="order">
+                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
+                                        <span>Purchase Now</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pricing Card 2 -->
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="item mb-md50" data-aos="flip-right">
+                                <div class="type">
+                                    <img src="./static/img/glo.png" alt="Glo Logo">
+                                </div>
+                                <div class="value">
+                                    <h3>Glo Data</h3>
+                                    <span class="per">30 Days</span>
+                                </div>
+                                <div class="features">
+                                    <ul>
+                                        <li>₦ 500 - 1.8 GB</li>
+                                        <li>₦ 950 - 3.9 GB</li>
+                                        <li>₦ 1,450 - 5.2 GB</li>
+                                        <li>₦ 2,400 - 10.8 GB</li>
+                                        <li>₦ 9,200 - 50 GB</li>
+                                    </ul>
+                                </div>
+                                <div class="order">
+                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
+                                        <span>Purchase Now</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pricing Card 3 -->
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="item mb-md50" data-aos="flip-left">
+                                <div class="type">
+                                    <img src="./static/img/airtel.png" alt="Airtel Logo">
+                                </div>
+                                <div class="value">
+                                    <h3>Airtel Data</h3>
+                                    <span class="per">30 Days</span>
+                                </div>
+                                <div class="features">
+                                    <ul>
+                                        <li>₦ 200 - 500 MB</li>
+                                        <li>₦ 250 - 1 GB</li>
+                                        <li>₦ 500 - 2.00 GB</li>
+                                        <li>₦ 1,300 - 5.00 GB</li>
+                                        <li>₦ 2,500 - 10.00 GB</li>
+                                    </ul>
+                                </div>
+                                <div class="order">
+                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
+                                        <span>Purchase Now</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pricing Card 4 -->
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <div class="item mb-md50" data-aos="flip-up">
+                                <div class="type">
+                                    <img src="./static/img/9-mobile.png" alt="9 Mobile Logo">
+                                </div>
+                                <div class="value">
+                                    <h3>9 Mobile Data</h3>
+                                    <span class="per">30 Days</span>
+                                </div>
+                                <div class="features">
+                                    <ul>
+                                        <li>₦ 500 - 500 MB</li>
+                                        <li>₦ 1,000 - 1 GB</li>
+                                        <li>₦ 1,200 - 2.00 GB</li>
+                                        <li>₦ 1,400 - 3.00 GB</li>
+                                        <li>₦ 1,900 - 4.50 GB</li>
+                                        <li>₦ 3,800 - 11.00 GB</li>
+                                        <li>₦ 4,800 - 15.00 GB</li>
+                                    </ul>
+                                </div>
+                                <div class="order">
+                                    <a href="{% url 'home:download-app' %}" class="butn butn-bg">
+                                        <span>Purchase Now</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="curve curve-bottom"></div>
+        </section>
+        
+  
+      <!-- End Price ====
+          ======================================= -->
+  
+
+
+
+
+
+        <!--======= CONTACT SECTION ==========-->
+
+        <section class="main-contact-container" id="contact" data-scroll-index="6">
+          
+          <div class="main-contact" data-aos="zoom-in">
+
+            <div class="main-contact-form">
+              <h2>Get in touch</h2>
+              <h6 style="text-align: center;color: grey;padding-bottom: 50px; font-size: 20px;">Let's get to hear from you what your view on our services</h6>
+           <form id="contact-form" action="#" method="post">
+        <input type="text" name="full_name" placeholder="Full Name*" required><br><br>
+        <input type="email" name="email" placeholder="Email Address*" required><br><br>
+        <input type="tel" name="phone" placeholder="Phone Number*" required><br><br>
+        <textarea name="message" rows="4" placeholder="Your Message..." required></textarea><br><br>
+        <button type="submit">Send Message</button>
+    </form>
+         
+        </div>
+
+        </div>
+
+      </section>
+
+
+        <!--======= END OF CONTACT SECTION ==========-->
+      
+
+
+      <!--========Footer Section========--->
+    
+<section class="footer">
+  <div class="curve curve-top"></div>
+  <div class="footer-content">
+    <div class="curve curve-top"></div>
+    <a class="logo" href="#">
+      <img src="./static/img/logo-1.png" alt="logo">
+  </a>
+
+    <p>© 2023 Jero Pay
+All Rights Reserved</p>
+  </div>
+
+   <div class="footer-content">
+    <h3>Get in touch</h3>
+    <p>uyo, Akwa Ibom State, Nigeria.</p>
+      <p>jeropay@gmail.com<br>
+        +234 704 319 4111</p>
+  </div>
+
+   <div class="footer-content">
+    <h3>Learn More</h3>
+    <p>About Us</p>
+     <p>Features</p>
+      <p>FAQ</p>
+       <p>Pricing Policy</p>
+        <p>Terms of Use</p>
+  </div>
+
+<div class="footer-content">
+  <div class="social">
+    <a href="#0"><i class="fab fa-facebook-f"></i></a>
+    <a href="#0"><i class="fab fa-twitter"></i></a>
+    <a href="#0"><i class="fab fa-linkedin-in"></i></a>
+    <a href="#0"><i class="fab fa-behance"></i></a>
+    <a href="#0"><i class="fab fa-pinterest-p"></i></a>
+</div>
+
+</div>
+
+
+</section>
+
+      <!-- JAVA SCRIPT -->
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<!-- particles.min js -->
+<script src="./static/js/particles.min.js"></script>
+      <script>
+
+//scroll animation program
+AOS.init({
+       duration: 2000,
+       once: false,
+      });
+
+
+
+//navbar program  
+
+  function openNav(){
+  document.getElementById("mobilenav").style.width="100%";
+}
+function closeNav(){
+  document.getElementById("mobilenav").style.width="0%";
+}
+
+  
+
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<!-- particles.min js -->
+    <script src="./static/js/particles.min.js"></script>
+    <!-- app js -->
+    <script src="./static/js/app.js"></script>
+    <!-- animated.headline -->
+    <script src="./static/js/animated.headline.js"></script>
+
+     <!-- bootstrap -->
+     <script src="./static/js/bootstrap.min.js"></script>
+
+
+     <!-- jQuery -->
+    <script src="./static/js/jquery-3.0.0.min.js"></script>
+    <script src="./static/js/jquery-migrate-3.0.0.min.js"></script>
+
+    <!-- popper.min -->
+    <script src="./static/js/popper.min.js"></script>
+
+    <!-- bootstrap -->
+    <!-- <script src="./static/js/bootstrap.min.js"></script> -->
+
+    <!-- scrollIt -->
+    <script src="./static/js/scrollIt.min.js"></script>
+
+    <!-- animated.headline -->
+    <script src="./static/js/animated.headline.js"></script>
+
+    <!-- jquery.waypoints.min -->
+    <script src="./static/js/jquery.waypoints.min.js"></script>
+
+    <!-- owl carousel -->
+    <script src="./static/js/owl.carousel.min.js"></script>
+
+    <!-- jquery.magnific-popup js -->
+    <!-- <script src="./static/js/jquery.magnific-popup.min.js"></script> -->
+
+    <!-- stellar js -->
+    <!-- <script src="./static/js/jquery.stellar.min.js"></script> -->
+
+    <!-- isotope.pkgd.min js -->
+    <script src="./static/js/isotope.pkgd.min.js"></script>
+
+    
+
+    <!-- particles.min js -->
+    <script src="./static/js/particles.min.js"></script>
+
+    <!-- app js -->
+    <script src="./static/js/app.js"></script>
+
+    <!-- validator js -->
+    <script src="./static/js/validator.js"></script>
+
+    <!-- custom scripts -->
+    <script src="./static/js/scripts.js"></script>
+
+    <!-- custom scripts -->
+    <script src="./static/js/base.js"></script>
+
+</body>
+</html>

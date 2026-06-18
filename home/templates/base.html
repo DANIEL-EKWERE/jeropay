@@ -1,0 +1,668 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeropay - Nigeria's Most Trusted VTU Platform</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://www.247api.com.ng/site/storage/app/public/site_logos/5eWG3iyWUtteyDfHFxwH7vqeMwNdmzjvj3h7zDrx.jpg" type="image/x-icon">
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Jeropay Buy Cheap Data, Airtime And Pay Bills in Nigeria">
+    <meta property="og:title" content="Jeropay - Best Reliable Data and Airtime">
+    <meta property="og:description" content="Jeropay, your number one VTU platform in Nigeria. Most reliable place for buying internet data, airtime, TV subscriptions, exam pins, and paying NEPA bills.">
+    <meta property="og:image" content="https://www.247api.com.ng/site/storage/app/public/site_logos/5eWG3iyWUtteyDfHFxwH7vqeMwNdmzjvj3h7zDrx.jpg">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #3e0555;
+            --secondary-color: #f476ff;
+            --text-white: #ffffff;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+        }
+
+        /* Header Section */
+        .hero-section {
+           background: linear-gradient(
+  to bottom,
+  #3e0555 0%,
+  #c837f5 70%,
+  #f476ff 80%,
+  #ffffff 100%
+);
+
+            min-height: 70vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Feature Cards */
+        .feature-box-1 {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-box-1:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-box-1 .icons {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-box-1 .icons i {
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Pricing Cards */
+        .pricing-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+
+        .pricing-cards {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 0 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            min-width: 280px;
+            text-align: center;
+        }
+
+        .pricing-cards h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px 0;
+            gap: 20px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        /* Review Cards */
+        .review-cards {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            min-width: 300px;
+            margin: 0 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .review-cards h5 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 80vh;
+                text-align: center;
+            }
+            
+            .section {
+                padding: 50px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Fixed scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-light p-3"><a href="home.html"
+                            class="logo navbar-brand">
+                            <img src="{% static 'img/web-logo.png' %}"
+                            {% comment %} ./images/5eWG3iyWUtteyDfHFxwH7vqeMwNdmzjvj3h7zDrx.jpg" {% endcomment %}
+                                alt="Logo" style="width: 40px; height: auto;"></a><button
+                            class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation"><span class="navbar-toggler-icon text-white"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home:about' %}">About Us</a></li>
+                                <!-- <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact Us</a></li> -->
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home:privacy-policy' %}">Privacy Policy</a></li>
+                                <li class="nav-item"><a class="nav-link text-white" href="{% url 'home:terms-and-condition' %}">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center hero-content">
+                    <div class="mb-5"> .</div>
+                    <div class="mb-5">.</div>
+                    
+                    <p class="text-white fs-7 mb-3"><strong>Welcome To</strong></p>
+                    <h1 class="display-6 text-white fw-bold mb-2">Jeropay</h1>
+                    <p class="text-white fs-8 mb-2 px-lg-8">
+                        Welcome to JeroPay, Nigeria’s leading platform for cheap VTU services. Whether you need to recharge your airtime, buy data, pay electricity bills, renew your cable subscriptions, or purchase educational PINs, JeroPay makes it fast, affordable, and hassle-free.
+                    </p>
+                    <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mb-4">
+                        <button class="btn btn-light btn-lg px-4">Login</button>
+                        <button class="btn btn-outline-light btn-lg px-4">Register</button>
+                    </div>
+                    <a href="download-app.html" class="btn btn-dark btn-lg">
+                        INSTALL OUR APP <i class="fas fa-play ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="section-title">
+                        <h2 style="color: var(--primary-color);">
+                            Our Affordable VTU Services <i class="fas fa-check-circle"></i>
+                        </h2>
+                    </div>
+                    
+                    <div class="row text-start">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Airtime Recharge for All Networks
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Data Bundles – Stay Connected, Spend Less
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Pay Your Electricity Bills in Seconds
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Cable TV Subscription Renewal (DSTV, GOTV, Startimes)
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Bulk SMS for Businesses & Organizations
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-3" style="color: var(--primary-color);"></i>
+                                    Educational ePINs – WAEC, NECO, and JAMB
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <a href="#services" class="btn btn-primary btn-lg mt-4">GET STARTED!</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <div class="section-title text-start">
+                        <h2>Why Choose JeroPay?</h2>
+                    </div>
+                    <p class="fs-5">At JeroPay, we’re committed to providing the best service with unbeatable prices. Here’s why thousands of Nigerians trust us every day:</p>
+                    <a href="#pricing" class="btn btn-primary">SEE MORE!</a>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Cheapest Rates</h5>
+                            <p> Enjoy the lowest prices for airtime, data, and bills.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Instant Service Delivery</h5>
+                            <p>Recharge or pay bills in seconds, no waiting.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>100% Secure</h5>
+                            <p>Your information is protected with top-grade encryption.
+</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>User-Friendly</h5>
+                            <p>Simple and intuitive app and website interface.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Available 24/7</h5>
+                            <p>Our platform is always up, always ready.
+</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-box-1">
+                        <div class="icons">
+                            <i class="fas fa-print"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Get Rewards</h5>
+                            <p>Enjoy wallet bonuses and loyalty rewards with every transaction.
+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions (FAQs)</h2>
+                <p>Find answers to the most common questions about our services.</p>
+            </div>
+            
+            <div class="scroll-container">
+                <div class="pricing-cards">
+                    <h3>How can I be sure JeroPay is reliable?</h3>
+                    <p>JeroPay guarantees secure, instant transactions with zero hidden fees. We use trusted payment gateways and offer 24/7 support for all users.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <div class="pricing-cards">
+                    <h3> Can I resell data and airtime using JeroPay?</h3>
+                    <p>Yes! JeroPay is perfect for resellers. You can buy data and airtime in bulk at discounted rates and resell them to your customers for a profit.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <div class="pricing-cards">
+                    <h3>How do I resolve issues with transactions?</h3>
+                    <p>We provide instant transaction refunds in case of any failure, and our support team is available around the clock to assist you.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                
+                <div class="pricing-cards">
+                    <h3>do i need to complete kyc</h3>
+                    <p>Yes, to ensure the security of your account and comply with regulations, we require all users to complete a simple KYC process during registration.</p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Testimonials – Real Experiences, Real Value
+</h2>
+            </div>
+            
+            <div class="scroll-container">
+                <div class="review-cards">
+                    <h5>— Chima O., Lagos
+</h5>
+                    <p>"I’ve tried several platforms, but JeroPay is by far the cheapest and fastest. I recommend it to everyone."</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="review-cards">
+                    <h5>— Tunde K., Abuja</h5>
+                    <p> "Finally! A platform that offers affordable data plans and instant airtime recharge. No delays!"</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="review-cards">
+                    <h5>— Funmi A., Port Harcourt</h5>
+                    <p>"JeroPay has transformed the way I do business. Their bulk SMS service is super easy, cost-effective, and reliable."</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="review-cards">
+                    <h5>— Bello Sub, Kano</h5>
+                    <p>"JeroPay is a game-changer! Their API is fast, reliable, and the support is top-notch."</p>
+                    <div class="text-warning">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-8">
+                    <h3 class="text-white mb-3">
+                        Jeropay <i class="fas fa-check-circle ms-2"></i>
+                    </h3>
+                    <p class="text-white">
+                        <b>How JeroPay Works</b><br><br>
+
+Get your services in just 3 easy steps:
+<br>
+1. Sign Up: Create your free JeroPay account in just 60 seconds.
+
+<br>
+2. Fund Your Wallet: Add funds to your wallet through your preferred payment method.
+<br>
+
+3. Choose & Pay: Select your desired service (Airtime, Data, Electricity, etc.), pay securely, and receive your service instantly.
+
+<br>
+<br>
+It’s that simple. No hassle. No delays.
+
+
+
+
+
+Ready to Save More with JeroPay?
+
+You don’t have to overpay for VTU services anymore. With JeroPay, you can get cheap airtime, affordable data plans, and more in seconds.
+
+Sign Up Now to start saving instantly.
+                    </p>
+                </div>
+            </div>
+            
+            <hr class="text-white">
+            
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <h5 class="text-white fw-bold mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{% url 'home:about' %}" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>About Us
+                            </a>
+                        </li>
+                        {% comment %} <li class="mb-2">
+                            <a href="{% url 'home:' %}" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>Contact Us
+                            </a>
+                        </li> {% endcomment %}
+                        <li class="mb-2">
+                            <a href="#terms" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>Terms of Service
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'home:privacy-policy' %}" class="text-white text-decoration-none">
+                                <i class="fas fa-check-circle me-2"></i>Privacy Policy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5 class="text-white fw-bold mb-3">Contact Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-phone me-2"></i>
+                            <strong>Phone:</strong> +234 701 371 5767
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <strong>Email:</strong> info@jeropay.com.ng
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>Address:</strong> Elelewon, Port Harcourt
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="text-white mt-5">
+            
+            <div class="row text-center mt-4">
+                <div class="col-12">
+                    <p class="text-white mb-3">© 2025 Jeropay. All rights reserved.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-whatsapp fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <a href="#home" class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollButton = document.querySelector('.scroll-to-top');
+            if (window.pageYOffset > 300) {
+                scrollButton.style.opacity = '1';
+            } else {
+                scrollButton.style.opacity = '0';
+            }
+        });
+    </script>
+</body>
+</html>

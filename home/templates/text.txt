@@ -1,0 +1,201 @@
+Terms and Conditions for JeroPay
+
+Effective Date: February 15, 2025
+Last Updated: July 26, 2025
+
+Welcome to JeroPay! By using our app, you agree to be bound by these Terms and Conditions. Please read them carefully before proceeding. If you do not agree, you should discontinue use immediately.
+
+
+
+1. Eligibility
+
+You must be at least 18 years old and legally capable of entering into binding contracts under Nigerian law. By using JeroPay, you confirm that all information you provide is accurate and up to date.
+
+
+2. Services Offered
+
+JeroPay provides Value-Added Services (VAS) and payment solutions, including airtime, data, cable subscriptions, electricity bills, bulk SMS, education PINs, hotel and travel bookings, and other digital services within Nigeria. All services are subject to availability.
+
+3. User Account Responsibilities
+
+You are responsible for maintaining the confidentiality of your account credentials and for all activities conducted under your account. Any suspicious activity should be reported immediately to info@jeropay.com.ng or 07013715767.
+
+
+4. Prohibited Conduct
+
+You agree not to:
+
+Engage in fraudulent or illegal activities.
+
+Use JeroPay for spamming, hacking, or spreading harmful content.
+
+Misrepresent your identity or payment details.
+
+Interfere with the operation of the app.
+
+
+5. Pricing and Payment
+
+Prices for services are clearly displayed in the app and may change without notice. Payments are processed via secure third-party payment gateways such as Billstack and Monnify.
+
+6. Refund and Dispute Resolution
+
+If you experience a failed transaction:
+
+Report within 48 hours of occurrence.
+
+Provide relevant details (transaction ID, date, service type).
+
+Refunds are processed within 5–10 working days if confirmed as valid.
+
+7. Service Availability
+
+While we strive for uninterrupted services, JeroPay does not guarantee 24/7 uptime due to maintenance, technical issues, or third-party failures.
+
+8. Force Majeure
+
+We are not liable for service interruptions or failures caused by events beyond our control, such as natural disasters, government actions, strikes, cyberattacks, or network outages.
+
+9. Indemnity
+
+You agree to indemnify and hold harmless JeroPay, its directors, employees, and partners from any claims, losses, damages, or expenses arising from your misuse of the platform or violation of these terms.
+
+10. Limitation of Liability
+
+To the maximum extent permitted by law, our liability for any claim shall not exceed the total value of the transaction in dispute.
+
+11. Data Privacy
+
+We process your personal data in compliance with the Nigeria Data Protection Act (NDPA). Your data is used only for service delivery, fraud prevention, and customer support. See our Privacy Policy for details.
+
+
+12. Intellectual Property
+
+All content, trademarks, and software in JeroPay are owned or licensed by us. You may not copy, modify, distribute, or use them without prior written consent.
+
+13. Termination
+
+We may suspend or terminate your account without notice if you breach these terms or engage in unlawful activities.
+
+14. Jurisdiction
+
+These terms are governed by the laws of the Federal Republic of Nigeria. All disputes shall be resolved exclusively in the courts of Rivers State, Nigeria.
+
+15. Changes to Terms
+
+We may update these terms from time to time. Updates will be posted in-app, and continued use after changes implies acceptance.
+
+16. Contact Information
+
+JeroPay Headquarters
+Victory estate, Elelewon, Port Harcourt, Rivers State.
+Email: info@jeropay.com.ng
+Phone: 07013715767
+
+17. Acknowledgment
+
+By using JeroPay, you acknowledge that you have read, understood, and agreed to these Terms and Conditions.
+
+
+
+
+
+JeroPay Privacy Policy
+
+Effective Date: February 15, 2025
+Last Updated: August 13, 2025
+
+JeroPay (“we,” “our,” or “us”) values the privacy of all users (“you,” “your”) who use our services. This Privacy Policy explains how we collect, use, store, and protect your personal data when you access or use JeroPay’s applications, websites, and value-added services. By using JeroPay, you agree to this policy.
+
+
+1. Information We Collect
+
+We collect personal information such as your full name, phone number, email address, and any identity verification documents you provide. We also collect transactional data (such as airtime and data purchases, bill payments, and API usage), device information, location data (where applicable), and customer support interactions. This information helps us deliver, improve, and secure our services.
+
+
+2. How We Collect Information
+
+Information is collected directly from you when you sign up, perform transactions, contact support, or interact with JeroPay’s features. We may also obtain information from trusted third-party service providers, such as payment gateways or identity verification partners, in line with legal requirements.
+
+3. Purpose of Data Collection
+
+We use your data to process transactions, personalize your user experience, detect and prevent fraud, comply with legal obligations, send important account updates, and improve our services. We will never use your personal data for unrelated purposes without your consent.
+
+4. Data Sharing with Third Parties
+
+We may share your data with trusted service providers, such as payment processors, telecommunication partners, and regulatory authorities, only as necessary to provide our services or comply with the law. We do not sell your personal information to advertisers or unrelated third parties.
+
+5. Data Storage and Security
+
+Your data is stored on secure servers with strong encryption and access control measures. We use firewalls, multi-factor authentication, and regular security audits to protect your information against unauthorized access, disclosure, alteration, or destruction.
+
+
+6. Data Retention
+
+We retain your personal data only for as long as necessary to fulfill the purposes stated in this policy or as required by law. After this period, your data will be securely deleted or anonymized.
+
+
+7. Your Rights Under NDPA
+
+You have the right to access, update, correct, or delete your personal information. You may also request a copy of the data we hold about you, object to processing, or withdraw consent where applicable, in line with the Nigeria Data Protection Act 2023.
+
+
+8. Cookies and Tracking
+
+We may use cookies, web beacons, and similar technologies to remember your preferences, enhance performance, and analyze how you use our platform. You can manage cookie settings in your browser, though disabling them may affect certain features.
+
+
+
+9. Marketing Communications and No Spam
+
+We will only send you marketing messages if you have consented. All promotional emails or SMS will include an option to unsubscribe. We will never spam you, sell your contact details, or send irrelevant messages.
+
+
+10. User Conduct and Privacy Protection
+
+You must not use JeroPay to engage in illegal activities, harassment, spamming, or unauthorized data collection. Any abuse of our platform that compromises the privacy of others will lead to account suspension and possible legal action.
+
+
+
+11. Children’s Privacy
+
+JeroPay is not intended for users under 18 years old. We do not knowingly collect information from minors. If we discover that a child has provided us with personal information, we will delete it immediately.
+
+
+
+12. Cross-Border Data Transfers
+
+Where necessary, your information may be transferred to and processed in countries outside Nigeria. Such transfers will only occur with adequate safeguards in line with NDPA requirements.
+
+
+13. Data Breach Notification
+
+In the event of a data breach that may harm your rights or freedoms, we will notify you and the relevant authorities promptly, as required by law.
+
+
+
+14. Third-Party Links and Services
+
+Our platform may contain links to external websites or services. We are not responsible for the privacy practices or content of those third parties. We encourage you to read their privacy policies before providing any personal data.
+
+
+
+15. Changes to This Policy
+
+We may update this Privacy Policy to reflect changes in technology, law, or our business practices. We will notify you of significant updates through email, app notifications, or our website. Continued use of JeroPay after such updates means you accept the revised policy.
+
+
+
+16. Complaints and Dispute Resolution
+
+If you believe your privacy rights have been violated, you may contact our Data Protection Officer at info@jeropay.com.ng or call 07013715767. If unresolved, you may lodge a complaint with the Nigeria Data Protection Commission (NDPC).
+
+
+
+17. Contact Information
+
+If you have any questions about this Privacy Policy or our data handling practices, contact us at:
+JeroPay
+Support Email: info@jeropay.com.ng
+Phone: 07013715767
+Location: Port Harcourt, Rivers State, Nigeria

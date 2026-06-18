@@ -1,0 +1,402 @@
+[
+    {
+        "model": "api.cablesubscription",
+        "pk": "0ad4290f-c25d-4805-838c-038f92ed3aba",
+        "fields": {
+            "cable_service": "DStv Yanga + ExtraView",
+            "provider": "DSTV",
+            "amount": "5850",
+            "plan_id": 5
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "0db57f05-ac0b-401e-97c1-2f783f0451ba",
+        "fields": {
+            "cable_service": "DStv Premium French",
+            "provider": "DSTV",
+            "amount": "29300",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "1dccd483-2555-48fe-b5c7-a12906c1db2d",
+        "fields": {
+            "cable_service": "GOtv Max",
+            "provider": "GOTV",
+            "amount": "4150",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "2172dcd3-624b-4982-b8b4-fe4d3e180b70",
+        "fields": {
+            "cable_service": "Classic - 1200 Naira - 1 Week",
+            "provider": "Startimes",
+            "amount": "1200",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "38da1c79-5325-4187-8cef-31a4dc2778dd",
+        "fields": {
+            "cable_service": "Nova - 900 Naira - 1 Month",
+            "provider": "Startimes",
+            "amount": "900.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "3d9256fa-7347-40a4-b6ee-705482e58c24",
+        "fields": {
+            "cable_service": "Nova - 90 Naira - 1 Day",
+            "provider": "Startimes",
+            "amount": "90.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "447a9f90-5cdc-4480-9914-dc24c91b0164",
+        "fields": {
+            "cable_service": "Gotv supa",
+            "provider": "GOTV",
+            "amount": "5500.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "46ff8e1e-ae31-44ec-b78d-3babeb2e61ec",
+        "fields": {
+            "cable_service": "Smart - 700 Naira - 1 Week",
+            "provider": "Startimes",
+            "amount": "700",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "53dda02b-f966-4e28-a311-2aa176ffd23b",
+        "fields": {
+            "cable_service": "DStv Compact + Extra View",
+            "provider": "DSTV",
+            "amount": "11900.01",
+            "plan_id": 14
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "560615e9-7aea-4a3e-8acc-e07777a0cec4",
+        "fields": {
+            "cable_service": "GOtv Smallie - Yearly",
+            "provider": "GOTV",
+            "amount": "7000",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "57e118ee-b980-4013-997c-b5bbe04d691b",
+        "fields": {
+            "cable_service": "Classic - 320 Naira - 1 Day",
+            "provider": "Startimes",
+            "amount": "320.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "5e741fa3-057a-4474-9b3a-3a682c5ea76e",
+        "fields": {
+            "cable_service": "DStv Padi + ExtraView",
+            "provider": "DSTV",
+            "amount": "5050",
+            "plan_id": 12
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "64aea023-c53a-44a5-980d-e9958d1c9a42",
+        "fields": {
+            "cable_service": "DStv Compact Plus",
+            "provider": "DSTV",
+            "amount": "14250",
+            "plan_id": 7
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "708323ca-5db8-4633-b2a0-113f9f3eab41",
+        "fields": {
+            "cable_service": "ExtraView Access",
+            "provider": "Startimes",
+            "amount": "2950.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "74ec6184-faad-4489-a549-3b62408d4206",
+        "fields": {
+            "cable_service": "Smart - 2,200 Naira - 1 Month",
+            "provider": "Startimes",
+            "amount": "2600.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "769aa928-7a96-4f35-91a5-dab74d21ec02",
+        "fields": {
+            "cable_service": "DStv Confam + ExtraView",
+            "provider": "DSTV",
+            "amount": "8200.01",
+            "plan_id": 10
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "7a65daed-1890-49d9-93d0-3f1d60e3fa96",
+        "fields": {
+            "cable_service": "Nova - 90 Naira - 1 Day",
+            "provider": "Startimes",
+            "amount": "90",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "7d612c58-a988-4687-ac51-640c6cbd4892",
+        "fields": {
+            "cable_service": "Basic - 1,700 Naira - 1 Month",
+            "provider": "Startimes",
+            "amount": "1850",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "7f57a26c-b631-4b2f-b23f-22f17e935018",
+        "fields": {
+            "cable_service": "DStv Compact",
+            "provider": "DSTV",
+            "amount": "9000",
+            "plan_id": 4
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "8061791f-eec2-4ffb-aea5-36fab4892451",
+        "fields": {
+            "cable_service": "Super - 1,500 Naira - 1 Week",
+            "provider": "Startimes",
+            "amount": "1500.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "8642daf2-3e79-4d8f-9b5d-d904ec7b9e27",
+        "fields": {
+            "cable_service": "DStv Premium Asia",
+            "provider": "DSTV",
+            "amount": "23500.01",
+            "plan_id": 9
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "9731fc39-da68-445d-9267-a53a6b58c3d5",
+        "fields": {
+            "cable_service": "DStv Asia",
+            "provider": "DSTV",
+            "amount": "7100.01",
+            "plan_id": 6
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "ad4f8902-7128-4390-93b1-13192a6759fc",
+        "fields": {
+            "cable_service": "GOtv Jinja",
+            "provider": "GOTV",
+            "amount": "1900",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "ae7a554d-d4a4-4d16-95ba-4e43831315c1",
+        "fields": {
+            "cable_service": "Super - 400 Naira - 1 Day",
+            "provider": "Startimes",
+            "amount": "400.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "b33533ca-6dda-42a9-9806-6aa85d90604a",
+        "fields": {
+            "cable_service": "DStv Confam",
+            "provider": "DSTV",
+            "amount": "5300",
+            "plan_id": 3
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "b90323d1-7d2f-4f25-8158-0b57d8e673d1",
+        "fields": {
+            "cable_service": "DStv Premium + Extra View",
+            "provider": "DSTV",
+            "amount": "23900",
+            "plan_id": 16
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "b9a28be0-2403-44ed-a702-ae0f370f77a6",
+        "fields": {
+            "cable_service": "Super - 4,200 Naira - 1 Month",
+            "provider": "Startimes",
+            "amount": "4900.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "bae0b97e-6e43-4cce-b595-9d1a0432943b",
+        "fields": {
+            "cable_service": "Smart - 200 Naira - 1 Day",
+            "provider": "Startimes",
+            "amount": "200.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "bda41d89-0aa3-4aee-9380-806c950e9686",
+        "fields": {
+            "cable_service": "DStv Premium",
+            "provider": "DSTV",
+            "amount": "21000",
+            "plan_id": 5
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "c5768c41-0b86-42c6-b7ed-15c932202de8",
+        "fields": {
+            "cable_service": "DStv Compact Plus - Extra View",
+            "provider": "DSTV",
+            "amount": "17150.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "caf9f594-c2f4-45c9-b360-beee17578f39",
+        "fields": {
+            "cable_service": "GOtv Smallie - Quarterly",
+            "provider": "GOTV",
+            "amount": "2400.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "cfa11521-aa10-48ee-aa79-01bf8733057d",
+        "fields": {
+            "cable_service": "Nova - 300 Naira - 1 Week",
+            "provider": "Startimes",
+            "amount": "300",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "d3d030c4-094e-4ae3-9fef-71032d3a01f3",
+        "fields": {
+            "cable_service": "Basic - 160 Naira - 1 Day",
+            "provider": "Startimes",
+            "amount": "160.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "d6b01b33-2c2a-4f86-aa1f-883979371e2d",
+        "fields": {
+            "cable_service": "Classic - 2,500 Naira - 1 Mont",
+            "provider": "Startimes",
+            "amount": "2750.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "e1e8c8fa-562f-49b0-884a-a093add33482",
+        "fields": {
+            "cable_service": "GOtv Smallie - Monthly",
+            "provider": "GOTV",
+            "amount": "900.01",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "e44fe912-0f8a-4c0b-990e-60ffde329f0d",
+        "fields": {
+            "cable_service": "Basic - 600 Naira - 1 Week",
+            "provider": "Startimes",
+            "amount": "600",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "e750d446-c355-4ff5-a4f0-1630b28f75c7",
+        "fields": {
+            "cable_service": "GOtv Jolli",
+            "provider": "GOTV",
+            "amount": "2800",
+            "plan_id": 0
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "f0ffc6da-3168-4a36-aaf4-358815ba2dad",
+        "fields": {
+            "cable_service": "DStv Padi",
+            "provider": "DSTV",
+            "amount": "2150",
+            "plan_id": 1
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "fb83b85e-8f37-4040-bf72-2e1368324ac5",
+        "fields": {
+            "cable_service": "DStv HDPVR Access Service",
+            "provider": "DSTV",
+            "amount": "2950.01",
+            "plan_id": 28
+        }
+    },
+    {
+        "model": "api.cablesubscription",
+        "pk": "fc53270a-1597-4a63-8708-038f602c1fbd",
+        "fields": {
+            "cable_service": "DStv Yanga",
+            "provider": "DSTV",
+            "amount": "4150",
+            "plan_id": 2
+        }
+    }
+]
