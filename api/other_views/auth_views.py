@@ -417,9 +417,9 @@ class CreateTransactionPinAPIView(GenericAPIView):
             if serializer.is_valid():
                 serializer_inst = serializer.validated_data
                 pin = serializer_inst["pin"]
-                TransactionPin.objects.create(
+                TransactionPin.objects.update_or_create(
                     profile=profile,
-                    pin=pin
+                    defaults={'pin': pin}
                 )
                 return Response(
                     status=201,

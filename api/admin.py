@@ -23,6 +23,7 @@ from .models import (
     CommunityPost,
     CommunityPostLike,
     PushNotification,
+    InAppNotification,
 )
 
 
@@ -301,3 +302,11 @@ class PushNotificationAdmin(admin.ModelAdmin):
             obj.sent_count = 0
             super().save_model(request, obj, form, change)
             self.message_user(request, f'Notification saved but delivery failed: {e}', level=messages.ERROR)
+
+
+@admin.register(InAppNotification)
+class InAppNotificationAdmin(admin.ModelAdmin):
+    list_display = ['title', 'user', 'is_read', 'created_at']
+    list_filter = ['is_read', 'created_at']
+    search_fields = ['user__username', 'title']
+    readonly_fields = ['created_at']

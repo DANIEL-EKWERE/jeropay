@@ -3,8 +3,9 @@ from fcm_django.models import FCMDevice
 from firebase_admin.messaging import (
     Message, Notification, AndroidConfig, AndroidNotification,
 )
+from api.models import InAppNotification
 
-CHANNEL_ID = 'jeropay_high_importance'
+CHANNEL_ID = 'jeropay_alerts_v2'
 
 
 def make_message(title: str, body: str) -> Message:
@@ -23,7 +24,8 @@ def make_message(title: str, body: str) -> Message:
 
 
 def send_push(user, title: str, body: str) -> None:
-    """Send a push notification to all active devices for a user. Silent on failure."""
+    """Send FCM push + persist an in-app notification for the user."""
+    InAppNotification.objects.create(user=user, title=title, body=body)
     try:
         devices = FCMDevice.objects.filter(user=user, active=True)
         if devices.exists():

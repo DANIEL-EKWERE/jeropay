@@ -72,8 +72,8 @@ class FundCustomerAccount(GenericAPIView):
                 # Create a Transaction record so it shows in user history
                 Transaction.objects.create(
                     user=user,
-                    detail='Admin Credit',
-                    network='N/A',
+                    detail= f'Manual Account Funding {new_balance}',
+                    network='Wallet',
                     response='N/A',
                     request_id='N/A',
                     old_balance=old_balance,

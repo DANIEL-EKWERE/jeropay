@@ -102,3 +102,11 @@ from api.other_views.community_views import CommunityPostListView, CommunityPost
 
 # Transfer
 from api.other_views.transfer_views import WalletToWalletTransferView
+
+# In-app notifications + complete google profile
+from api.other_views.notification_views import (
+    InAppNotificationListView,
+    InAppNotificationMarkReadView,
+    InAppNotificationMarkAllReadView,
+    CompleteGoogleProfileView,
+)

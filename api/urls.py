@@ -130,3 +130,11 @@ urlpatterns += [
 urlpatterns += [
     path('transfer/wallet-to-wallet/', WalletToWalletTransferView.as_view(), name='wallet-transfer'),
 ]
+
+# in-app notifications + complete google profile
+urlpatterns += [
+    path('notifications/', InAppNotificationListView.as_view(), name='in-app-notifications'),
+    path('notifications/<int:pk>/read/', InAppNotificationMarkReadView.as_view(), name='notification-mark-read'),
+    path('notifications/read-all/', InAppNotificationMarkAllReadView.as_view(), name='notification-mark-all-read'),
+    path('user/complete-google-profile/', CompleteGoogleProfileView.as_view(), name='complete-google-profile'),
+]
