@@ -47,6 +47,12 @@ def send_push_to_all(title: str, body: str, queryset=None) -> int:
         devices = queryset if queryset is not None else FCMDevice.objects.filter(active=True)
         count = devices.count()
         if count:
+            # Persist in-app notification for every targeted user
+            user_ids = list(devices.values_list('user_id', flat=True).distinct())
+            InAppNotification.objects.bulk_create([
+                InAppNotification(user_id=uid, title=title, body=body)
+                for uid in user_ids
+            ])
             devices.send_message(
                 make_message(title, body),
                 app=settings.FCM_DJANGO_SETTINGS['DEFAULT_FIREBASE_APP'],

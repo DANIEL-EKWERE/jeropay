@@ -214,7 +214,7 @@ class LoginUser(APIView):
                 try:
                     #proserializer = None
                     profile = Profile.objects.get(user=user)
-                    virtaualAccounts = VirtualAccount.objects.all()
+                    virtaualAccounts = VirtualAccount.objects.filter(profile=profile)
                     VirtaualAccountsserializer = virtaualAccountSerializer(virtaualAccounts, many=True)
                     my_recs = profile.get_recommened_profiles()
                     profileSerializer = ProfileSerializer(profile)
@@ -905,6 +905,7 @@ class GoogleAuthView(GenericAPIView):
                 'refresh': str(refresh),
                 'user_id': user.id,
                 'username': user.username,
+                'email': user.email,
                 'accounts': va_serializer.data,
                 'profile': profile_serializer.data,
                 'pin': pin_serializer.data,

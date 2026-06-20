@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import transaction as db_transaction
 from django.contrib.auth.models import User
 from rest_framework.generics import GenericAPIView
@@ -20,7 +21,7 @@ class WalletToWalletTransferView(GenericAPIView):
         recipient_username = request.data.get('recipient_username', '').strip()
         pin = request.data.get('pin', '').strip()
         try:
-            amount = float(request.data.get('amount', 0))
+            amount = Decimal(str(request.data.get('amount', 0)))
         except (TypeError, ValueError):
             return Response({'status': 'error', 'message': 'Invalid amount'}, status=400)
 

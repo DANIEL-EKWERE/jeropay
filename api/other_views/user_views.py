@@ -57,16 +57,7 @@ class UserDashboardView(GenericAPIView):
                 status=403,
             )
         
-        try:
-            virtual_accounts = VirtualAccount.objects.all()
-        except:
-            return Response(
-                data={
-                    'status': 'error',
-                    'message': 'No virtual accounts found'
-                },
-                status=403,
-            )
+        virtual_accounts = VirtualAccount.objects.filter(profile=profile)
                 
         
         # wallet infomation

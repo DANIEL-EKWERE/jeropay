@@ -272,6 +272,13 @@ class PushNotificationAdmin(admin.ModelAdmin):
             super().save_model(request, obj, form, change)
             return
 
+        # Persist in-app notification for every targeted user before sending FCM
+        user_ids = list(devices.values_list('user_id', flat=True).distinct())
+        InAppNotification.objects.bulk_create([
+            InAppNotification(user_id=uid, title=obj.title, body=obj.body)
+            for uid in user_ids
+        ])
+
         try:
             response = devices.send_message(
                 make_message(obj.title, obj.body),
