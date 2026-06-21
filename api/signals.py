@@ -55,6 +55,9 @@ def _create_virtual_account_for(profile, bank_code):
 def create_virtual_accounts(sender, instance, created, **kwargs):
     if not created:
         return
+    if not instance.phone or len(instance.phone.strip()) < 11:
+        # Phone not yet collected (e.g. Google auth — will be set on CompleteGoogleProfileView)
+        return
 
     any_failed = False
     for bank_code in BANK_CODES:

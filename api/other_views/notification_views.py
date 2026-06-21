@@ -5,7 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import serializers
 
-from api.models import InAppNotification, Profile, Wallet
+from api.models import InAppNotification, Profile, Wallet, VirtualAccount
+from api.signals import _create_virtual_account_for, BANK_CODES
 
 
 class InAppNotificationSerializer(serializers.ModelSerializer):
@@ -92,5 +93,18 @@ class CompleteGoogleProfileView(GenericAPIView):
                     profile.save(update_fields=['recommended_by'])
             except Profile.DoesNotExist:
                 pass
+
+        # Create virtual accounts now that we have a valid phone number
+        # (signal skipped this because phone was empty at Google auth time)
+        if not VirtualAccount.objects.filter(profile=profile).exists():
+            existing_codes = set(
+                VirtualAccount.objects.filter(profile=profile).values_list('bank_code', flat=True)
+            )
+            for bank_code in BANK_CODES:
+                if bank_code not in existing_codes:
+                    try:
+                        _create_virtual_account_for(profile, bank_code)
+                    except Exception as e:
+                        print(f'Virtual account creation failed [{bank_code}]: {e}')
 
         return Response({'status': 'success', 'message': 'Profile updated'})
