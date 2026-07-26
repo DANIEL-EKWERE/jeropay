@@ -282,7 +282,7 @@ class DepositRecord(models.Model):
     date_and_time = models.DateTimeField(auto_now_add=True)
     gateway = models.CharField(max_length=100,default='')
     status = models.CharField(max_length=100,default='')
-    reference = models.CharField(max_length=100,default='')
+    reference = models.CharField(max_length=100,default='', unique=True)
     # user = models.OneToOneField(Profile, on_delete=models.CASCADE, default='',blank=True)
     
 class ConfirmPayment(models.Model):
