@@ -75,6 +75,19 @@ class UserSerializer(serializers.ModelSerializer):
             recommended_by=recommended_by_user,
         )
         Wallet.objects.create(user=profile, balance=0.0)
+
+        # Credit ₦3 referral bonus to the referrer
+        if recommended_by_user:
+            try:
+                from decimal import Decimal
+                from django.db.models import F
+                referrer_profile = Profile.objects.get(user=recommended_by_user)
+                Wallet.objects.filter(user=referrer_profile).update(
+                    commission_balance=F('commission_balance') + Decimal('3.00')
+                )
+            except (Profile.DoesNotExist, Wallet.DoesNotExist):
+                pass
+
         return user
 
 class LogInUserSerializer(serializers.Serializer):

@@ -13,20 +13,11 @@ BaseUrl = 'https://api.payvessel.com/'
 api_key = 'PVKEY-3ZO1QOSQH83C5Q3PBCVUT1' # api-key
 api_secret = 'Bearer PVSECRET-OZJD0SZ2F2WOTXAF' # api-secret
 
-# NETWORK_ID = {
-#     'MTN': '1',
-#     'GLO': '2',
-#     '9MOBILE': '3',
-#     'AIRTEL': '4',
-#     'SMILE': '5',
-# }
-
 NETWORK_ID = {
     'MTN': '1',
-    'AIRTEL': '2',
-    'GLO': '3',
-    '9MOBILE': '4',
-    # 'SMILE': '5',
+    'GLO': '2',
+    '9MOBILE': '3',
+    'AIRTEL': '4',
 }
 
 # ELECTRIC_DISCO_ID = {

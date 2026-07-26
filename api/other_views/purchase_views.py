@@ -358,7 +358,8 @@ class PurchaseDataView1(WalletCheckMixin, GenericAPIView):
             
             # check wallet balance method
             wallet = self.check_wallet_balance(amount=data_plan_price)
-            
+            message = f'You have purchased {data.bandwidth} Data from {data.network}'
+
             # Parameters and flow for the old process
             # request_params = {
             #     'username': settings.PG_USERNAME,

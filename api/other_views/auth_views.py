@@ -909,6 +909,7 @@ class GoogleAuthView(GenericAPIView):
                 'accounts': va_serializer.data,
                 'profile': profile_serializer.data,
                 'pin': pin_serializer.data,
+                'profile_complete': bool(profile.phone),
             },
             status=status_code,
         )

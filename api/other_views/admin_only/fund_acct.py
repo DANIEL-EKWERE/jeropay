@@ -32,6 +32,7 @@ def create_id():
 
 class FundCustomerAccount(GenericAPIView):
     serializer_class = FundUserAccountSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def put(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -72,7 +73,7 @@ class FundCustomerAccount(GenericAPIView):
                 # Create a Transaction record so it shows in user history
                 Transaction.objects.create(
                     user=user,
-                    detail= f'Manual Account Funding {new_balance}',
+                    detail= f'Manual Account Funding of ₦{amount}',
                     network='Wallet',
                     response='N/A',
                     request_id='N/A',

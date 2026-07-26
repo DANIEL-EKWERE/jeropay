@@ -152,10 +152,10 @@ retry_virtual_accounts.short_description = 'Retry virtual account generation'
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
-    list_display = ['id', 'user', 'phone', 'location', 'state', 'reseller', 'account_generation_failed']
+    list_display = ['id', 'user', 'phone', 'location', 'state', 'code', 'recommended_by', 'reseller', 'account_generation_failed']
     list_filter = ('reseller', 'state', 'account_generation_failed')
     list_editable = ['reseller']
-    search_fields = ('user__username', 'user__email', 'phone')
+    search_fields = ('user__username', 'user__email', 'phone', 'code', 'recommended_by__username')
     list_per_page = 25
     actions = [retry_virtual_accounts]
 

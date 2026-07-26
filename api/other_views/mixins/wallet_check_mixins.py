@@ -47,10 +47,13 @@ class WalletCheckMixin:
 
 
     def deduct_amount_from_balance(self, amount):
-        old_balance = self.check_wallet_balance(amount)
         with transaction.atomic():
+            wallet = Wallet.objects.select_for_update().get(user=self.check_profile())
+            old_balance = wallet.balance
+            if old_balance < amount:
+                raise ValidationError('Wallet balance is too low for the transaction, Please fund your Wallet.')
             new_balance = old_balance - amount
-            Wallet.objects.filter(user=self.check_profile()).update(balance=new_balance)
+            Wallet.objects.filter(pk=wallet.pk).update(balance=new_balance)
         return old_balance, new_balance
 
     def refund_amount_to_balance(self, amount):
@@ -58,5 +61,5 @@ class WalletCheckMixin:
         with transaction.atomic():
             wallet = Wallet.objects.select_for_update().get(user=self.check_profile())
             refunded_balance = wallet.balance + amount
-            Wallet.objects.filter(user=self.check_profile()).update(balance=refunded_balance)
+            Wallet.objects.filter(pk=wallet.pk).update(balance=refunded_balance)
         return refunded_balance
