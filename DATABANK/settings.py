@@ -53,13 +53,19 @@ INSTALLED_APPS = [
 ]
 
 
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ekweredaniel8@gmail.com'
-EMAIL_HOST_PASSWORD = 'wfrqbqqouzgywnkc'
+EMAIL_USE_SSL = True
+EMAIL_PORT = 465
+EMAIL_HOST = 'mail.jeropay.com.ng'
+EMAIL_HOST_USER = 'support@jeropay.com.ng'
+EMAIL_HOST_PASSWORD = 'Efe2026$@'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Password reset token: 6-digit numeric code instead of the default long hex string
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "django_rest_passwordreset.tokens.RandomNumberTokenGenerator",
+    "OPTIONS": {"min_number": 100000, "max_number": 999999},
+}
 
 # Frontend URL for password reset
 FRONTEND_URL = 'http://127.0.0.1:8000'  # Your frontend URL

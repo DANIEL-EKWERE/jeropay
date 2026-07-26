@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_rest_passwordreset.signals import reset_password_token_created
@@ -85,6 +86,6 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
             f'Open the JeroPay app, go to "Forgot Password", and enter this token along with your new password.\n\n'
             f'This token expires in 24 hours. If you did not request a password reset, ignore this email.'
         ),
-        'no-reply@jeropay.com.ng',
+        settings.DEFAULT_FROM_EMAIL,
         [reset_password_token.user.email]
     )
