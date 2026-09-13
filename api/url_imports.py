@@ -13,7 +13,7 @@ from api.other_views.auth_views import (
     CreateUserAccountView, CreateProfileAPIView, ChangePasswordView,
     UpdateProfileView, LoginUser, LogOut,
     CreateTransactionPinAPIView, UpdateTransactionPinWithPasswordAPIView,
-    ForgotPasswordView, GoogleAuthView, RetryVirtualAccountsView,
+    ForgotPasswordView, GoogleAuthView, AppleAuthView, RetryVirtualAccountsView,
 )
 
 # dashboard views

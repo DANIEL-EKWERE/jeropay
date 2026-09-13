@@ -915,6 +915,100 @@ class GoogleAuthView(GenericAPIView):
         )
 
 
+class AppleAuthView(GenericAPIView):
+    """
+    Accepts a Firebase ID token from the Flutter app (obtained after Sign in
+    with Apple → Firebase credential exchange). Firebase verifies the same
+    way regardless of upstream provider, so this mirrors GoogleAuthView.
+
+    Apple only returns the user's name on their very first authorization
+    ever, and Firebase's decoded token for Apple sign-ins usually has no
+    'name' claim — so the client sends the name it captured at that first
+    authorization as `full_name`, used as a fallback when creating the user.
+
+    Apple's "Hide My Email" relay addresses (…@privaterelay.appleid.com)
+    are valid, real, routable emails — they're treated the same as any
+    other email here.
+    """
+
+    def post(self, request, *args, **kwargs):
+        id_token = request.data.get('id_token')
+        if not id_token:
+            return Response({'status': 'error', 'message': 'id_token is required'}, status=400)
+
+        # Verify token with Firebase Auth (jeropay-baa6f project)
+        try:
+            decoded = fb_auth.verify_id_token(id_token, app=django_settings.FIREBASE_AUTH_APP)
+        except Exception as e:
+            return Response({'status': 'error', 'message': f'Invalid token: {str(e)}'}, status=401)
+
+        email = decoded.get('email')
+        name = decoded.get('name') or request.data.get('full_name', '')
+        if not email:
+            return Response({'status': 'error', 'message': 'Email not found in token'}, status=400)
+
+        # Look up existing user by email (email is not unique in Django by default)
+        existing = User.objects.filter(email=email).order_by('id')
+        user = existing.first()
+        created = user is None
+
+        if created:
+            base_username = email.split('@')[0].replace('.', '_').replace('+', '_')
+            username = base_username
+            suffix = 1
+            while User.objects.filter(username=username).exists():
+                username = f'{base_username}{suffix}'
+                suffix += 1
+            parts = name.strip().split(' ', 1) if name else ['', '']
+            user = User.objects.create(
+                email=email,
+                username=username,
+                first_name=parts[0],
+                last_name=parts[1] if len(parts) > 1 else '',
+            )
+            user.set_unusable_password()
+            user.save()
+
+        # Ensure profile + wallet exist for new Apple users
+        profile, profile_created = Profile.objects.get_or_create(
+            user=user,
+            defaults={
+                'location': '',
+                'phone': '',
+                'fullName': name,
+                'reseller': False,
+                'state': 'Lagos',
+            }
+        )
+        Wallet.objects.get_or_create(user=profile)
+        pin, _ = TransactionPin.objects.get_or_create(profile=profile)
+
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+
+        virtual_accounts = VirtualAccount.objects.filter(profile=profile)
+        va_serializer = virtaualAccountSerializer(virtual_accounts, many=True)
+        profile_serializer = ProfileSerializer(profile)
+        pin_serializer = TransactionPinSerializer(pin)
+
+        status_code = 201 if created else 200
+        return Response(
+            data={
+                'status': 'success',
+                'token': access_token,
+                'refresh': str(refresh),
+                'user_id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'accounts': va_serializer.data,
+                'profile': profile_serializer.data,
+                'pin': pin_serializer.data,
+                'profile_complete': bool(profile.phone),
+            },
+            status=status_code,
+        )
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Virtual Account Retry (for users whose accounts were not generated on signup)
 # ─────────────────────────────────────────────────────────────────────────────

@@ -53,6 +53,7 @@ urlpatterns += [
     path('user/create-account/', CreateUserAccountView.as_view(), name='create-account'),
     path('user/login-user/', LoginUser.as_view(), name='login-user'),
     path('user/google-auth/', GoogleAuthView.as_view(), name='google-auth'),
+    path('user/apple-auth/', AppleAuthView.as_view(), name='apple-auth'),
     path('user/transaction-pin/', CreateTransactionPinAPIView.as_view(), name='create-pin'),
     path('user/update-transaction-pin/', UpdateTransactionPinWithPasswordAPIView.as_view(), name='update-pin'),
     path('user/logout-user/', LogOut.as_view(), name='logout-account'),
