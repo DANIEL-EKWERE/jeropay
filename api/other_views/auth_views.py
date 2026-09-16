@@ -915,35 +915,64 @@ class GoogleAuthView(GenericAPIView):
         )
 
 
+APPLE_BUNDLE_ID = 'com.jeropay.ng.jeropay'
+_apple_jwk_client = None
+
+
+def _get_apple_jwk_client():
+    """Lazily build (and cache) the PyJWT client that fetches/caches Apple's
+    public signing keys from https://appleid.apple.com/auth/keys."""
+    global _apple_jwk_client
+    if _apple_jwk_client is None:
+        import jwt as _jwt
+        _apple_jwk_client = _jwt.PyJWKClient('https://appleid.apple.com/auth/keys')
+    return _apple_jwk_client
+
+
 class AppleAuthView(GenericAPIView):
     """
-    Accepts a Firebase ID token from the Flutter app (obtained after Sign in
-    with Apple → Firebase credential exchange). Firebase verifies the same
-    way regardless of upstream provider, so this mirrors GoogleAuthView.
+    Accepts the raw Apple-issued identity_token straight from the Flutter
+    app (via sign_in_with_apple), verified directly against Apple's public
+    keys — no Firebase involved. Routing Apple sign-in through Firebase
+    (verify a Firebase-wrapped credential) reliably failed with
+    "invalid-credential: invalid OAuth response from apple.com" even with a
+    correct entitlement, nonce and audience; going straight to Apple's own
+    JWKS endpoint is the pattern already proven working in the NoveluX app.
 
     Apple only returns the user's name on their very first authorization
-    ever, and Firebase's decoded token for Apple sign-ins usually has no
-    'name' claim — so the client sends the name it captured at that first
-    authorization as `full_name`, used as a fallback when creating the user.
+    ever — the client sends the name it captured at that first authorization
+    as `full_name`, used as a fallback when creating the user.
 
     Apple's "Hide My Email" relay addresses (…@privaterelay.appleid.com)
     are valid, real, routable emails — they're treated the same as any
     other email here.
     """
 
+    permission_classes = []  # public
+
     def post(self, request, *args, **kwargs):
-        id_token = request.data.get('id_token')
-        if not id_token:
-            return Response({'status': 'error', 'message': 'id_token is required'}, status=400)
+        import jwt as _jwt
 
-        # Verify token with Firebase Auth (jeropay-baa6f project)
+        identity_token = request.data.get('identity_token', '').strip()
+        if not identity_token:
+            return Response({'status': 'error', 'message': 'identity_token is required'}, status=400)
+
+        # Verify directly against Apple's public keys (RS256, audience = our
+        # app's bundle id, issuer = Apple) — no Firebase in this path.
         try:
-            decoded = fb_auth.verify_id_token(id_token, app=django_settings.FIREBASE_AUTH_APP)
-        except Exception as e:
-            return Response({'status': 'error', 'message': f'Invalid token: {str(e)}'}, status=401)
+            signing_key = _get_apple_jwk_client().get_signing_key_from_jwt(identity_token)
+            decoded = _jwt.decode(
+                identity_token,
+                signing_key.key,
+                algorithms=['RS256'],
+                audience=APPLE_BUNDLE_ID,
+                issuer='https://appleid.apple.com',
+            )
+        except _jwt.PyJWTError as e:
+            return Response({'status': 'error', 'message': f'Invalid Apple token: {str(e)}'}, status=401)
 
-        email = decoded.get('email')
-        name = decoded.get('name') or request.data.get('full_name', '')
+        email = (decoded.get('email') or request.data.get('email', '')).lower()
+        name = request.data.get('full_name', '')
         if not email:
             return Response({'status': 'error', 'message': 'Email not found in token'}, status=400)
 
@@ -1007,6 +1036,43 @@ class AppleAuthView(GenericAPIView):
             },
             status=status_code,
         )
+
+
+class MyReferralsView(GenericAPIView):
+    """
+    GET /my-referrals
+    Returns everyone who signed up using the authenticated user's referral
+    code (Profile.recommended_by), plus a count. The Flutter app's referral
+    screen was already built to call this exact path — it just never
+    existed server-side, so every request 404'd and the screen always
+    showed an empty/zero state. Referral-bonus crediting (Wallet
+    .commission_balance) already happens at signup in UserSerializer.create;
+    this view only surfaces who was referred.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        referred_profiles = (
+            Profile.objects.filter(recommended_by=request.user)
+            .select_related('user')
+            .order_by('-user__date_joined')
+        )
+
+        referrals = [
+            {
+                'full_name': p.fullName,
+                'username': p.user.username,
+                'email': p.user.email,
+                'date_joined': p.user.date_joined,
+            }
+            for p in referred_profiles
+        ]
+
+        return Response({
+            'status': 'success',
+            'count': len(referrals),
+            'referrals': referrals,
+        })
 
 
 # ─────────────────────────────────────────────────────────────────────────────

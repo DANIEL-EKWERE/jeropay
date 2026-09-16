@@ -61,6 +61,7 @@ urlpatterns += [
     path('user/update/profile/', UpdateProfileView.as_view(), name='update-profile'),
     path('user/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('user/retry-virtual-accounts/', RetryVirtualAccountsView.as_view(), name='retry-virtual-accounts'),
+    path('my-referrals', MyReferralsView.as_view(), name='my-referrals'),
     path('password_reset/', CustomResetPassword.as_view(), name='password_reset'),
 
 ]

@@ -36,17 +36,17 @@ NETWORK_ID = {
 
 
 ELECTRIC_DISCO_ID = {
-    "Abuja Electric": '10',
-    "Benin Electric": '11',
-    "Eko Electric": '12',
-    "Enugu Electric": '13',
-    "Ibadan Electric": '14',
-    "Ikeja Electric": '15',
-    "Jos Electric": '16',
-    "Kaduna Electric": '17',
-    "Kano Electric": '18',
+    "Abuja Electricity": '10',
+    "Benin Electricity": '11',
+    "Eko Electricity": '12',
+    "Enugu Electricity": '13',
+    "Ibadan Electricity": '14',
+    "Ikeja Electricity": '15',
+    "Jos Electricity": '16',
+    "Kaduna Electricity": '17',
+    "Kano Electricity": '18',
     "Port Harcourt": '19',
-    "Yola Electric": '20',
+    "Yola Electricity": '20',
 }
 
 
