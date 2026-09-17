@@ -1,0 +1,7 @@
+{% extends "admin/change_form.html" %}
+{% block object-tools-items %}
+  {% if can_change_status and original %}
+    <li><a href="{% url 'admin:api_transaction_change_status' original.pk %}">Change status</a></li>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}

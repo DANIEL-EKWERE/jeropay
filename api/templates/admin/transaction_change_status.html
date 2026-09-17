@@ -1,0 +1,133 @@
+{% extends "admin/base_site.html" %}
+{% load humanize_naira %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  #content { max-width: 1000px; }
+  .cs-panel { background: var(--darkened-bg, #f8f8f8); border: 1px solid var(--hairline-color, #e8e8e8); border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
+  .cs-panel h2 { margin: 0 0 10px; font-size: 1rem; color: var(--body-fg, #333); }
+  .cs-statuses { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cs-statuses label { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid var(--hairline-color, #ccc); border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--body-fg, #333); }
+  .cs-statuses input:checked + span { text-decoration: underline; }
+  .cs-field { margin: 12px 0; }
+  .cs-field label { display: block; font-weight: 600; margin-bottom: 4px; color: var(--body-fg, #333); }
+  .cs-field input[type=text] { width: 100%; box-sizing: border-box; }
+  .cs-check { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; color: var(--body-fg, #333); }
+  .cs-help { color: var(--body-quiet-color, #777); font-size: 0.8rem; }
+  .cs-effect { font-size: 0.8rem; }
+  .cs-credit { color: #1e7e46; font-weight: 600; }
+  .cs-debit { color: #b42318; font-weight: 600; }
+  .cs-errors { border-left: 4px solid #d64545; }
+  .cs-errors li { color: var(--error-fg, #ba2121); }
+  .cs-table-wrap { overflow-x: auto; }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a> &rsaquo;
+  <a href="{% url 'admin:api_transaction_changelist' %}">Transactions</a> &rsaquo;
+  {% if single %}<a href="{% url 'admin:api_transaction_change' rows.0.trans.pk %}">{{ rows.0.trans.pk|stringformat:"s"|slice:":8" }}</a> &rsaquo;{% endif %}
+  Change status
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+<form method="post" id="cs-form" {% if single %}action="{% url 'admin:api_transaction_change_status' rows.0.trans.pk %}"{% else %}action="{% url 'admin:api_transaction_changelist' %}"{% endif %}>
+  {% csrf_token %}
+  {% if not single %}
+    <input type="hidden" name="action" value="change_status_action">
+    {% for pk in selected_ids %}<input type="hidden" name="_selected_action" value="{{ pk }}">{% endfor %}
+  {% endif %}
+  <input type="hidden" name="apply_status" value="yes">
+
+  {% if errors %}
+  <div class="cs-panel cs-errors" role="alert"><ul style="margin:0;padding-left:1.2em">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>
+  {% endif %}
+
+  <div class="cs-panel">
+    <h2>{{ rows|length }} transaction{{ rows|length|pluralize }}</h2>
+    <div class="cs-table-wrap">
+    <table style="width:100%">
+      <thead><tr><th>ID</th><th>Customer</th><th>Type</th><th>Phone</th><th>Amount</th><th>Current status</th><th>Wallet effect</th></tr></thead>
+      <tbody>
+      {% for row in rows %}
+        <tr class="cs-row" data-current="{{ row.current }}" data-purchase="{% if row.is_purchase %}1{% else %}0{% endif %}" data-amount="{{ row.trans.amount|naira }}">
+          <td>{{ row.trans.pk|stringformat:"s"|slice:":8" }}</td>
+          <td>{{ row.trans.user.username }}</td>
+          <td>{{ row.trans.type }}</td>
+          <td>{{ row.trans.phone_number }}</td>
+          <td>{{ row.trans.amount|naira }}</td>
+          <td>{{ row.current }}</td>
+          <td class="cs-effect">-</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="cs-panel">
+    <h2>New status</h2>
+    <div class="cs-statuses" role="radiogroup" aria-label="New status">
+      {% for status in statuses %}
+        <label><input type="radio" name="new_status" value="{{ status }}" {% if status == new_status %}checked{% endif %}><span>{{ status }}</span></label>
+      {% endfor %}
+    </div>
+    <p class="cs-help">
+      <strong>Failed</strong> = the purchase failed and the money stays deducted.
+      <strong>Refunded</strong> = the purchase failed and the money goes back to the wallet.
+    </p>
+
+    <div class="cs-field">
+      <label for="cs-reason">Reason</label>
+      <input type="text" id="cs-reason" name="reason" value="{{ reason }}" maxlength="120" placeholder="e.g. Confirmed on 247API dashboard: customer received the data">
+      <div class="cs-help">Saved on the transaction and in its History.</div>
+    </div>
+
+    <label class="cs-check"><input type="checkbox" name="move_money" value="yes" {% if move_money_checked %}checked{% endif %}>
+      <span>Update the wallet to match: refund the customer when changing <em>to</em> Refunded, and take the money back when changing <em>from</em> Refunded.
+      <span class="cs-help">Untick to change the status label only.</span></span></label>
+    <label class="cs-check"><input type="checkbox" name="notify" value="yes" {% if notify_checked %}checked{% endif %}>
+      <span>Notify the customer (app notification)</span></label>
+
+    <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input type="submit" class="default" value="Change status">
+      <a href="{% if single %}{% url 'admin:api_transaction_change' rows.0.trans.pk %}{% else %}{% url 'admin:api_transaction_changelist' %}{% endif %}" class="button cancel-link">Cancel</a>
+    </div>
+  </div>
+</form>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('cs-form');
+  var moveMoney = form.querySelector('input[name=move_money]');
+  function effectFor(row, next) {
+    if (!next) return '-';
+    var current = row.dataset.current;
+    if (current === next) return 'No change (already ' + next + ')';
+    if (row.dataset.purchase !== '1') return 'Status only (wallet not changed for this type)';
+    if (!moveMoney.checked) return 'Status only';
+    if (next === 'Refunded') return '<span class="cs-credit">+' + row.dataset.amount + ' back to wallet</span>';
+    if (current === 'Refunded') return '<span class="cs-debit">-' + row.dataset.amount + ' taken from wallet</span>';
+    if (next === 'Failed') return 'Status only (money stays deducted)';
+    return 'Status only';
+  }
+  function update() {
+    var picked = form.querySelector('input[name=new_status]:checked');
+    var next = picked ? picked.value : '';
+    form.querySelectorAll('.cs-row').forEach(function (row) {
+      row.querySelector('.cs-effect').innerHTML = effectFor(row, next);
+    });
+  }
+  form.addEventListener('change', update);
+  update();
+  form.addEventListener('submit', function (e) {
+    var picked = form.querySelector('input[name=new_status]:checked');
+    if (picked && !window.confirm('Change {{ rows|length }} transaction{{ rows|length|pluralize }} to ' + picked.value + '?')) e.preventDefault();
+  });
+})();
+</script>
+{% endblock %}

@@ -31,6 +31,70 @@ NETWORK_QUERIES = {
     '9MOBILE': Q(network__iexact='9MOBILE') | Q(network__iexact='9 MOBILE') | Q(network__iexact='ETISALAT'),
 }
 
+STATUS_CHOICES = ['Success', 'Pending', 'Failed', 'Refunded']
+
+
+def canonical_status(value):
+    """'success' -> 'Success' etc., so old lowercase rows compare correctly."""
+    for choice in STATUS_CHOICES:
+        if str(value or '').lower() == choice.lower():
+            return choice
+    return str(value or '')
+
+
+def status_change_effect(trans, new_status):
+    """What changing to new_status does to the wallet: ('credit'|'debit'|None, amount)."""
+    if trans.type not in PURCHASE_TYPES:
+        return None, Decimal('0')
+    old = canonical_status(trans.status)
+    if new_status == 'Refunded' and old != 'Refunded':
+        return 'credit', trans.amount
+    if old == 'Refunded' and new_status != 'Refunded':
+        return 'debit', trans.amount
+    return None, Decimal('0')
+
+
+def apply_status_change(pk, new_status, reason, move_money, admin_user):
+    """
+    Change one transaction's status, keeping the wallet consistent.
+    Returns (changed: bool, message: str, transaction or None).
+    """
+    with db_transaction.atomic():
+        trans = Transaction.objects.select_for_update().select_related('user').filter(pk=pk).first()
+        if trans is None:
+            return False, 'Transaction not found.', None
+        old = canonical_status(trans.status)
+        if old == new_status:
+            return False, f'{str(trans.pk)[:8]} is already {new_status}.', trans
+
+        effect, amount = status_change_effect(trans, new_status)
+        money_note = ''
+        if effect and move_money:
+            wallet = Wallet.objects.select_for_update().filter(user__user=trans.user).first()
+            if wallet is None:
+                return False, f'{str(trans.pk)[:8]}: customer has no wallet, status not changed.', trans
+            if effect == 'debit' and wallet.balance < amount:
+                return False, (f'{str(trans.pk)[:8]}: wallet balance ₦{wallet.balance:,.2f} is less than ₦{amount:,.2f}, '
+                               'status not changed. Untick "take the money back" to change the status only.'), trans
+            delta = amount if effect == 'credit' else -amount
+            Wallet.objects.filter(pk=wallet.pk).update(balance=F('balance') + delta)
+            money_note = f' ₦{amount:,.2f} {"refunded to" if effect == "credit" else "taken back from"} wallet.'
+
+        if trans.type in PURCHASE_TYPES:
+            if old == 'Success' and new_status != 'Success':
+                Wallet.objects.filter(user__user=trans.user).update(
+                    total_purchase=Coalesce(F('total_purchase'), Decimal('0')) - trans.amount)
+            elif new_status == 'Success' and old != 'Success':
+                Wallet.objects.filter(user__user=trans.user).update(
+                    total_purchase=Coalesce(F('total_purchase'), Decimal('0')) + trans.amount)
+
+        note = f'Status {old} -> {new_status} by {admin_user.username}: {reason}.{money_note}'
+        trans.status = new_status
+        trans.response = f'{note} | {trans.response or ""}'[:300]
+        trans.save(update_fields=['status', 'response'])
+        return True, note, trans
+
+
 STATUS_COLOURS = {
     'success': ('#1e7e46', '#e3f5ea', 'Successful'),
     'pending': ('#8a5a00', '#fff3d6', 'Pending'),
@@ -175,7 +239,8 @@ class TransactionMonitorAdmin(admin.ModelAdmin):
     ordering = ['-date_and_time']
     list_per_page = 50
     change_list_template = 'admin/api/transaction/change_list.html'
-    actions = ['mark_successful_action', 'refund_pending_action']
+    actions = ['change_status_action', 'mark_successful_action', 'refund_pending_action']
+    change_form_template = 'admin/api/transaction/change_form.html'
 
     fieldsets = (
         ('Transaction', {'fields': ('id', 'type', 'status_badge', 'amount_naira', 'date_and_time', 'detail')}),
@@ -291,6 +356,99 @@ class TransactionMonitorAdmin(admin.ModelAdmin):
                                            'date_to': obj.date_and_time.astimezone(WAT).strftime('%Y-%m-%d')})
         return format_html('<a href="{}">This customer\'s transactions</a> &nbsp;·&nbsp; <a href="{}">All transactions that day</a>',
                            same_user, same_day)
+
+    # ── change status (single transaction page + bulk action) ──
+    def get_urls(self):
+        from django.urls import path
+        custom = [
+            path('<path:object_id>/change-status/', self.admin_site.admin_view(self.change_status_view),
+                 name='api_transaction_change_status'),
+        ]
+        return custom + super().get_urls()
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = dict(extra_context or {})
+        extra_context['can_change_status'] = request.user.has_perm('api.change_transaction')
+        return super().change_view(request, object_id, form_url, extra_context)
+
+    def change_status_view(self, request, object_id):
+        self._check(request)
+        return self._status_form(request, Transaction.objects.filter(pk=object_id), single=True)
+
+    @admin.action(description='Change status of selected transactions')
+    def change_status_action(self, request, queryset):
+        self._check(request)
+        return self._status_form(request, queryset, single=False)
+
+    def _status_form(self, request, queryset, single):
+        from api.utils.push import send_push
+
+        transactions = list(queryset.select_related('user').order_by('-date_and_time'))
+        if single and not transactions:
+            self.message_user(request, 'Transaction not found.', messages.ERROR)
+            from django.http import HttpResponseRedirect
+            return HttpResponseRedirect(reverse('admin:api_transaction_changelist'))
+
+        errors = []
+        new_status = request.POST.get('new_status', '')
+        reason = request.POST.get('reason', '').strip()
+        submitted = request.method == 'POST' and request.POST.get('apply_status') == 'yes'
+
+        if submitted:
+            if new_status not in STATUS_CHOICES:
+                errors.append('Choose the new status.')
+            if len(reason) < 3:
+                errors.append('Write a short reason (it is saved on the transaction and in its History).')
+            if not errors:
+                move_money = request.POST.get('move_money') == 'yes'
+                notify = request.POST.get('notify') == 'yes'
+                changed, skipped = 0, []
+                for trans in transactions:
+                    ok, note, updated = apply_status_change(trans.pk, new_status, reason, move_money, request.user)
+                    if not ok:
+                        skipped.append(note)
+                        continue
+                    changed += 1
+                    self._log(request, updated, note)
+                    if notify and updated.type in PURCHASE_TYPES:
+                        if new_status == 'Refunded':
+                            body = f'₦{updated.amount:,.2f} has been refunded to your wallet.' if move_money else 'Your purchase was marked as refunded.'
+                        elif new_status == 'Success':
+                            body = f'Your ₦{updated.amount:,.2f} {updated.type.lower()} purchase was successful.'
+                        elif new_status == 'Failed':
+                            body = f'Your ₦{updated.amount:,.2f} {updated.type.lower()} purchase failed.'
+                        else:
+                            body = f'Your ₦{updated.amount:,.2f} {updated.type.lower()} purchase is being processed.'
+                        send_push(updated.user, f'{updated.type} Purchase Update', body)
+                if changed:
+                    self.message_user(request, f'Changed {changed} transaction(s) to {new_status}.', messages.SUCCESS)
+                for note in skipped:
+                    self.message_user(request, note, messages.WARNING)
+                from django.http import HttpResponseRedirect
+                if single:
+                    return HttpResponseRedirect(reverse('admin:api_transaction_change', args=[transactions[0].pk]))
+                return None  # back to the list
+
+        rows = [{
+            'trans': t,
+            'current': canonical_status(t.status),
+            'is_purchase': t.type in PURCHASE_TYPES,
+        } for t in transactions]
+        return TemplateResponse(request, 'admin/transaction_change_status.html', {
+            **self.admin_site.each_context(request),
+            'title': 'Change transaction status',
+            'rows': rows,
+            'single': single,
+            'statuses': STATUS_CHOICES,
+            'new_status': new_status,
+            'reason': reason,
+            'errors': errors,
+            'selected_ids': [str(t.pk) for t in transactions],
+            'opts': self.model._meta,
+            # ticked by default; after a failed submit, keep what the admin chose
+            'move_money_checked': (request.POST.get('move_money') == 'yes') if submitted else True,
+            'notify_checked': (request.POST.get('notify') == 'yes') if submitted else True,
+        })
 
     # ── summary bar for whatever is currently filtered ──
     def changelist_view(self, request, extra_context=None):
