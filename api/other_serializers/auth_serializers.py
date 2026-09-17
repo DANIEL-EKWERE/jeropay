@@ -45,7 +45,7 @@ class UserSerializer(serializers.ModelSerializer):
         fullname = validated_data.pop('fullname')
         phone = validated_data.pop('phone')
         address_area = validated_data.pop('address_area')
-        referral_code = validated_data.pop('referral_code', None) or ''
+        referral_code = (validated_data.pop('referral_code', None) or '').strip()
         password = validated_data.pop('password')
         names = fullname.strip().split(' ', 1)
         first_name = names[0]
@@ -61,11 +61,10 @@ class UserSerializer(serializers.ModelSerializer):
         # Resolve referral code to a User FK
         recommended_by_user = None
         if referral_code:
-            try:
-                ref_profile = Profile.objects.get(code=referral_code)
+            # codes are generated uppercase; users often type them in lowercase
+            ref_profile = Profile.objects.filter(code__iexact=referral_code).first()
+            if ref_profile:
                 recommended_by_user = ref_profile.user
-            except Profile.DoesNotExist:
-                pass
         profile = Profile.objects.create(
             user=user,
             phone=phone,

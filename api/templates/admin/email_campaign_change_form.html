@@ -1,0 +1,8 @@
+{% extends "admin/change_form.html" %}
+{% block extrahead %}{{ block.super }}
+{% if original.status == 'sending' or original.status == 'queued' %}<meta http-equiv="refresh" content="5">{% endif %}
+{% endblock %}
+{% block object-tools-items %}
+  <li><a href="{% url 'admin:send-email' %}">Send another email</a></li>
+  {{ block.super }}
+{% endblock %}

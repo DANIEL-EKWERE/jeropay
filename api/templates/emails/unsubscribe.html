@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>JeroPay email preferences</title>
+<style>
+  :root { --bg: #f4f2f8; --card: #fff; --fg: #222; --muted: #666; --brand: #5f2e96; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #16131c; --card: #221d2b; --fg: #eee; --muted: #aaa; --brand: #b58ae6; } }
+  body { margin: 0; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }
+  main { max-width: 440px; margin: 48px auto; padding: 0 16px; }
+  .card { background: var(--card); border-radius: 10px; padding: 28px 24px; text-align: center; }
+  h1 { font-size: 1.3rem; margin: 0 0 10px; }
+  p { color: var(--muted); line-height: 1.5; }
+  button { background: #5f2e96; color: #fff; border: 0; border-radius: 6px; padding: 12px 20px; font-size: 1rem; cursor: pointer; }
+  a { color: var(--brand); }
+</style>
+</head>
+<body>
+<main><div class="card">
+  {% if invalid %}
+    <h1>Link not valid</h1>
+    <p>This unsubscribe link is broken or incomplete. Please use the link from the latest email, or contact support@jeropay.com.ng.</p>
+  {% elif done %}
+    <h1>You're unsubscribed</h1>
+    <p><strong>{{ email }}</strong> won't receive JeroPay newsletters and announcements any more. You'll still get important account and transaction emails.</p>
+  {% else %}
+    <h1>Unsubscribe?</h1>
+    <p>Stop JeroPay newsletters and announcements to <strong>{{ email }}</strong>. You'll still get important account and transaction emails.</p>
+    <form method="post"><button type="submit">Unsubscribe</button></form>
+  {% endif %}
+  <p><a href="https://jeropay.com.ng">jeropay.com.ng</a></p>
+</div></main>
+</body>
+</html>

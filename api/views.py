@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from api.network_control import available_plans
 # from rest_framework.generics.views import ser
 # Create your views here.
 
@@ -25,6 +26,10 @@ class CableSubscriptionAPIView(generics.ListAPIView):
 
 class DataNetworkViewAPIView(generics.ListAPIView):
     queryset = Data.objects.all()
+
+    def get_queryset(self):
+        return available_plans(super().get_queryset())
+
     serializer_class = DataSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['network']
@@ -41,6 +46,8 @@ class SingleDataNetworkView(generics.GenericAPIView):
             data_network_provider = Data.objects.filter(network=network_provider_name, plan_type='SME').order_by('amount')
         else:
             data_network_provider = Data.objects.filter(network=network_provider_name).order_by('amount')
+        # hide plans switched off in admin, and every plan of a network that's switched off
+        data_network_provider = available_plans(data_network_provider)
         
         # Check if the user is a reseller
         profile = Profile.objects.get(user=request.user)      
@@ -70,7 +77,7 @@ class AllDataNetworkView(generics.GenericAPIView):
         #     data_network_provider = Data.objects.filter(network=network_provider_name).order_by('amount')
 
 
-        data_network_provider = Data.objects.all().order_by('network')        
+        data_network_provider = available_plans(Data.objects.all()).order_by('network')
         # Check if the user is a reseller
         profile = Profile.objects.get(user=request.user)      
         if profile.reseller:

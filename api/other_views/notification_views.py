@@ -82,17 +82,15 @@ class CompleteGoogleProfileView(GenericAPIView):
         profile.save(update_fields=['phone', 'location'])
 
         # Apply referral bonus
-        if referred_by:
-            try:
-                ref_profile = Profile.objects.get(code=referred_by)
-                if ref_profile.user != user:
-                    Wallet.objects.filter(user=ref_profile).update(
-                        commission_balance=F('commission_balance') + Decimal('3.00')
-                    )
-                    profile.recommended_by = ref_profile.user
-                    profile.save(update_fields=['recommended_by'])
-            except Profile.DoesNotExist:
-                pass
+        # only once per user - calling this endpoint again must not pay the referrer again
+        if referred_by and profile.recommended_by_id is None:
+            ref_profile = Profile.objects.filter(code__iexact=str(referred_by).strip()).first()
+            if ref_profile and ref_profile.user != user:
+                Wallet.objects.filter(user=ref_profile).update(
+                    commission_balance=F('commission_balance') + Decimal('3.00')
+                )
+                profile.recommended_by = ref_profile.user
+                profile.save(update_fields=['recommended_by'])
 
         # Create virtual accounts now that we have a valid phone number
         # (signal skipped this because phone was empty at Google auth time)

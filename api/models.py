@@ -187,6 +187,14 @@ class Profile(models.Model):
             self.code = code
         super().save(*args, **kwargs)
 
+class Referral(Profile):
+    """Admin-only view of profiles that signed up with someone's referral code."""
+    class Meta:
+        proxy = True
+        verbose_name = 'Referral'
+        verbose_name_plural = 'Referrals'
+
+
 # class Invitee(models.Model):
 #     referrer = models.ForeignKey(Referrer, on_delete=models.CASCADE)
 #     date_and_time = models.DateTimeField(auto_now_add=True)
@@ -201,6 +209,7 @@ class Data(SharedInfo):
     price_desc = models.CharField(max_length=100, default='')
     data_plan_id = models.CharField(max_length=3, default='')
     reseller_amount = models.DecimalField(decimal_places=2, max_digits=11, default=0.0)
+    is_active = models.BooleanField(default=True, help_text='Turn off to hide this plan in the app and block purchases')
     verbose_name = 'Internet Data'
     
     def __str__(self):
@@ -239,6 +248,7 @@ class Transaction(models.Model):
         ('AdminCredit', 'AdminCredit'),
         ('AdminDebit', 'AdminDebit'),
         ('Transfer', 'Transfer'),
+        ('Bonus', 'Bonus'),
     )
     
     user = models.ForeignKey(User, on_delete= models.CASCADE)
@@ -403,3 +413,112 @@ class InAppNotification(models.Model):
 
     def __str__(self):
         return f'{self.title} → {self.user.username}'
+
+
+class EmailCampaign(models.Model):
+    """One email sent from admin to one or many customers. Each recipient gets their own copy."""
+    STATUS_CHOICES = (
+        ('queued', 'Queued'),
+        ('sending', 'Sending'),
+        ('sent', 'Sent'),
+        ('cancelled', 'Cancelled'),
+    )
+
+    subject = models.CharField(max_length=200)
+    body = models.TextField(help_text='Plain text. Placeholders: {name}, {first_name}, {username}, {email}')
+    is_bulk = models.BooleanField(default=False, help_text='Bulk emails include an unsubscribe link and skip unsubscribed addresses')
+    audience = models.CharField(max_length=300, blank=True, help_text='Who it was sent to, for the record')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='queued')
+    site_url = models.CharField(max_length=200, blank=True, help_text='Used to build unsubscribe links')
+
+    total_recipients = models.PositiveIntegerField(default=0)
+    sent_count = models.PositiveIntegerField(default=0)
+    failed_count = models.PositiveIntegerField(default=0)
+    skipped_count = models.PositiveIntegerField(default=0)
+
+    created_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='email_campaigns')
+    created_at = models.DateTimeField(auto_now_add=True)
+    started_at = models.DateTimeField(null=True, blank=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    last_activity_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Email'
+        verbose_name_plural = 'Emails sent'
+
+    def __str__(self):
+        return f'{self.subject} ({self.total_recipients} recipient{"s" if self.total_recipients != 1 else ""})'
+
+
+class EmailRecipient(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('sent', 'Sent'),
+        ('failed', 'Failed'),
+        ('skipped', 'Skipped'),
+    )
+
+    campaign = models.ForeignKey(EmailCampaign, on_delete=models.CASCADE, related_name='recipients')
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='emails_received')
+    email = models.EmailField(max_length=254)
+    name = models.CharField(max_length=150, blank=True)
+    username = models.CharField(max_length=150, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    error = models.CharField(max_length=500, blank=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['id']
+        constraints = [
+            models.UniqueConstraint(fields=['campaign', 'email'], name='unique_email_per_campaign'),
+        ]
+
+    def __str__(self):
+        return f'{self.email} ({self.status})'
+
+
+class EmailUnsubscribe(models.Model):
+    """Addresses that opted out of bulk emails from admin."""
+    email = models.EmailField(max_length=254, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Email unsubscribe'
+        verbose_name_plural = 'Email unsubscribes'
+
+    def __str__(self):
+        return self.email
+
+
+class NetworkStatus(models.Model):
+    """Admin switch to turn a whole mobile network off for airtime and data purchases."""
+    NETWORK_CHOICES = (
+        ('MTN', 'MTN'),
+        ('AIRTEL', 'Airtel'),
+        ('GLO', 'Glo'),
+        ('9MOBILE', '9mobile'),
+    )
+
+    network = models.CharField(max_length=20, choices=NETWORK_CHOICES, unique=True)
+    is_enabled = models.BooleanField(default=True, verbose_name='On')
+    message = models.CharField(
+        max_length=200, blank=True,
+        help_text='Shown to customers while the network is off. Leave blank for the default message.',
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = 'Network switch'
+        verbose_name_plural = 'Network switches'
+
+    def __str__(self):
+        return f'{self.get_network_display()} - {"ON" if self.is_enabled else "OFF"}'
+
+    @property
+    def customer_message(self):
+        return self.message or f'{self.get_network_display()} is temporarily unavailable. Please try again later.'
+

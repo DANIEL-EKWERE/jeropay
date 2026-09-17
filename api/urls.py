@@ -26,6 +26,8 @@ urlpatterns += [
     path('admin/fund-account/', FundCustomerAccount.as_view(), name='fund-customer-account'),
     path('admin/deduct-account/', DeductCustomerAccount.as_view(), name='deduct-customer-account'),
     path('admin/payment_webhook/', payment_webhook, name='payvessel-payment-done'),
+    path('webhooks/247api/', ProviderWebhookView.as_view(), name='247api-webhook'),
+    path('email/unsubscribe/<str:token>/', email_unsubscribe_view, name='email-unsubscribe'),
     path('admin/display-deposit-records/', DisplayDepositRecordsView.as_view(), name='display-deposit-records'),
     
     # private url
@@ -62,6 +64,7 @@ urlpatterns += [
     path('user/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('user/retry-virtual-accounts/', RetryVirtualAccountsView.as_view(), name='retry-virtual-accounts'),
     path('my-referrals', MyReferralsView.as_view(), name='my-referrals'),
+    path('user/move-bonus-to-wallet/', MoveBonusToWalletView.as_view(), name='move-bonus-to-wallet'),
     path('password_reset/', CustomResetPassword.as_view(), name='password_reset'),
 
 ]
@@ -116,6 +119,8 @@ urlpatterns += [
     path('cable-subscription/purchase/<str:cable_uuid>/', PurchaseCableSubscriptionView.as_view()),
     path('Data-price-list-API/purchase/<str:network>/', DataPriceListAPI.as_view()),
     path('purchase/exam-epin/',PurchaseExamEpin.as_view()),
+    path('exam-pin-prices/', ExamPinPriceListView.as_view(), name='exam-pin-prices'),
+    path('network-status/', NetworkStatusListView.as_view(), name='network-status'),
 
     # validate Meter / IUC
     path('electric-bill/validate/', ValidateMeterNumberAPI.as_view()),

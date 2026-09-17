@@ -417,7 +417,12 @@ class TransFilterMixin(OtherDateFilters):
         return transactions
 
     def transaction_sum(self, type, transaction_instance):
-        return transaction_instance.filter(type=type).aggregate(Sum('amount'))['amount__sum'] or 0
+        # refunded / failed purchases never cost the user anything
+        return (
+            transaction_instance.filter(type=type)
+            .exclude(status__in=['Refunded', 'Failed'])
+            .aggregate(Sum('amount'))['amount__sum'] or 0
+        )
 
     def total_trans_amount(self, transaction_instance):
         airtime = self.transaction_sum('Airtime', transaction_instance)

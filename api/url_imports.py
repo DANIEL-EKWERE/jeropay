@@ -13,7 +13,7 @@ from api.other_views.auth_views import (
     CreateUserAccountView, CreateProfileAPIView, ChangePasswordView,
     UpdateProfileView, LoginUser, LogOut,
     CreateTransactionPinAPIView, UpdateTransactionPinWithPasswordAPIView,
-    ForgotPasswordView, GoogleAuthView, AppleAuthView, MyReferralsView,
+    ForgotPasswordView, GoogleAuthView, AppleAuthView, MyReferralsView, MoveBonusToWalletView,
     RetryVirtualAccountsView,
 )
 
@@ -55,6 +55,8 @@ from api.other_views.purchase_views import (
 
     # exam epin
     PurchaseExamEpin,
+    ExamPinPriceListView,
+    NetworkStatusListView,
 
     # electricity
     ValidateMeterNumberAPI,
@@ -63,7 +65,13 @@ from api.other_views.purchase_views import (
     # cable subscribptions
     ValidateCableNumberAPI,
     PurchaseCableSubscriptionView,
+
+    # 247api webhook
+    ProviderWebhookView,
 )
+
+# admin email unsubscribe (public link in bulk emails)
+from api.email_views import unsubscribe_view as email_unsubscribe_view
 
 '''#admin only views'''
 

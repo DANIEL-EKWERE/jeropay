@@ -1,0 +1,137 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  #content { max-width: 900px; }
+  .ec-panel { background: var(--darkened-bg, #f8f8f8); border: 1px solid var(--hairline-color, #e8e8e8); border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
+  .ec-panel h2 { margin: 0 0 10px; font-size: 1rem; color: var(--body-fg, #333); }
+  .ec-field { margin-bottom: 14px; }
+  .ec-field label { display: block; font-weight: 600; margin-bottom: 4px; color: var(--body-fg, #333); }
+  .ec-field input[type=text], .ec-field textarea { width: 100%; box-sizing: border-box; font-size: 0.9rem; }
+  .ec-field textarea { min-height: 220px; resize: vertical; line-height: 1.5; }
+  textarea#ec-to { min-height: 70px; }
+  .ec-help { color: var(--body-quiet-color, #777); font-size: 0.78rem; margin-top: 4px; }
+  .ec-count { font-size: 1.6rem; font-weight: 700; color: var(--body-fg, #333); }
+  .ec-chip { display: inline-block; padding: 2px 8px; margin: 2px 4px 2px 0; border-radius: 12px; border: 1px solid var(--hairline-color, #ddd); font-size: 0.75rem; color: var(--body-fg, #333); max-width: 100%; overflow-wrap: anywhere; }
+  .ec-placeholder { cursor: pointer; font-family: ui-monospace, Menlo, Consolas, monospace; background: transparent; }
+  .ec-errors { border-left: 4px solid #d64545; }
+  .ec-errors li { color: var(--error-fg, #ba2121); }
+  .ec-warn { color: #b8860b; }
+  .ec-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .ec-btn { padding: 9px 16px; border-radius: 4px; border: 0; font-weight: 600; cursor: pointer; font-size: 0.85rem; background: var(--button-bg, #79aec8); color: var(--button-fg, #fff); }
+  .ec-btn-secondary { background: var(--default-button-bg, #417690); }
+  .ec-btn-quiet { background: transparent; color: var(--link-fg, #447e9b); border: 1px solid var(--hairline-color, #ccc); }
+  .ec-confirm { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 12px; font-weight: 600; color: var(--body-fg, #333); }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a>
+  {% if bulk %}&rsaquo; <a href="{{ back_url }}">Customer emails</a>{% endif %}
+  &rsaquo; <a href="{% url 'admin:api_emailcampaign_changelist' %}">Emails sent</a>
+  &rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+<form method="post" id="ec-form">
+  {% csrf_token %}
+  <input type="hidden" name="token" value="{{ token }}">
+  {% if bulk %}<input type="hidden" name="mode" value="bulk">{% endif %}
+  {% for key, value in filter_fields %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endfor %}
+
+  {% if errors %}
+  <div class="ec-panel ec-errors" role="alert">
+    <ul style="margin:0;padding-left:1.2em">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  <div class="ec-panel">
+    <h2>To</h2>
+    {% if bulk %}
+      <div><span class="ec-count">{{ recipient_count }}</span> customer{{ recipient_count|pluralize }} &middot; {{ audience_label }}</div>
+      <div style="margin:6px 0">
+        {% for r in recipients_preview %}<span class="ec-chip">{{ r.email }}</span>{% endfor %}
+        {% if recipient_count > recipients_preview|length %}<span class="ec-help">+{{ recipient_count|add:"-8" }} more</span>{% endif %}
+      </div>
+      {% if unsubscribed_count %}<p class="ec-help ec-warn">{{ unsubscribed_count }} of them unsubscribed and will be skipped.</p>{% endif %}
+      <p class="ec-help">Each customer gets their own copy, so nobody sees other addresses. An unsubscribe link is added at the bottom.
+        <a href="{{ back_url }}">Change who gets this</a></p>
+    {% else %}
+      <div class="ec-field">
+        <label for="ec-to">Email address(es)</label>
+        <textarea id="ec-to" name="to" placeholder="customer@example.com, another@example.com">{{ to_raw }}</textarea>
+        <div class="ec-help">Separate with commas or new lines (up to {{ max_individual }}). Each person gets their own copy. For large groups use <a href="{% url 'admin:customer-emails' %}">Customer emails</a> &rarr; "Email these customers".</div>
+        {% if recipients_preview %}<div style="margin-top:6px">{% for r in recipients_preview %}<span class="ec-chip">{% if r.full_name %}{{ r.full_name }} &middot; {% endif %}{{ r.email }}</span>{% endfor %}{% if recipient_count > recipients_preview|length %}<span class="ec-help">+{{ recipient_count|add:"-8" }} more</span>{% endif %}</div>{% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ec-panel">
+    <h2>Message</h2>
+    <p class="ec-help" style="margin-top:0">From: {{ from_address }}</p>
+    <div class="ec-field">
+      <label for="ec-subject">Subject</label>
+      <input type="text" id="ec-subject" name="subject" value="{{ subject }}" maxlength="200" required>
+    </div>
+    <div class="ec-field">
+      <label for="ec-body">Message</label>
+      <textarea id="ec-body" name="body" required>{{ body }}</textarea>
+      <div class="ec-help">
+        Plain text; links become clickable. Personalise with:
+        {% for p in placeholders %}<button type="button" class="ec-chip ec-placeholder" data-insert="{{ p }}">{{ p }}</button>{% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="ec-panel">
+    <h2>Send</h2>
+    {% if bulk %}
+    <label class="ec-confirm"><input type="checkbox" name="confirm" value="yes">
+      I've sent myself a test and I'm ready to email {{ recipient_count }} customer{{ recipient_count|pluralize }}.</label>
+    <p class="ec-help">Large sends go out in the background, about one email every {{ send_delay|floatformat:"-1" }} second{{ send_delay|pluralize }}, so your mail server doesn't block them. You can watch progress, cancel, or retry failures from "Emails sent".</p>
+    {% endif %}
+    <div class="ec-actions">
+      <button type="submit" name="action" value="test" class="ec-btn ec-btn-quiet" formnovalidate>Send test to {{ request.user.email|default:"me" }}</button>
+      <button type="submit" name="action" value="send" class="ec-btn" id="ec-send">
+        {% if bulk %}Send to {{ recipient_count }} customer{{ recipient_count|pluralize }}{% else %}Send email{% endif %}
+      </button>
+    </div>
+  </div>
+</form>
+</div>
+
+<script>
+(function () {
+  var body = document.getElementById('ec-body');
+  document.querySelectorAll('.ec-placeholder').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-insert');
+      var start = body.selectionStart || body.value.length, end = body.selectionEnd || body.value.length;
+      body.value = body.value.slice(0, start) + text + body.value.slice(end);
+      body.focus();
+      body.selectionStart = body.selectionEnd = start + text.length;
+    });
+  });
+  var form = document.getElementById('ec-form');
+  var sending = false;
+  form.addEventListener('submit', function (event) {
+    var submitter = event.submitter;
+    if (!submitter || submitter.value !== 'send') return;
+    if (sending) { event.preventDefault(); return; }
+    {% if bulk %}
+    if (!window.confirm('Send this email to {{ recipient_count }} customer{{ recipient_count|pluralize }}?')) { event.preventDefault(); return; }
+    {% endif %}
+    sending = true;
+    submitter.textContent = 'Sending…';
+    // keep the button's value in the POST even though it's disabled
+    var hidden = document.createElement('input');
+    hidden.type = 'hidden'; hidden.name = 'action'; hidden.value = 'send';
+    form.appendChild(hidden);
+    submitter.disabled = true;
+  });
+})();
+</script>
+{% endblock %}

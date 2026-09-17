@@ -1,0 +1,17 @@
+{% for choice in choices %}
+<details data-filter-title="{{ title }}" open>
+  <summary>By {{ title }}</summary>
+  <form method="get" style="padding:6px 12px 10px">
+    {% for key, value in choice.hidden %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endfor %}
+    {% for field in choice.inputs %}
+      <label style="display:block;font-size:11px;margin:4px 0 2px" for="f-{{ field.name }}">{{ field.label }}</label>
+      <input id="f-{{ field.name }}" type="{{ field.type }}" name="{{ field.name }}" value="{{ field.value }}" placeholder="{{ field.placeholder }}"
+             {% if field.type == 'number' %}min="0" step="any"{% endif %} style="width:100%;box-sizing:border-box">
+    {% endfor %}
+    <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
+      <button type="submit" class="button" style="padding:4px 10px">Apply</button>
+      {% if choice.active %}<a href="{{ choice.clear_url }}" style="font-size:11px">Clear</a>{% endif %}
+    </div>
+  </form>
+</details>
+{% endfor %}

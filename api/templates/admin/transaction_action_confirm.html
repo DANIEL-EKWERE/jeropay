@@ -1,0 +1,40 @@
+{% extends "admin/base_site.html" %}
+{% load humanize_naira %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a> &rsaquo;
+  <a href="{% url 'admin:api_transaction_changelist' %}">Transactions</a> &rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main" style="max-width:900px">
+  <p>{{ explanation }}</p>
+  {% if transactions %}
+    <p><strong>{{ transactions|length }}</strong> pending purchase{{ transactions|length|pluralize }}, <strong>{{ total|naira }}</strong> in total.</p>
+    {% if skipped %}<p style="color:var(--body-quiet-color,#777)">{{ skipped }} selected transaction{{ skipped|pluralize }} {{ skipped|pluralize:"is,are" }} not pending and will be left alone.</p>{% endif %}
+    <div style="overflow-x:auto">
+    <table style="width:100%">
+      <thead><tr><th>ID</th><th>Customer</th><th>Type</th><th>Phone</th><th>Amount</th><th>Provider response</th></tr></thead>
+      <tbody>
+      {% for t in transactions %}
+        <tr><td>{{ t.id|stringformat:"s"|slice:":8" }}</td><td>{{ t.user.username }}</td><td>{{ t.type }}</td><td>{{ t.phone_number }}</td><td>{{ t.amount|naira }}</td><td>{{ t.response }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <form method="post" style="margin-top:16px">
+      {% csrf_token %}
+      {% for pk in selected_ids %}<input type="hidden" name="_selected_action" value="{{ pk }}">{% endfor %}
+      <input type="hidden" name="action" value="{{ action }}">
+      <input type="hidden" name="confirm" value="yes">
+      <input type="submit" value="{{ button }}" class="default" style="margin-right:12px">
+      <a href="{% url 'admin:api_transaction_changelist' %}" class="button cancel-link">Cancel</a>
+    </form>
+  {% else %}
+    <p>None of the selected transactions are pending purchases, so there is nothing to do.</p>
+    <p><a href="{% url 'admin:api_transaction_changelist' %}">Back to transactions</a></p>
+  {% endif %}
+</div>
+{% endblock %}

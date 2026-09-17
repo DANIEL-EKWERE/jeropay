@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from api.models import Data, Transaction
@@ -12,8 +14,14 @@ class DeductDataSerializer(serializers.Serializer):
 
 class AirtimeSerializer(serializers.Serializer):
     network = serializers.CharField(max_length=10)
-    amount = serializers.DecimalField(max_digits=11, decimal_places=2)
+    amount = serializers.DecimalField(max_digits=11, decimal_places=2, min_value=Decimal('50'))
     phone_number = serializers.CharField(max_length=11)
+
+    def validate_amount(self, value):
+        # the provider only takes whole naira, so don't charge for kobo it won't deliver
+        if value != value.to_integral_value():
+            raise ValidationError("Amount must be a whole number.")
+        return value
 
 class DataSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=11)
@@ -32,17 +40,22 @@ class PurchaseExamEpinSerializer(serializers.Serializer):
     Validate and purchase Electricity bill serializer
 '''
 class ValidateMeterNumberSerializer(serializers.Serializer):
-    meter_number = serializers.IntegerField()
+    # CharField so meter numbers starting with 0 keep their leading zero
+    meter_number = serializers.RegexField(r'^\d{6,20}$', error_messages={'invalid': 'Meter number must contain only digits.'})
     meter_type = serializers.CharField()
     disco = serializers.CharField()
+
+    def validate_meter_type(self, value):
+        value = value.strip().lower()
+        if value not in ('prepaid', 'postpaid'):
+            raise ValidationError("Meter type must be prepaid or postpaid.")
+        return value
 
 class ElectricBillPaymentSerializer(ValidateMeterNumberSerializer):
     amount = serializers.IntegerField()
     phone = serializers.CharField()
     disco = serializers.CharField()
-    meter_type = serializers.CharField()
-    meter_number = serializers.CharField()
-    bypass = serializers.BooleanField()
+    bypass = serializers.BooleanField(required=False, default=True)
    
     def validate_amount(self, value):
         if value < 300:
@@ -54,7 +67,8 @@ class ElectricBillPaymentSerializer(ValidateMeterNumberSerializer):
     Validate and purchase Cable subscription serializer
 '''
 class ValidateCableNumber(serializers.Serializer):
-    iuc = serializers.IntegerField()
+    # CharField so smartcard numbers starting with 0 (e.g. StarTimes) keep their leading zero
+    iuc = serializers.RegexField(r'^\d{6,20}$', error_messages={'invalid': 'IUC / smartcard number must contain only digits.'})
     cable_provider = serializers.CharField()
 
 class CablePaymentSerializer(ValidateCableNumber):

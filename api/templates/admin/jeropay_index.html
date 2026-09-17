@@ -1,0 +1,160 @@
+{% extends "admin/index.html" %}
+{% load humanize_naira %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  /* admin fixes the home page at 600px; give the overview room for 4 cards a row */
+  .dashboard #content { width: auto; max-width: 1240px; }
+  .jp-dash { margin: 0 0 24px; }
+  .jp-dash-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; }
+  .jp-dash-head h2 { margin: 0; font-size: 1.25rem; color: var(--body-fg, #333); }
+  .jp-dash-head .jp-muted { font-size: 0.75rem; }
+  .jp-periods { display: flex; flex-wrap: wrap; gap: 6px; }
+  .jp-periods a { padding: 4px 10px; border-radius: 14px; border: 1px solid var(--hairline-color, #ddd); font-size: 0.8rem; text-decoration: none; color: var(--body-fg, #333); }
+  .jp-periods a.jp-active { background: var(--primary, #79aec8); border-color: var(--primary, #79aec8); color: #fff; }
+  .jp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 12px; }
+  .jp-card { background: var(--darkened-bg, #f8f8f8); border: 1px solid var(--hairline-color, #e8e8e8); border-left: 4px solid var(--jp-accent, #79aec8); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .jp-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--body-quiet-color, #666); }
+  .jp-value { font-size: 1.6rem; font-weight: 700; line-height: 1.2; color: var(--body-fg, #333); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .jp-sub { font-size: 0.8rem; color: var(--body-quiet-color, #666); font-variant-numeric: tabular-nums; }
+  .jp-muted { color: var(--body-quiet-color, #888); }
+  .jp-list { list-style: none; margin: 4px 0 0; padding: 0; font-size: 0.78rem; }
+  .jp-list li { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; border-top: 1px dashed var(--hairline-color, #e0e0e0); list-style: none; }
+  .jp-list li span:last-child { font-variant-numeric: tabular-nums; text-align: right; }
+  .jp-card a.jp-link { margin-top: auto; padding-top: 6px; font-size: 0.78rem; }
+  .jp-warn { color: #b8860b; font-weight: 600; }
+  .jp-total { --jp-accent: #5b6ee1; }
+  .jp-success { --jp-accent: #2e9e5b; }
+  .jp-failed { --jp-accent: #d64545; }
+  .jp-pending { --jp-accent: #d99a1f; }
+  .jp-sales { --jp-accent: #5f2e96; }
+  .jp-deposits { --jp-accent: #1f8fb3; }
+  .jp-users { --jp-accent: #8a5cd0; }
+  .jp-data { --jp-accent: #e0762a; }
+  .jp-networks { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 14px; }
+  .jp-networks form { margin: 0; }
+  .jp-net { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 18px; border: 1px solid var(--hairline-color, #ddd); background: var(--darkened-bg, #f8f8f8); font-size: 0.85rem; color: var(--body-fg, #333); }
+  .jp-net.jp-off { border-color: #d64545; }
+  .jp-net button { border: 0; border-radius: 12px; padding: 3px 9px; font-size: 0.72rem; font-weight: 700; cursor: pointer; color: #fff; background: #d64545; }
+  .jp-net.jp-off button { background: #2e9e5b; }
+  .jp-quicklinks { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.8rem; margin: 0 0 12px; }
+</style>
+{% endblock %}
+
+{% block content_title %}{{ block.super }}
+{% if jeropay_stats %}{% with s=jeropay_stats %}
+<section class="jp-dash" aria-label="JeroPay overview">
+  <div class="jp-dash-head">
+    <div>
+      <h2>JeroPay overview &middot; {{ s.period_label }}</h2>
+      <span class="jp-muted">Nigerian time (WAT) &middot; updated {{ s.generated_at|date:"d M Y, H:i" }}</span>
+    </div>
+    <nav class="jp-periods" aria-label="Period">
+      {% for key, label in s.periods %}
+        <a href="?period={{ key }}" class="{% if key == s.period %}jp-active{% endif %}">{{ label }}</a>
+      {% endfor %}
+    </nav>
+  </div>
+
+  <div class="jp-quicklinks">
+    {% if s.transactions_url %}<a href="{{ s.transactions_url }}">Search transactions &rarr;</a>{% endif %}
+    {% if s.plans_url %}<a href="{{ s.plans_url }}">Data plan switches &rarr;</a>{% endif %}
+    {% if s.networks_url %}<a href="{{ s.networks_url }}">Network switches &rarr;</a>{% endif %}
+  </div>
+
+  {% if network_statuses %}
+  <div class="jp-networks" aria-label="Networks">
+    <strong style="font-size:0.8rem;margin-right:4px">Networks</strong>
+    {% for n in network_statuses %}
+      <div class="jp-net {% if not n.is_enabled %}jp-off{% endif %}">
+        <span>{% if n.is_enabled %}🟢{% else %}🔴{% endif %} {{ n.label }} &mdash; {% if n.is_enabled %}ON{% else %}OFF{% endif %}</span>
+        {% if can_switch_networks and s.network_switch_url %}
+        <form method="post" action="{{ s.network_switch_url }}" onsubmit="return confirm('Turn {{ n.label }} {% if n.is_enabled %}OFF{% else %}ON{% endif %}? {% if n.is_enabled %}Customers will not be able to buy {{ n.label }} airtime or data.{% endif %}')">
+          {% csrf_token %}
+          <input type="hidden" name="network" value="{{ n.network }}">
+          <input type="hidden" name="enabled" value="{% if n.is_enabled %}0{% else %}1{% endif %}">
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit" aria-label="Turn {{ n.label }} {% if n.is_enabled %}off{% else %}on{% endif %}">{% if n.is_enabled %}Turn off{% else %}Turn on{% endif %}</button>
+        </form>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="jp-grid">
+    <div class="jp-card jp-total">
+      <span class="jp-label">{% if s.period == 'today' %}Total transactions today{% else %}Total transactions{% endif %}</span>
+      <span class="jp-value">{{ s.total_count|intcomma_plain }}</span>
+      <span class="jp-sub">{{ s.total_amount|naira }} in purchases</span>
+      <span class="jp-sub jp-muted">Airtime, data, cable, electricity, exam</span>
+      {% if s.total_url %}<a class="jp-link" href="{{ s.total_url }}">View transactions &rarr;</a>{% endif %}
+    </div>
+
+    <div class="jp-card jp-success">
+      <span class="jp-label">Successful transactions</span>
+      <span class="jp-value">{{ s.success_count|intcomma_plain }}</span>
+      <span class="jp-sub">{{ s.success_amount|naira }}</span>
+      {% if s.success_url %}<a class="jp-link" href="{{ s.success_url }}">View successful &rarr;</a>{% endif %}
+    </div>
+
+    <div class="jp-card jp-failed">
+      <span class="jp-label">Failed transactions</span>
+      <span class="jp-value">{{ s.failed_count|intcomma_plain }}</span>
+      <span class="jp-sub">{{ s.failed_amount|naira }} refunded to wallets</span>
+      {% if s.failed_url %}<a class="jp-link" href="{{ s.failed_url }}">View failed &rarr;</a>{% endif %}
+    </div>
+
+    <div class="jp-card jp-pending">
+      <span class="jp-label">Pending transactions</span>
+      <span class="jp-value">{{ s.pending_count|intcomma_plain }}</span>
+      <span class="jp-sub">{{ s.pending_amount|naira }} held</span>
+      <span class="jp-sub {% if s.pending_all_time %}jp-warn{% endif %}">{{ s.pending_all_time|intcomma_plain }} pending in total, all dates</span>
+      {% if s.pending_url %}<a class="jp-link" href="{{ s.pending_url }}">Review pending &rarr;</a>{% endif %}
+    </div>
+
+    <div class="jp-card jp-sales">
+      <span class="jp-label">Total sales</span>
+      <span class="jp-value">{{ s.sales_amount|naira }}</span>
+      <ul class="jp-list">
+        {% for row in s.sales_breakdown %}
+          <li><span>{{ row.type }} <span class="jp-muted">({{ row.count|intcomma_plain }})</span></span><span>{{ row.amount|naira }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="jp-card jp-deposits">
+      <span class="jp-label">Wallet deposits</span>
+      <span class="jp-value">{{ s.deposit_amount|naira }}</span>
+      <span class="jp-sub">{{ s.deposit_count|intcomma_plain }} customer deposit{{ s.deposit_count|pluralize }}</span>
+      <span class="jp-sub jp-muted">+ {{ s.admin_credit_amount|naira }} admin credits ({{ s.admin_credit_count|intcomma_plain }})</span>
+      {% if s.deposit_url %}<a class="jp-link" href="{{ s.deposit_url }}">View deposits &rarr;</a>{% endif %}
+    </div>
+
+    <div class="jp-card jp-users">
+      <span class="jp-label">New users</span>
+      <span class="jp-value">{{ s.new_users|intcomma_plain }}</span>
+      <span class="jp-sub">{{ s.total_users|intcomma_plain }} users in total</span>
+      {% if s.users_url %}<a class="jp-link" href="{{ s.users_url }}">View users &rarr;</a>{% endif %}
+      {% if s.emails_url %}<a href="{{ s.emails_url }}" style="font-size:0.78rem">Copy / download customer emails &rarr;</a>{% endif %}
+    </div>
+
+    <div class="jp-card jp-data">
+      <span class="jp-label">Data volume sold</span>
+      <span class="jp-value">{{ s.data_volume }}</span>
+      {% if s.data_volume_by_network %}
+        <ul class="jp-list">
+          {% for network, volume in s.data_volume_by_network %}
+            <li><span>{{ network }}</span><span>{{ volume }}</span></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <span class="jp-sub jp-muted">No data sold in this period</span>
+      {% endif %}
+      {% if s.data_unparsed %}<span class="jp-sub jp-muted">{{ s.data_unparsed }} sale{{ s.data_unparsed|pluralize }} without a readable size</span>{% endif %}
+      {% if s.data_url %}<a class="jp-link" href="{{ s.data_url }}">View data sales &rarr;</a>{% endif %}
+    </div>
+  </div>
+</section>
+{% endwith %}{% endif %}
+{% endblock %}

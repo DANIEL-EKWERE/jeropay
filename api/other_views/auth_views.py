@@ -651,11 +651,9 @@ class CreateProfileAPIView(GenericAPIView):
                     referred_by_code = request.data.get('referred_by', '').strip()
                     recommended_user = None
                     if referred_by_code:
-                        try:
-                            ref_profile = Profile.objects.get(code=referred_by_code)
+                        ref_profile = Profile.objects.filter(code__iexact=referred_by_code).first()
+                        if ref_profile and ref_profile.user != request.user:
                             recommended_user = ref_profile.user
-                        except Profile.DoesNotExist:
-                            pass
 
                     serializer_inst = serializer.save(
                         user=request.user,
@@ -1072,6 +1070,64 @@ class MyReferralsView(GenericAPIView):
             'status': 'success',
             'count': len(referrals),
             'referrals': referrals,
+        })
+
+
+class MoveBonusToWalletView(GenericAPIView):
+    """
+    POST /user/move-bonus-to-wallet/
+    Moves the whole referral bonus (Wallet.commission_balance) into the main
+    wallet balance and records it as a 'Bonus' transaction.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        from decimal import Decimal
+        from django.db import transaction as db_transaction
+        from api.models import Transaction
+        from api.utils.push import send_push
+
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except Profile.DoesNotExist:
+            return Response({'status': 'error', 'message': 'This account does not have a profile.'}, status=400)
+
+        with db_transaction.atomic():
+            # lock the row so two taps can't move the same bonus twice
+            wallet = Wallet.objects.select_for_update().filter(user=profile).first()
+            if wallet is None:
+                return Response({'status': 'error', 'message': 'This account does not have a wallet.'}, status=400)
+
+            bonus = wallet.commission_balance or Decimal('0')
+            if bonus <= 0:
+                return Response({'status': 'error', 'message': 'You have no referral bonus to move.'}, status=400)
+
+            old_balance = wallet.balance
+            new_balance = old_balance + bonus
+            Wallet.objects.filter(pk=wallet.pk).update(balance=new_balance, commission_balance=Decimal('0'))
+
+            Transaction.objects.create(
+                user=request.user,
+                detail=f'Referral bonus of ₦{bonus} moved to wallet',
+                network='N/A',
+                response='Referral bonus moved to wallet',
+                request_id='N/A',
+                old_balance=old_balance,
+                new_balance=new_balance,
+                phone_number='N/A',
+                status='Success',
+                amount=bonus,
+                type='Bonus',
+            )
+
+        send_push(request.user, 'Bonus Moved to Wallet', f'₦{bonus} referral bonus has been added to your wallet.')
+
+        return Response({
+            'status': 'success',
+            'message': f'₦{bonus} has been moved to your wallet.',
+            'amount': bonus,
+            'balance': new_balance,
+            'commission_balance': Decimal('0'),
         })
 
 

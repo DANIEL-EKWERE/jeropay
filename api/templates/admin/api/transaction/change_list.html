@@ -1,0 +1,31 @@
+{% extends "admin/change_list.html" %}
+{% load humanize_naira %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  .tx-summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(170px, 100%), 1fr)); gap: 8px; margin: 0 0 12px; }
+  .tx-card { display: block; text-decoration: none !important; background: var(--darkened-bg, #f8f8f8); border: 1px solid var(--hairline-color, #e8e8e8); border-left: 4px solid var(--tx-accent, #79aec8); border-radius: 6px; padding: 8px 12px; color: var(--body-fg, #333) !important; }
+  .tx-card:hover { border-color: var(--tx-accent, #79aec8); }
+  .tx-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--body-quiet-color, #666); }
+  .tx-value { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tx-sub { font-size: 12px; color: var(--body-quiet-color, #666); font-variant-numeric: tabular-nums; }
+  .tx-all { --tx-accent: #5b6ee1; } .tx-ok { --tx-accent: #2e9e5b; } .tx-bad { --tx-accent: #d64545; } .tx-wait { --tx-accent: #d99a1f; }
+  .tx-alert { margin: 0 0 12px; padding: 8px 12px; border-radius: 6px; background: #fff3d6; color: #6b4600; font-size: 13px; }
+  .tx-alert a { color: #6b4600; font-weight: 700; }
+</style>
+{% endblock %}
+
+{% block search %}
+{% if transaction_summary %}{% with s=transaction_summary %}
+  {% if s.pending_all_time %}
+  <div class="tx-alert" role="status">{{ s.pending_all_time }} purchase{{ s.pending_all_time|pluralize }} still pending across all dates. <a href="{{ s.pending_all_url }}">Review pending &rarr;</a></div>
+  {% endif %}
+  <div class="tx-summary" aria-label="Summary of filtered transactions">
+    <div class="tx-card tx-all"><div class="tx-label">Matching</div><div class="tx-value">{{ s.count }}</div><div class="tx-sub">{{ s.total_amount|naira }}</div></div>
+    <a class="tx-card tx-ok" href="{{ s.urls.success }}"><div class="tx-label">Successful</div><div class="tx-value">{{ s.success }}</div><div class="tx-sub">{{ s.success_amount|naira }}</div></a>
+    <a class="tx-card tx-bad" href="{{ s.urls.failed }}"><div class="tx-label">Failed / refunded</div><div class="tx-value">{{ s.failed }}</div><div class="tx-sub">{{ s.failed_amount|naira }}</div></a>
+    <a class="tx-card tx-wait" href="{{ s.urls.pending }}"><div class="tx-label">Pending</div><div class="tx-value">{{ s.pending }}</div><div class="tx-sub">{{ s.pending_amount|naira }}</div></a>
+  </div>
+{% endwith %}{% endif %}
+{{ block.super }}
+{% endblock %}

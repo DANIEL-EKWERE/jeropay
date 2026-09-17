@@ -1,0 +1,178 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  #content { max-width: 1100px; }
+  .ce-panel { background: var(--darkened-bg, #f8f8f8); border: 1px solid var(--hairline-color, #e8e8e8); border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
+  .ce-panel h2 { margin: 0 0 10px; font-size: 1rem; color: var(--body-fg, #333); }
+  .ce-filters { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 12px 16px; align-items: end; }
+  .ce-filters label { display: block; font-weight: 600; font-size: 0.8rem; margin-bottom: 4px; color: var(--body-fg, #333); }
+  .ce-filters select, .ce-filters input[type=date] { width: 100%; box-sizing: border-box; }
+  .ce-checks label { font-weight: normal; display: flex; align-items: center; gap: 6px; margin: 2px 0; }
+  .ce-summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 10px; }
+  .ce-count { font-size: 1.8rem; font-weight: 700; color: var(--body-fg, #333); font-variant-numeric: tabular-nums; }
+  .ce-muted { color: var(--body-quiet-color, #777); font-size: 0.8rem; }
+  .ce-copy-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .ce-copy-row select { max-width: 100%; }
+  textarea.ce-emails { width: 100%; box-sizing: border-box; min-height: 140px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8rem; resize: vertical; }
+  .ce-btn { display: inline-block; padding: 8px 14px; border-radius: 4px; border: 0; background: var(--button-bg, #79aec8); color: var(--button-fg, #fff) !important; font-weight: 600; cursor: pointer; text-decoration: none !important; font-size: 0.8rem; }
+  .ce-btn:hover { background: var(--button-hover-bg, #609ab6); }
+  .ce-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .ce-btn-secondary { background: var(--default-button-bg, #417690); }
+  .ce-downloads { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ce-copied { color: #2e9e5b; font-weight: 600; font-size: 0.8rem; min-height: 1em; }
+  .ce-table-wrap { overflow-x: auto; }
+  .ce-table { width: 100%; }
+  .ce-selection { border-left: 4px solid #d99a1f; }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">Home</a> &rsaquo; Customer emails
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+  {% if selection_count is not None %}
+  <div class="ce-panel ce-selection">
+    Showing only the <strong>{{ selection_count }}</strong> customer{{ selection_count|pluralize }} you ticked in the admin list.
+    <a href="{{ clear_selection_url }}">Show all customers instead</a>
+  </div>
+  {% endif %}
+
+  <form method="get" class="ce-panel" id="ce-filter-form">
+    <h2>Who to include</h2>
+    {% if filters.selection %}<input type="hidden" name="selection" value="1">{% endif %}
+    <div class="ce-filters">
+      <div>
+        <label for="ce-audience">Customers</label>
+        <select id="ce-audience" name="audience">
+          {% for key, label in audiences %}<option value="{{ key }}" {% if key == filters.audience %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="ce-joined">Joined</label>
+        <select id="ce-joined" name="joined">
+          {% for key, label in joined_choices %}<option value="{{ key }}" {% if key == filters.joined %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="ce-custom-dates">
+        <label for="ce-start">From</label>
+        <input type="date" id="ce-start" name="start" value="{{ filters.start }}">
+      </div>
+      <div class="ce-custom-dates">
+        <label for="ce-end">To</label>
+        <input type="date" id="ce-end" name="end" value="{{ filters.end }}">
+      </div>
+      <div class="ce-checks">
+        <label><input type="checkbox" name="include_staff" value="1" {% if filters.include_staff %}checked{% endif %}> Include staff / admin accounts</label>
+        <label><input type="checkbox" name="include_inactive" value="1" {% if filters.include_inactive %}checked{% endif %}> Include deactivated accounts</label>
+      </div>
+      <input type="hidden" name="style" value="{{ filters.style }}">
+      <div><button type="submit" class="ce-btn">Apply filters</button></div>
+    </div>
+  </form>
+
+  <div class="ce-panel">
+    <div class="ce-summary">
+      <span class="ce-count">{{ email_count }}</span>
+      <span>email{{ email_count|pluralize }} ready</span>
+      {% if skipped_total %}
+        <span class="ce-muted">
+          Left out: {% if skipped.blank %}{{ skipped.blank }} without an email{% endif %}{% if skipped.blank and skipped.invalid %}, {% endif %}{% if skipped.invalid %}{{ skipped.invalid }} invalid{% endif %}{% if skipped.duplicate %}{% if skipped.blank or skipped.invalid %}, {% endif %}{{ skipped.duplicate }} duplicate{{ skipped.duplicate|pluralize }}{% endif %}
+        </span>
+      {% endif %}
+    </div>
+
+    <h2>Copy</h2>
+    <form method="get" class="ce-copy-row" id="ce-style-form">
+      {% for key, value in request.GET.items %}{% if key != 'style' and key != 'download' %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endif %}{% endfor %}
+      <label for="ce-style" class="ce-muted">Format</label>
+      <select id="ce-style" name="style" onchange="this.form.submit()">
+        {% for key, label in copy_styles %}<option value="{{ key }}" {% if key == filters.style %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <noscript><button type="submit" class="ce-btn ce-btn-secondary">Change</button></noscript>
+      <button type="button" class="ce-btn" id="ce-copy" {% if not email_count %}disabled{% endif %}>Copy all {{ email_count }} email{{ email_count|pluralize }}</button>
+      <span class="ce-copied" id="ce-copied" role="status" aria-live="polite"></span>
+    </form>
+    <textarea class="ce-emails" id="ce-emails" readonly aria-label="Customer emails">{{ copy_text }}</textarea>
+  </div>
+
+  <div class="ce-panel">
+    <h2>Send email</h2>
+    {% if email_count %}
+      <a class="ce-btn" href="{% url 'admin:send-email' %}?{% if query_prefix %}{{ query_prefix }}&amp;{% endif %}mode=bulk">Email these {{ email_count }} customer{{ email_count|pluralize }}</a>
+      <a class="ce-btn ce-btn-secondary" href="{% url 'admin:send-email' %}">Email one person</a>
+      <a href="{% url 'admin:api_emailcampaign_changelist' %}" style="margin-left:8px">Emails sent &rarr;</a>
+    {% else %}
+      <p class="ce-muted">No customers match these filters.</p>
+    {% endif %}
+  </div>
+
+  <div class="ce-panel">
+    <h2>Download</h2>
+    {% if email_count %}
+    <div class="ce-downloads">
+      {% for key, label in download_formats %}
+        <a class="ce-btn ce-btn-secondary" href="?{% if query_prefix %}{{ query_prefix }}&amp;{% endif %}download={{ key }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+    <p class="ce-muted">Downloads use the filters above. CSV and Excel include name, username, phone, reseller status and join date.</p>
+    {% else %}
+    <p class="ce-muted">No customers match these filters.</p>
+    {% endif %}
+  </div>
+
+  {% if rows_preview %}
+  <div class="ce-panel">
+    <h2>Preview{% if email_count > 10 %} (first 10 of {{ email_count }}){% endif %}</h2>
+    <div class="ce-table-wrap">
+      <table class="ce-table">
+        <thead><tr><th>Email</th><th>Name</th><th>Username</th><th>Phone</th><th>Reseller</th><th>Joined</th></tr></thead>
+        <tbody>
+          {% for r in rows_preview %}
+          <tr><td>{{ r.email }}</td><td>{{ r.full_name }}</td><td>{{ r.username }}</td><td>{{ r.phone }}</td><td>{{ r.reseller }}</td><td>{{ r.joined }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function () {
+  var joined = document.getElementById('ce-joined');
+  function toggleDates() {
+    var show = joined.value === 'custom';
+    document.querySelectorAll('.ce-custom-dates').forEach(function (el) { el.style.display = show ? '' : 'none'; });
+  }
+  joined.addEventListener('change', toggleDates);
+  toggleDates();
+
+  var button = document.getElementById('ce-copy');
+  var box = document.getElementById('ce-emails');
+  var status = document.getElementById('ce-copied');
+  function done(ok) {
+    status.textContent = ok ? 'Copied to clipboard' : 'Press Ctrl+C / Cmd+C to copy the selected text';
+    setTimeout(function () { status.textContent = ''; }, 4000);
+  }
+  function fallback() {
+    box.focus(); box.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    done(ok);
+  }
+  button.addEventListener('click', function () {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(box.value).then(function () { done(true); }, fallback);
+    } else {
+      fallback();
+    }
+  });
+})();
+</script>
+{% endblock %}
